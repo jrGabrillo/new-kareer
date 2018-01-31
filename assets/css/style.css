@@ -1,0 +1,62 @@
+.accent-1{
+	background: #54b3af !important;
+}
+.accent-2{
+	background: #73587b !important;
+}
+
+.loader{
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: center;
+}
+
+.welcome-screen-content{
+	background: url('../img/bg/shakehand.png') center/cover no-repeat !important;
+	text-align: center;
+}
+.welcome-screen-content .page-content{
+	background: rgba(255,255,255,0.8) !important;
+}
+.welcome-screen-content .holder{
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.welcome-screen-content .login-screen-title{
+	margin:0px 0px 100px 0px;
+}
+
+.block-create-account{
+	position:  fixed;
+	bottom:  0%;
+	left: 50%;
+	width: 100%;
+	/*text-align: center !important;*/
+	transform: translateX(-50%);
+}
+
+.login-screen-content{
+	background: url('../img/bg/kareer_bg1.png') center/cover no-repeat  !important;
+}
+
+.login-screen-title{
+	margin: 0px 0px 50px 0px !important;
+}
+
+.block-login{
+	width: 150px;
+}
+
+.block-create-account{
+	text-align:  center;
+}
+
+.tab-link{
+	color: rgba(158, 158, 158, 0.3) !important;
+}
+
+.tab-link-active{
+	color: #54b3af !important;
+}
