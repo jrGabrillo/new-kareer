@@ -12,67 +12,67 @@ jobs = {
 		let data = [
 					{
 						company:{
-							logo:'',
+							logo:'rnr_logo.png',
 							name:'RNR Digital Consultancy',
-							address:''
+							address:'Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan'
 						},
 						job:{
-							title:'',
-							date:'',
-							requirements:'',
-							description:'',
+							title:'Front-End Developer',
+							date:'January 31, 2018',
+							requirements:'Skills of a Front-End Developer.',
+							description:'We are in need of Front-End Developers, who are passionate and highly motivated in making great ideas into reality.',
 						}
 					},
 					{
 						company:{
-							logo:'',
-							name:'Company 2',
-							address:''
+							logo:'apple.png',
+							name:'Apple Corp',
+							address:'Bgy. Bagumbayan, Libis, Quezon City, Metro Manila, Philippines'
 						},
 						job:{
-							title:'',
-							date:'',
-							requirements:'',
-							description:'',
+							title:'Operations Manager for Apple Farm',
+							date:'February 1, 2018',
+							requirements:'Skills of an Operations Manager.',
+							description:'We are in need of Operations Managers, who are passionate and highly motivated in operating farm industry.',
 						}
 					},
 					{
 						company:{
-							logo:'',
-							name:'Company 3',
-							address:''
+							logo:'penshoppe.png',
+							name:'Penshoppe Inc.',
+							address:'519-520 Makiling St, Makati, Metro Manila, Philippines'
 						},
 						job:{
-							title:'',
-							date:'',
-							requirements:'',
-							description:'',
+							title:'Pen Maker',
+							date:'January 15, 2018',
+							requirements:'Skills of a Pen Maker.',
+							description:'We are in need of Pen Makers, who are passionate and highly motivated in making pen products.',
 						}
 					},
 					{
 						company:{
-							logo:'',
-							name:'Company 4',
-							address:''
+							logo:'bench.png',
+							name:'Bench Furnitures',
+							address:'Dona Irenia, Parañaque, Metro Manila, Philippines'
 						},
 						job:{
-							title:'',
-							date:'',
-							requirements:'',
-							description:'',
+							title:'Wood Carver',
+							date:'January 12, 2018',
+							requirements:'Skills of a wood carver.',
+							description:'We are in need of Wood Carvers, who are passionate and highly motivated in carving bench furnitures.',
 						}
 					},
 					{
 						company:{
-							logo:'',
-							name:'Company 5',
-							address:''
+							logo:'huawei.png',
+							name:'Huawei Inc.',
+							address:'Taft Ave. Malate Manila, Manila, Metro Manila, Philippines'
 						},
 						job:{
-							title:'',
-							date:'',
-							requirements:'',
-							description:'',
+							title:'Chief Technlogy Officer',
+							date:'January 1, 2018',
+							requirements:'Skills of a Chief Technlogy Officer',
+							description:'We are in need of a Chief Technlogy Officer, who are passionate and highly motivated in leading.',
 						}
 					},
 					];
@@ -85,17 +85,24 @@ jobs = {
 		                                <div class='card job'>
 		                                    <div class='card-header align-items-flex-end'>
 		                                        <div class='company'>
-		                                            <div class='logo'><img src='assets/img/logo/rnr_logo.png' width='100%'></div>
+		                                            <div class='logo'><img src='assets/img/logo/${job.company.logo}' width='100%'></div>
 		                                            <div class='information'>
 		                                                <h3>${job.company.name}</h3>
-		                                                <span>Lingayen, Pangasinan</span>
+		                                                <span>${job.company.address}</span>
 		                                            </div>
 		                                        </div>
 		                                    </div>
 		                                    <div class='card-content card-content-padding align-self-stretch'>
 		                                        <div class='job-description'>
-		                                            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</span>
-		                                            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</span>
+		                                        	<span><strong>Posted:</strong> ${job.job.date}</span><br>
+		                                            <span><strong>Requirements:</strong></span>
+			                                            <ul>
+			                                            	<li>${job.job.requirements}</li>
+			                                            </ul>
+		                                            <span><strong>Description</strong></span>
+		                                            	<ul>
+			                                            	<li>${job.job.description}</li>
+			                                            </ul>
 		                                        </div>
 		                                    </div>
 		                                </div>
