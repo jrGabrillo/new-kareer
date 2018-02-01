@@ -80,29 +80,30 @@ jobs = {
 	},
 	display:function(){
 		let display = "";
-		for(let job of this.get()){
+		for(let post of this.get()){
 			$('#display_jobs').append(`<div class='swiper-slide'>
 		                                <div class='card job'>
 		                                    <div class='card-header align-items-flex-end'>
 		                                        <div class='company'>
-		                                            <div class='logo'><img src='assets/img/logo/${job.company.logo}' width='100%'></div>
+		                                            <div class='logo'><img src='assets/img/logo/${post.company.logo}' width='100%'></div>
 		                                            <div class='information'>
-		                                                <h3>${job.company.name}</h3>
-		                                                <span>${job.company.address}</span>
+		                                                <h3>${post.company.name}</h3>
+		                                                <span>${post.company.address}</span>
 		                                            </div>
 		                                        </div>
 		                                    </div>
 		                                    <div class='card-content card-content-padding align-self-stretch'>
 		                                        <div class='job-description'>
-		                                        	<span><strong>Posted:</strong> ${job.job.date}</span><br>
-		                                            <span><strong>Requirements:</strong></span>
-			                                            <ul>
-			                                            	<li>${job.job.requirements}</li>
-			                                            </ul>
-		                                            <span><strong>Description</strong></span>
-		                                            	<ul>
-			                                            	<li>${job.job.description}</li>
-			                                            </ul>
+		                                        	<h3>${post.job.title}</h3>
+		                                        	<p><span>${post.job.date}</span></p>
+		                                            <strong>Requirements:</strong>
+		                                            <ul>
+		                                            	<li>${post.job.requirements}</li>
+		                                            </ul>
+		                                            <strong>Description</strong>
+	                                            	<ul>
+		                                            	<li>${post.job.description}</li>
+		                                            </ul>
 		                                        </div>
 		                                    </div>
 		                                </div>

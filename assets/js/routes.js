@@ -17,6 +17,7 @@ var routes = [
       on: {
         pageInit:function(e,page){
           jobs.display();
+          jobs.display();
           // var view = app.views.create('#tab_jobs');
           // view.router.navigate('/signup/');
         }

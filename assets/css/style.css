@@ -178,6 +178,7 @@
 	border-radius: 50%;
 	border: 1px solid rgba(0,0,0,0.2);
 	margin:  auto;
+	overflow:  hidden;
 }
 #tab_jobs .card.active .logo{
 	width: 50px;
@@ -196,12 +197,23 @@
 }
 #tab_jobs .job-description{
 	top: 80px;
+	min-height: 75%;
 	position:  relative;
 	border-radius: 15px;
 	background: #4776e621;
 	margin: 0px;
 	padding: 5px 15px 0px 15px;
 }
+#tab_jobs .job-description p, #tab_jobs .job-description ul, #tab_jobs .job-description li{
+	font-size: 12px;
+	margin-top:0px;
+}
+#tab_jobs .job-description i{
+	font-size: 20px;
+	display: inline;
+	margin: 0px 0px 0px 0px;
+}
+
 #tab_jobs .block{
 	height: calc(100% - 50px);
 }
