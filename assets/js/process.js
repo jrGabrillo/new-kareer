@@ -22,7 +22,7 @@ jobs = {
 		                                            <div class='logo'><img src='assets/img/logo/rnr_logo.png' width='100%'></div>
 		                                            <div class='information'>
 		                                                <h3>RNR Digital Consultancy</h3>
-		                                                <i>Lingayen, Pangasinan</i>
+		                                                <span>Lingayen, Pangasinan</span>
 		                                            </div>
 		                                        </div>
 		                                    </div>
