@@ -65,11 +65,11 @@
 
 #picture-holder{
 	background:url('../img/icons/no-photo.png') center/cover no-repeat;
-	width:100px;
-	height: 100px;
+	width: 150px;
+	height: 150px;
 	margin: auto;
-    border: 1px solid #ccc;
-    border-radius: 50%;
+	border: 1px solid #ccc;
+	border-radius: 50%;
 }
 #name-holder{
 	text-align:center;
@@ -82,6 +82,21 @@
 #name-holder p{
 	font-weight: 100;
 	margin: 0;
+}
+
+#tab_account .card-header{
+	padding: 20px 0px 10px 0px;
+	background: #03047729;
+	/* border-bottom-left-radius: 100%; */
+	/* border-bottom-right-radius: 100%; */
+}
+#tab_account .card-header:after{
+	background-color: #d6d7e9 !important;
+	border-bottom-left-radius: 100%;
+	border-bottom-right-radius: 100%;
+	height: 100px;
+	position: absolute;
+	bottom: -20px;
 }
 
 #tab_account #menu{
@@ -111,7 +126,7 @@
 	background: -webkit-linear-gradient(to right, #8E54E9, #4776E6);
 	background: linear-gradient(to right, #8E54E9, #4776E6);
 }
-#tab_jobs .block{
+#tab_account .block, #tab_jobs .block{
 	margin:0;
 	padding: 0;
 }
@@ -146,7 +161,7 @@
 #tab_jobs .job-description{
 	top: 120px;
 	position:  relative;
-	border-radius: 20px;
+	border-radius: 10px;
 	background: #4776e621;
 	margin: 5px 5px 0px 5px;
 	padding: 5px 15px 0px 15px;
