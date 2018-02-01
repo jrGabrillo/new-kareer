@@ -14,6 +14,13 @@ var routes = [
     {
       path: '/account/',
       url: './pages/account.html',
+      on: {
+        pageInit:function(e,page){
+          jobs.display();
+          // var view = app.views.create('#tab_jobs');
+          // view.router.navigate('/signup/');
+        }
+      }
     },
     {
       path: '(.*)',

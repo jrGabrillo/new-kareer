@@ -4,6 +4,12 @@
 .accent-2{
 	background: #73587b !important;
 }
+.text-accent-1{
+	color: #54b3af !important;
+}
+.text-accent-2{
+	color: #73587b !important;
+}
 
 .loader{
 	position: relative;
@@ -51,10 +57,10 @@
 }
 
 .tab-link{
-	color: rgba(158, 158, 158, 0.3) !important;
+	color: rgba(255,255,255, 0.3) !important;
 }
 .tab-link-active{
-	color: #54b3af !important;
+	color: #fff!important;
 }
 
 #picture-holder{
@@ -87,15 +93,8 @@
 	margin: 0px 0px 20px 0px;
 }
 
-/*#tab_account #menu a{
-	position: relative;
-	top: 20%;
-	transform: translateY(-50%);
-}
-*/
 #tab_account #menu a{
 }
-
 #tab_account #menu a i{
 	font-size: 50px;
 	background-color: #f5f7fa;
@@ -103,9 +102,76 @@
 	padding:15px;
 	color:#c0c0c0;
 }
-
 #tab_account #menu p{
 	margin:0;
 	color:#c0c0c0;
 }
-
+#tab_jobs, .tabbar, #tab_account, #tab_search{
+	background: #4776E6;
+	background: -webkit-linear-gradient(to right, #8E54E9, #4776E6);
+	background: linear-gradient(to right, #8E54E9, #4776E6);
+}
+#tab_jobs .block{
+	margin:0;
+	padding: 0;
+}
+#tab_jobs .card, #tab_account .card{
+	border-radius: 20px;
+	overflow:  hidden;
+}
+#tab_jobs .card-content{
+	height: calc(100% - 100px);
+	overflow: scroll;
+	padding: 0px 5px;
+}
+#tab_jobs .card-header{
+	height: 100px;
+	background: url('../img/bg/img-bg.jpg') center/cover no-repeat !important;
+}
+#tab_jobs .company{
+	position: relative;
+	top: 110px;
+	width:  100%;
+	text-align:  center;
+	z-index:  1000;
+}
+#tab_jobs .logo{
+	background: #fff;
+	width:100px;
+	height: 100px;
+	border-radius: 50%;
+	border: 1px solid rgba(0,0,0,0.2);
+	margin:  auto;
+}
+#tab_jobs .job-description{
+	top: 120px;
+	position:  relative;
+	border-radius: 20px;
+	background: #4776e621;
+	margin: 5px 5px 0px 5px;
+	padding: 5px 15px 0px 15px;
+}
+#tab_jobs .block{
+	height: calc(100% - 50px);
+}
+#tab_jobs .swiper-container, #tab_jobs .job{
+	height: 98%;
+	/* overflow:  scroll; */
+}
+#tab_jobs h3{
+	width:100%;
+	margin:0;
+}
+#tab_jobs .holder_action{
+	width: 95%;
+	position: fixed;
+	bottom:0;
+	left:0;
+	right: 0;
+	margin:auto;
+}/*
+#tab_jobs .holder_action button{
+	width: 40px;
+	min-width: unset;
+	margin:0px 5px;
+}*/
