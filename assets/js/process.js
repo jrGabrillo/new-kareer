@@ -9,7 +9,73 @@ jobs = {
 		console.log('jobs initialized')
 	},
 	get:function(){
-		let data = ['','','','','','','','','','',''];
+		let data = [
+					{
+						company:{
+							logo:'',
+							name:'RNR Digital Consultancy',
+							address:''
+						},
+						job:{
+							title:'',
+							date:'',
+							requirements:'',
+							description:'',
+						}
+					},
+					{
+						company:{
+							logo:'',
+							name:'Company 2',
+							address:''
+						},
+						job:{
+							title:'',
+							date:'',
+							requirements:'',
+							description:'',
+						}
+					},
+					{
+						company:{
+							logo:'',
+							name:'Company 3',
+							address:''
+						},
+						job:{
+							title:'',
+							date:'',
+							requirements:'',
+							description:'',
+						}
+					},
+					{
+						company:{
+							logo:'',
+							name:'Company 4',
+							address:''
+						},
+						job:{
+							title:'',
+							date:'',
+							requirements:'',
+							description:'',
+						}
+					},
+					{
+						company:{
+							logo:'',
+							name:'Company 5',
+							address:''
+						},
+						job:{
+							title:'',
+							date:'',
+							requirements:'',
+							description:'',
+						}
+					},
+					];
 		return data;
 	},
 	display:function(){
@@ -21,7 +87,7 @@ jobs = {
 		                                        <div class='company'>
 		                                            <div class='logo'><img src='assets/img/logo/rnr_logo.png' width='100%'></div>
 		                                            <div class='information'>
-		                                                <h3>RNR Digital Consultancy</h3>
+		                                                <h3>${job.company.name}</h3>
 		                                                <span>Lingayen, Pangasinan</span>
 		                                            </div>
 		                                        </div>
