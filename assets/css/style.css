@@ -1,3 +1,19 @@
+@-webkit-keyframes svg-pulse{       
+	0% {
+		transform: translate(0%, 0%) scale(1.0); opacity: 1;
+		-o-transform: translate(0%, 0%) scale(1.0); opacity: 1;
+		-moz-transform: translate(0%, 0%) scale(1.0); opacity: 1;
+		-webkit-transform: translate(0%, 0%) scale(1.0); opacity: 1;
+	}
+	100% {
+		transform: translate(0%, 0%) scale(2); opacity: 0;
+		-o-transform: translate(0%, 0%) scale(2); opacity: 0;
+		-moz-transform: translate(0%, 0%) scale(2); opacity: 0;
+		-webkit-transform: translate(0%, 0%) scale(2); opacity: 0;
+	}
+}
+
+
 .accent-1{
 	background: #54b3af !important;
 }
@@ -135,13 +151,24 @@
 	overflow:  hidden;
 }
 #tab_jobs .card-content{
-	height: calc(100% - 100px);
+	height: calc(100% - 160px);
 	overflow: scroll;
-	padding: 0px 5px;
+	padding: 0px 0px 0px 0px;
+	border-top: 50px solid #fff;
+	border-left: 10px solid #fff;
+	border-bottom: 10px solid #fff;
+	border-right: 10px solid #fff;
+	border-radius: 50px 50px 20px 20px;
+}
+#tab_jobs .card-content:after{
+	background-color: #d6d7e9 !important;
+	height: 100px;
+	bottom: -20px;
 }
 #tab_jobs .card-header{
 	height: 100px;
 	background: url('../img/bg/img-bg.jpg') center/cover no-repeat !important;
+	overflow:;
 }
 #tab_jobs .company{
 	position: relative;
@@ -149,6 +176,13 @@
 	width:  100%;
 	text-align:  center;
 	z-index:  1000;
+
+	-webkit-transition: 0.1s ease-out;
+	transition: 0.1s ease-out;
+}
+#tab_jobs .card.active .company{
+	top: 0px;
+	display: inline-flex;
 }
 #tab_jobs .logo{
 	background: #fff;
@@ -158,12 +192,27 @@
 	border: 1px solid rgba(0,0,0,0.2);
 	margin:  auto;
 }
+#tab_jobs .card.active .logo{
+	width: 50px;
+	height: 50px;
+	margin: 0;
+}
+#tab_jobs .card.active .information{
+	text-align: left;
+	margin: 0px 0px 0px 10px;
+}
+#tab_jobs .card.active .card-content{
+	height: calc(100% - 120px);
+	padding: 0px 0px 0px 0px;
+	border-top: 10px solid #fff;
+	border-radius: 20px 20px 20px 20px;
+}
 #tab_jobs .job-description{
-	top: 120px;
+	top: 80px;
 	position:  relative;
-	border-radius: 10px;
+	border-radius: 15px;
 	background: #4776e621;
-	margin: 5px 5px 0px 5px;
+	margin: 0px;
 	padding: 5px 15px 0px 15px;
 }
 #tab_jobs .block{
@@ -171,7 +220,6 @@
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
 	height: 98%;
-	/* overflow:  scroll; */
 }
 #tab_jobs h3{
 	width:100%;

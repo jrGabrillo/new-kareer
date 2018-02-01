@@ -1,4 +1,4 @@
-var $ = Dom7;
+var $$ = Dom7;
 var app = new Framework7({
     id: 'rnr.kareer.app',
     root: '#app',
