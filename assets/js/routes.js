@@ -16,10 +16,71 @@ var routes = [
       url: './pages/account.html',
       on: {
         pageInit:function(e,page){
+          // account.ini();
           jobs.display();
           jobs.display();
+
+          let ps = "";
+          $('#display_jobs .card-content').each(function(){
+            ps = new PerfectScrollbar(this);
+          })
+          app.tab.show('#tab_jobs', true);
           // var view = app.views.create('#tab_jobs');
           // view.router.navigate('/signup/');
+        }
+      }
+    },
+    {
+      path: '/account-info/',
+      url: './pages/account-info.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('info');
+        }
+      }
+    },
+    {
+      path: '/career-info/',
+      url: './pages/career-info.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('career');
+        }
+      }
+    },
+    {
+      path: '/academic-info/',
+      url: './pages/academic-info.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('academic');
+        }
+      }
+    },
+    {
+      path: '/bookmarks/',
+      url: './pages/bookmarks.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('bookmark');
+        }
+      }
+    },
+    {
+      path: '/settings/',
+      url: './pages/settings.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('info');
+        }
+      }
+    },
+    {
+      path: '/resume/',
+      url: './pages/resume.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('resume');
         }
       }
     },
