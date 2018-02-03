@@ -1,8 +1,182 @@
-<div class="page no-toolbar no-navbar no-swipeback welcome-screen-content">
-    <div class="page-content login-screen-content">
-        <div class="block">
-            <a class="link" href='/account/'>Close</a>
-        </div>	
-        educational information
+<div class="page no-swipeback account-subpage" id='career-info'>
+	<div class="navbar no-shadow">
+		<div class="navbar-inner sliding">
+			<div class="left">
+				<a class="link back"><i class='material-icons'>chevron_left</i></a>
+			</div>
+			<div class="title">Academic Information</div>
+		</div>
+	</div>	
+    <div class="page-content"> 
+        <div class="content">
+            <div class='card' id="list_schools">
+                <div class='card-content card-content-padding align-self-stretch'>
+					<div class="list media-list">
+						<ul>
+							<li>
+								<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
+									<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">
+												Macabito Elementary School
+											</div>
+										</div>
+										<div class="item-subtitle">
+											2001-2006
+										</div>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
+									<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">
+												Calasiao Comprehensive National High School
+											</div>
+										</div>
+										<div class="item-subtitle">
+											2006-2010
+										</div>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
+									<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">
+												Pangasinan State University
+											</div>
+										</div>
+										<div class="item-subtitle">
+											2011-2015
+										</div>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+
+            <div class='card'>
+	            <a class="col button button-fill button-round bg-color-white text-color-gray popup-open"  href="#" data-popup=".popup-newAcad">Add</a>
+            </div>
+        </div>
     </div>
+	<div class="popup popup-acad">
+		<div class="navbar no-shadow">
+			<div class="navbar-inner sliding">
+				<div class="left">
+					<a class="link popup-close" href="#"><i class='material-icons'>close</i></a>
+				</div>
+				<div class="title">Academic Information</div>
+			</div>
+		</div>
+        <div class='card'>
+            <div class='card-header align-items-flex-end'><i>Date will be saved automatically.</i></div>
+            <div class='card-content card-content-padding align-self-stretch'>
+		        <form>
+		            <div class="list">
+		                <ul>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">School</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="Name of school here">
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Year Started</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="January 01, 2018">
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Year Ended</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="January 01, 2018">
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Remarks</div>
+		                            <div class="item-input-wrap">
+                                        <textarea class="resizable">No remarks</textarea>
+		                            </div>
+		                        </div>
+		                    </li>
+		                </ul>
+		            </div>
+		            <!-- <div class="block">
+		                <button class="col button button-fill button-round">Save</button>
+		            </div> -->
+		        </form>
+            </div>
+        </div>
+	</div>
+	<div class="popup popup-newAcad">
+		<div class="navbar no-shadow">
+			<div class="navbar-inner sliding">
+				<div class="left">
+					<a class="link popup-close" href="#"><i class='material-icons'>close</i></a>
+				</div>
+				<div class="title">New Academic Information</div>
+			</div>
+		</div>
+        <div class='card'>
+            <div class='card-content card-content-padding align-self-stretch'>
+		        <form>
+		            <div class="list">
+		                <ul>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">School</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="">
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Year Started</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="">
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Year Ended</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="">
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Remarks</div>
+		                            <div class="item-input-wrap">
+                                        <textarea class="resizable"></textarea>
+		                            </div>
+		                        </div>
+		                    </li>
+		                </ul>
+		            </div>
+		            <div class="block">
+		                <button class="col button button-fill button-round">Save</button>
+		            </div>
+		        </form>
+            </div>
+        </div>
+	</div>
 </div>

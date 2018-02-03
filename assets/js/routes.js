@@ -24,7 +24,8 @@ var routes = [
           $('#display_jobs .card-content').each(function(){
             ps = new PerfectScrollbar(this);
           })
-          app.tab.show('#tab_jobs', true);
+          
+          // app.tab.show('#tab_jobs', true);
           // var view = app.views.create('#tab_jobs');
           // view.router.navigate('/signup/');
         }
@@ -69,6 +70,15 @@ var routes = [
     {
       path: '/settings/',
       url: './pages/settings.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('info');
+        }
+      }
+    },
+    {
+      path: '/job-application/',
+      url: './pages/job-application.html',
       on: {
         pageInit:function(e,page){
           console.log('info');
