@@ -107,6 +107,13 @@ body {
 	color: #fff!important;
 }
 
+.card .tab-link{
+	color: rgba(0, 0, 0, 0.3) !important;
+}
+.card .tab-link-active{
+	color: #0b0b0b!important;
+}
+
 #picture-holder{
 	background:url('../img/icons/no-photo.png') center/cover no-repeat;
 	width: 150px;
@@ -317,4 +324,17 @@ body {
 
 #list_schools .item-media i{
 	font-size: 40px;
+}
+#list_jobs .item-subtitle{
+	white-space: unset;
+}
+#list_jobs .item-subtitle p{
+	/* white-space: unset; */
+	margin:  0;
+	background: #e4f5fd;
+	padding: 5px;
+	border-radius: 10px;
+}
+.no-bg{
+	background: transparent !important;
 }

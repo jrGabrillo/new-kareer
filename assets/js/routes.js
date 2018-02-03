@@ -77,8 +77,8 @@ var routes = [
       }
     },
     {
-      path: '/job-application/',
-      url: './pages/job-application.html',
+      path: '/notifications/',
+      url: './pages/notifications.html',
       on: {
         pageInit:function(e,page){
           console.log('info');
