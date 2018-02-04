@@ -200,13 +200,14 @@ body {
 	height:  100%;
 }
 #tab_account .block, #tab_jobs .block, #tab_search .block{
-	margin:0;
+	margin: 0;
 	padding: 0;
 }
 /*#tab_jobs .card, #tab_account .card, #tab_search .card, .account-subpage .card{*/
 .card{
 	border-radius: 10px;
 	overflow:  hidden;
+	margin: 8px 16px !important;
 }
 #tab_jobs .card-content{
 	height: calc(100% - 160px);
@@ -468,4 +469,18 @@ body {
 	left: 0;
 	position: relative;
 	margin-left: 0;
+}
+
+#display_info .item-inner{
+	margin: 0px !important;
+}
+#display_info .item-link{
+	margin: 10px 0 !important;
+}
+#display_info .item-inner:after{
+	background: transparent;
+}
+
+#display_info{
+	padding: 20px 0px;
 }
