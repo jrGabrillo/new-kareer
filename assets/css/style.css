@@ -42,6 +42,17 @@ body {
 .text-accent-2{
 	color: #73587b !important;
 }
+.no-bg{
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+
+.button-icons{
+	line-height: 35px;
+	/* position: relative; */
+	/* top: 100px; */
+}
 
 .range-bar, .range-bar-active{
     height:5px !important;
@@ -186,6 +197,7 @@ body {
 	background: -webkit-linear-gradient(to top, #28888c, #6abc9c) !important;
 	background: linear-gradient(to top, #28888c, #6abc9c) !important;
 	overflow:  hidden;
+	height:  100%;
 }
 #tab_account .block, #tab_jobs .block, #tab_search .block{
 	margin:0;
@@ -193,7 +205,7 @@ body {
 }
 /*#tab_jobs .card, #tab_account .card, #tab_search .card, .account-subpage .card{*/
 .card{
-	border-radius: 20px;
+	border-radius: 10px;
 	overflow:  hidden;
 }
 #tab_jobs .card-content{
@@ -206,7 +218,8 @@ body {
 	border-bottom: 10px solid #fff;
 	border-right: 10px solid #fff;
 	position: relative;
-	border-radius: 50px 50px 20px 20px;
+	border-radius: 0px 0px 20px 20px;
+	background:  #fff;
 }
 #tab_jobs .card-content:after{
 	background-color: #d6d7e9 !important;
@@ -294,6 +307,9 @@ body {
 	right: 0;
 	margin:auto;
 }
+#tab_jobs .tall{
+	height: calc(100% - 130px);
+}
 
 #tab_search .card-content{
 	padding:0;
@@ -311,10 +327,11 @@ body {
 	margin:0px;
 }
 .account-subpage .card-content, .md .card-content-padding{
-	padding:16px 0px;
+	padding: 0px;
 }
-.account-subpage .page-content form, .account-subpage .card-content form{
+.account-subpage .page-content form, .account-subpage .card-content form, #display_skills{
 	width:100%;
+	margin-bottom: 16px;
 }
 /*.account-subpage .page-content .list .item-input-wrap{*/
 .list .item-input-wrap{
@@ -331,10 +348,124 @@ body {
 #list_jobs .item-subtitle p{
 	/* white-space: unset; */
 	margin:  0;
-	background: #e4f5fd;
+	background: #4776e621;
 	padding: 5px;
 	border-radius: 10px;
 }
-.no-bg{
-	background: transparent !important;
+
+.kareer-card .card-header {
+	display: block;
+	padding: 10px;
+}
+.kareer-card .card-content {
+	padding: 5px 16px;
+}
+.kareer-card .kareer-avatar {
+	float: left;
+}
+.kareer-card .kareer-name {
+	margin-left: 44px;
+	font-size: 14px;
+	font-weight: 500;
+}
+.kareer-card .kareer-date {
+	margin-left: 44px;
+	font-size: 13px;
+	color: #8e8e93;
+}
+.kareer-card .card-footer {
+	background: #fafafa;
+}
+.kareer-card .card-footer a {
+	color: #81848b;
+	font-weight: 500;
+}
+.kareer-card .card-content img {
+	display: block;
+}
+.kareer-card .card-content-padding {
+	padding: 15px 10px;
+}
+.kareer-card .card-content-padding .likes {
+	color: #8e8e93;
+}
+
+.md .page-content .searchbar {
+    border-radius: unset;
+    margin: unset;
+    width: unset;
+    -webkit-box-shadow: unset;
+    box-shadow: unset;
+}
+.searchbar-expandable {
+	position: absolute;
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
+	pointer-events: none
+}
+.md .searchbar-expandable {
+	height: 100%;
+}
+.md .searchbar-inner {
+	position:  relative;}
+
+.md .page>.searchbar textarea, .md .page>.searchbar input[type=text], .md .searchbar-expandable textarea, .md .searchbar-expandable input[type=text], .md .subnavbar .searchbar textarea, .md .subnavbar .searchbar input[type=text] {
+	padding: 0px !important;
+	font-size: 15px !important;
+	font-weight: normal;
+	color: inherit;
+	width: 100%;
+	position:  relative;
+	background:  #4776e621;
+}
+.md .page>.searchbar .searchbar-disable-button, .md .page>.searchbar .searchbar-icon, .md .searchbar-expandable .searchbar-disable-button, .md .searchbar-expandable .searchbar-icon, .md .subnavbar .searchbar .searchbar-disable-button, .md .subnavbar .searchbar .searchbar-icon {
+	left: 4px
+}
+.md .searchbar-expandable {
+	width: 56px;
+	height: 100%;
+	opacity: 0;
+	top: 50%;
+	margin-top: -28px;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	left: 100%;
+	margin-left: -56px;
+}
+.md .navbar .searchbar-expandable {
+	border-radius: 28px;
+	width: 56px;
+	margin-top: -28px;
+	margin-left: -56px
+}
+@media (min-width:768px) {
+	.md .navbar .searchbar-expandable {
+		border-radius: 32px;
+		width: 64px;
+		margin-top: -32px;
+		margin-left: -64px
+	}
+}
+.md .subnavbar .searchbar-expandable, .md .toolbar .searchbar-expandable {
+	border-radius: 24px;
+	width: 48px;
+	margin-top: -24px;
+	margin-left: -48px
+}
+.md .tabbar-labels .searchbar-expandable {
+	border-radius: 36px;
+	width: 72px;
+	margin-top: -36px;
+	margin-left: -72px
+}
+.md .searchbar-expandable.searchbar-enabled {
+	width: 100%;
+	border-radius: 0;
+	opacity: 1;
+	pointer-events: auto;
+	top: 0;
+	margin-top: 0;
+	left: 0;
+	position: relative;
+	margin-left: 0;
 }

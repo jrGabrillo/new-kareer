@@ -81,7 +81,7 @@ var routes = [
       url: './pages/notifications.html',
       on: {
         pageInit:function(e,page){
-          console.log('info');
+          let ps = new PerfectScrollbar('#list_jobs');
         }
       }
     },
