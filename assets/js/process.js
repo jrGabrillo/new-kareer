@@ -118,10 +118,10 @@ jobs = {
 		                                <div class='card job'>
 		                                    <div class='card-header align-items-flex-end'>
 		                                        <div class='company'>
-		                                            <div class='logo' style='background:url(assets/img/logo/${post.company.logo}) center/cover no-repeat;'></div>
+		                                            <div class='logo-holder'><div class='logo' style='background:url(assets/img/logo/${post.company.logo}) center/cover no-repeat;'></div></div>
 		                                            <div class='information'>
 		                                                <h3>${post.company.name}</h3>
-		                                                <span>${post.company.address}</span>
+		                                                <div>${post.company.address}</div>
 		                                            </div>
 		                                        </div>
 		                                    </div>

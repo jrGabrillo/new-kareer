@@ -244,26 +244,40 @@ body {
 	top: 0px;
 	display: inline-block;
 }
-#tab_jobs .logo{
+#tab_jobs .logo-holder{
 	background: #fff;
 	width:100px;
 	height: 100px;
-	/* border-radius: 50%; */
-	/* border: 1px solid rgba(0,0,0,0.2); */
+	border: 1px solid rgba(0,0,0,0.2);
 	margin:  auto;
 	overflow:  hidden;
 }
-#tab_jobs .card.active .logo{
+#tab_jobs .logo{
+	background: #fff;
+	width:100%;
+	height: 100%;
+}
+#tab_jobs .card.active .logo-holder{
 	width: 50px;
 	height: 50px;
 	margin: 0;
 	float: left;
+	position:  absolute;
 }
 #tab_jobs .card.active .information{
 	text-align: left;
 	margin: 0px 0px 0px 10px;
 	width: 80%;
 	float: right;
+}
+#tab_jobs .card.active .information div{
+	/*text-align: left;
+	margin: 0px 0px 0px 10px;
+	width: 80%;
+	float: right;*/
+	width: 100%;
+	height: 50px !important;
+	overflow:  hidden;
 }
 #tab_jobs .card.active .card-content{
 	height: calc(100% - 120px);
