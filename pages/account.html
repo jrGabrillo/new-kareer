@@ -2,7 +2,7 @@
     <div class='toolbar tabbar no-shadow color-theme-white'>
         <div class='toolbar-inner'>
             <a class='tab-link tab-link-active' href='#tab_account'><i class='material-icons'>account_circle</i></a> 
-            <a class='tab-link' href='#tab_jobs'><i class='material-icons'>business_center</i></a> 
+            <a class='tab-link' href='#tab_jobs'><i class='material-icons'>business_center</i></a>
             <a class='tab-link' href='#tab_search'><i class='material-icons'>search</i></a>
         </div>
     </div>
@@ -66,8 +66,8 @@
                 </div>
             </div>
             <div class='page-content tab' id='tab_jobs'>
-                <div class='block'>
-                    <div class='swiper-container swiper-init demo-swiper' data-pagination='{'el': '.swiper-pagination', 'hideOnClick': true}'>
+                <div class=''>
+                    <div class='swiper-container swiper-init demo-swiper' data-pagination='{'el': '.swiper-pagination', 'hideOnClick': true}' data-slides-per-view="1" data-space-between="10">
                         <div class='swiper-wrapper' id='display_jobs'></div>
                     </div>
                     <div class='holder_action'>
@@ -134,7 +134,7 @@
                                         <ul>
                                             <li class="item-content item-input">
                                                 <div class="item-inner">
-                                                    <div class="item-input-wrap">
+                                                    <div class="item-input-wrap" style="background: #fff;">
                                                         <div class="range-slider range-slider-init" data-label="true">
                                                             <input type="range" value="50" min="0" max="100" step="1">
                                                         </div>
