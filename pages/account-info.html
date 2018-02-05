@@ -97,18 +97,26 @@
 	            <div class='card-header align-items-flex-end accordion-item-toggle'><p class="item-inner">Skills</p></div>
 	            <div class='card-content card-content-padding align-self-stretch accordion-item-content'>
 	                <div class="row">
-	                	<div class="list" id='display_skills'>
-							<ul>
-							    <li class="item-content">Web Development</li>
-							    <li class="item-content">Server Management</li>
-							</ul>
+	                	<div class="block" id='display_skills'>
+
+	                		<div class="chip">
+								<div class="chip-label">Web Development</div>
+								<a href="#" class="chip-delete"></a>
+							</div>
+	                		<div class="chip">
+								<div class="chip-label">Server Management</div>
+								<a href="#" class="chip-delete"></a>
+							</div>
 				        </div>
 	                </div>
 	                <div class='holder_action'>
 	                	<div class="block">
-	                        <p class="row">
-		                        <button class="col button button-raised button-round text-color-white bg-color-blue">Add Skill</button>
-	                        </p>
+	                		<div class="item-input-wrap">
+                                <textarea class="resizable">Add new skill</textarea>
+                            </div>
+                            <p class="row">
+								<button class="button button-raised button-round">Save</button>                            
+                            </p>
 	                	</div>
 	                </div>
 	            </div>

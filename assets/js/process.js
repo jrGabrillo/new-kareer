@@ -131,7 +131,7 @@ jobs = {
 		                                        	<p><span>${post.job.date}</span></p>
 		                                        	<div class='row'>
 			                                            <strong>Skills</strong>
-			                                            <div class='row' id='display_skills'>
+			                                            <div id='display_skills'>
 															<div class="chip color-pink">
 																<div class="chip-label">Lorem </div>
 															</div>

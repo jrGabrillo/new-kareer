@@ -127,8 +127,8 @@ body {
 
 #picture-holder{
 	background:url('../img/icons/no-photo.png') center/cover no-repeat;
-	width: 150px;
-	height: 150px;
+	width: 100px;
+	height: 100px;
 	margin: auto;
 	border: 1px solid #ccc;
 	border-radius: 50%;
@@ -150,6 +150,7 @@ body {
 
 #tab_account .card-content{
 	padding: 20px 0px 10px 0px;
+	/* height: 300px; */
 	background: #d3d3d3;
 	background: -webkit-linear-gradient(to top, #e9e9e9, #fbfbfb);
 	background: linear-gradient(to top, #fbfbfb, #fbfbfb);
@@ -169,29 +170,46 @@ body {
 }
 
 #tab_account #menu{
-	margin: 10px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	width: 100%;
 }
 
 #tab_account #menu .menu-link{
 	text-align:center;
-	margin: 0px 0px 20px 0px;
+	margin: 0px 0px 0px 0px;
 }
 
 #tab_account #menu a{
 }
 #tab_account #menu a i{
-	font-size: 50px;
-	background-color: #f5f7fa;
+	font-size: 20px;
+	/* background-color: #f5f7fa; */
 	border-radius: 50%;
 	padding:15px;
 	color:#c0c0c0;
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24);
-	box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24);
+	/* -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24); */
+	/* box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24); */
 }
 #tab_account #menu p{
 	margin:0;
 	color:#c0c0c0;
 }
+
+#about, #skills, #menu{
+	margin: 0px 16px;
+}
+#about p{
+height: 100px;
+overflow: hidden;
+margin: 0;
+}
+#skills .row{
+	display: inline-table; 
+}
+#skills .row .chip{
+	margin: 5px 5px;
+}
+
 #tab_jobs, .tabbar, #tab_account, #tab_search, .account-subpage, .popup{
 	background: #28888c !important;
 	background: -webkit-linear-gradient(to top, #28888c, #6abc9c) !important;
@@ -207,7 +225,8 @@ body {
 .card{
 	border-radius: 5px;
 	overflow:  hidden;
-	margin: 8px 16px !important;
+	margin: 0px 8px !important;
+	/* width: 100%; */
 }
 #tab_jobs .card-content{
 	height: calc(100% - 120px);
@@ -321,6 +340,7 @@ body {
 #tab_jobs h3{
 	width:100%;
 	margin:0;
+	/* position:  fixed; */
 }
 #tab_jobs .holder_action{
 	width: 95%;
@@ -359,7 +379,9 @@ body {
 /*.account-subpage .page-content .list .item-input-wrap{*/
 .list .item-input-wrap{
 	background: #f1f1f163;
+	border: 1px solid #f0f0f0;
 	border-radius: 2px;
+	padding: 2px;
 }
 
 #list_schools .item-media i{
@@ -509,4 +531,13 @@ body {
 
 #display_skills{
 	width:100%;
+}
+
+#display_info .card, #list_schools .card, #list_jobs .card{
+	margin: 16px 8px !important;
+}
+
+.job-description .row{
+width: 100%;
+display: inline-block;
 }

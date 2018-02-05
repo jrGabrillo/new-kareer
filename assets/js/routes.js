@@ -20,7 +20,7 @@ var routes = [
           jobs.display();
           jobs.display();
 
-          let ps = "";
+          let ps = new PerfectScrollbar("#about p");
           $('#display_jobs .card-content').each(function(){
             ps = new PerfectScrollbar(this);
           })
@@ -91,6 +91,24 @@ var routes = [
       on: {
         pageInit:function(e,page){
           console.log('resume');
+        }
+      }
+    },
+    {
+      path: '/messages/',
+      url: './pages/messages.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('messages');
+        }
+      }
+    },
+    {
+      path: '/message/',
+      componentUrl: './pages/message.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('message');
         }
       }
     },
