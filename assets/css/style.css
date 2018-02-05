@@ -213,7 +213,7 @@ margin: 0;
 #tab_jobs, .tabbar, #tab_account, #tab_search, .account-subpage, .popup{
 	background: #28888c !important;
 	background: -webkit-linear-gradient(to top, #28888c, #6abc9c) !important;
-	background: linear-gradient(to top, #28888c, #6abc9c) !important;
+	background: linear-gradient(to top, #64c2ec, #64c2ec) !important;
 	overflow:  hidden;
 	height:  100%;
 }

@@ -108,7 +108,7 @@ var routes = [
       componentUrl: './pages/message.html',
       on: {
         pageInit:function(e,page){
-          console.log('message');
+          let ps = new PerfectScrollbar('.messages-content');
         }
       }
     },
