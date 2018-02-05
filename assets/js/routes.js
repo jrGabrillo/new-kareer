@@ -25,7 +25,7 @@ var routes = [
             ps = new PerfectScrollbar(this);
           })
           
-          // app.tab.show('#tab_jobs', true);
+          app.tab.show('#tab_jobs', true);
           // var view = app.views.create('#tab_jobs');
           // view.router.navigate('/signup/');
         }

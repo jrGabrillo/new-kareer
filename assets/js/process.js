@@ -129,10 +129,31 @@ jobs = {
 		                                        <div class='job-description'>
 		                                        	<h3>${post.job.title}</h3>
 		                                        	<p><span>${post.job.date}</span></p>
-		                                            <strong>Description</strong>
-	                                            	${post.job.description}
-		                                            <strong>Requirements:</strong>
-	                                            	${post.job.requirements}
+		                                        	<div class='row'>
+			                                            <strong>Skills</strong>
+			                                            <div class='row' id='display_skills'>
+															<div class="chip color-pink">
+																<div class="chip-label">Lorem </div>
+															</div>
+															<div class="chip color-green">
+																<div class="chip-label">voluptatem </div>
+															</div>
+															<div class="chip color-yellow">
+																<div class="chip-label">numquam </div>
+															</div>
+															<div class="chip color-blue">
+																<div class="chip-label">reprehenderit </div>
+															</div>
+			                                            </div>
+		                                        	</div>
+		                                        	<div class='row'>
+			                                            <strong>Description</strong>
+		                                            	${post.job.description}
+		                                        	</div>
+		                                        	<div class='row'>
+			                                            <strong>Requirements:</strong>
+		                                            	${post.job.requirements}
+		                                        	</div>
 		                                        </div>
 		                                    </div>
 		                                </div>
@@ -141,14 +162,18 @@ jobs = {
 		jobs.scroll();
 	},
 	scroll:function(){
+		let scroll = 0, direction = "";
 		$("#display_jobs .card-content").on( 'scroll', function(){
 			let scrolled = $(this).scrollTop();
-		   	if(scrolled >= 25){
+			direction = (scrolled>scroll)?'up':'down';
+		   	if(direction == 'up'){
 		   		$(this).parent('.card').addClass('active');
+		   		// $(this).parent('.job').find('.logo-holder').attr({'style':`transform:scale(${(1*0.6)}); top:-${(scrolled*0.6)}px; left:-${(scrolled*0.7)}px;`});
 		   	}
 		   	else{
 		   		$(this).parent('.card').removeClass('active');
 		   	}
+			scroll = scrolled;
 		});
 	}
 }
