@@ -1,0 +1,12 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Kareer",
+  "short_name": "Kareer",
+  "version": "rnr.Kareer.com",
+  "description": "Tinder for jobs",
+  "author": "RNR Digital Consultancy",
+  "icons": [],
+  "start_url": "index.html",
+  "theme_color": "#2196f3\" name=\"theme-color"
+}

@@ -1,0 +1,15 @@
+.login-screen-content{
+	background: url('../img/bg/kareer_bg1.png') center/cover no-repeat  !important;
+}
+
+.block-login{
+	width: 150px;
+}
+
+.block-create-account{
+	/* position:  fixed; */
+	/* bottom: 0%; */
+	/* left: 0; */
+	/* right: 0; */
+	text-align:  center;
+}
