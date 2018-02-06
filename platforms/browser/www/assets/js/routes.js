@@ -20,18 +20,14 @@ var routes = [
           jobs.display();
 
           var mySwiper = new Swiper('#tab_jobs .swiper-container',{
-            speed: 400,
-            spaceBetween: 100,
-            freeMode:true,
-            freeModeSticky:true
+            speed: 100,
+            spaceBetween: 10,
           });
-
-
-
+          
           let ps = new PerfectScrollbar("#about p");
-          // $('#display_jobs .card-content').each(function(){
-          //   ps = new PerfectScrollbar(this);
-          // })
+          $('#display_jobs .card-content').each(function(){
+            ps = new PerfectScrollbar(this);
+          })
           
           app.tab.show('#tab_jobs', true);
           // var view = app.views.create('#tab_jobs');

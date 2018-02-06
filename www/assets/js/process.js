@@ -159,19 +159,23 @@ jobs = {
 		                                </div>
 		                            </div>`);
 		}
-		// jobs.scroll();
+		this.scroll();
 	},
 	scroll:function(){
 		let scroll = 0, direction = "";
 		$("#display_jobs .card-content").on( 'scroll', function(){
 			let scrolled = $(this).scrollTop();
 			direction = (scrolled>scroll)?'up':'down';
-		   	if(direction == 'up'){
+			console.log(`${direction} ${scrolled}`);
+		   	if((direction == 'up') && (scrolled > 10)){
 		   		$(this).parent('.card').addClass('active');
+		   		$(this).scrollTop(110);
 		   		// $(this).parent('.job').find('.logo-holder').attr({'style':`transform:scale(${(1*0.6)}); top:-${(scrolled*0.6)}px; left:-${(scrolled*0.7)}px;`});
 		   	}
-		   	else{
+		   	else if((direction == 'down') && (scrolled < 100)){
 		   		$(this).parent('.card').removeClass('active');
+		   		$(this).scrollTop(0);
+		   		// $(this).animate({scrollTop:0},200);
 		   	}
 			scroll = scrolled;
 		});
