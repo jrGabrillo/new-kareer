@@ -1,20 +1,25 @@
 {
-  "name": "helloworld",
-  "displayName": "HelloCordova",
-  "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Apache Cordova Team",
-  "license": "Apache-2.0",
-  "cordova": {
-    "plugins": {
-      "cordova-plugin-whitelist": {}
+    "name": "helloworld",
+    "displayName": "HelloCordova",
+    "version": "1.0.0",
+    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Apache Cordova Team",
+    "license": "Apache-2.0",
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-facebook5": {
+                "APP_ID": "1778426385793075",
+                "APP_NAME": "kareer"
+            }
+        }
+    },
+    "dependencies": {
+        "cordova-plugin-facebook5": "^1.9.1",
+        "cordova-plugin-whitelist": "1"
     }
-  },
-  "dependencies": {
-    "cordova-plugin-whitelist": "1"
-  }
 }

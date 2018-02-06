@@ -42,4 +42,8 @@
         <icon height="87" platform="ios" src="www/assets/img/icons/icon.png" width="87" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="cordova-plugin-facebook5" spec="^1.9.1">
+        <variable name="APP_ID" value="1778426385793075" />
+        <variable name="APP_NAME" value="kareer" />
+    </plugin>
 </widget>

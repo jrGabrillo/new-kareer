@@ -1,10 +1,21 @@
 {
-  "cordova-plugin-whitelist": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-whitelist@1"
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist@1"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "is_top_level": true,
-    "variables": {}
-  }
+    "cordova-plugin-facebook5": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-facebook5"
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_ID": "1778426385793075",
+            "APP_NAME": "kareer"
+        }
+    }
 }

@@ -20,10 +20,10 @@ var routes = [
           jobs.display();
 
           var mySwiper = new Swiper('#tab_jobs .swiper-container',{
-            speed: 100,
+            speed: 800,
             spaceBetween: 10,
           });
-          
+
           let ps = new PerfectScrollbar("#about p");
           $('#display_jobs .card-content').each(function(){
             ps = new PerfectScrollbar(this);

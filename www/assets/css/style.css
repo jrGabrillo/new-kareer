@@ -47,13 +47,34 @@ body {
 	border: none !important;
 	box-shadow: none !important;
 }
-
 .button-icons{
 	line-height: 35px;
-	/* position: relative; */
-	/* top: 100px; */
+}
+.ellipsis{
+	overflow: hidden;
+	position: relative;
+	line-height: 1.2em;
+	text-align: justify;
+	margin-right: -1em;
+	padding-right: 1em;
 }
 
+.ellipsis:before {
+	content: '...';
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+.ellipsis:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	width: 1em;
+	height: 1em;
+	margin-top: 0.2em;
+	background: white;
+}
 .range-bar, .range-bar-active{
     height:5px !important;
     border-radius:10px;
