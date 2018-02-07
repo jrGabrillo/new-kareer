@@ -1,6 +1,26 @@
 account = {
 	ini:function(){
 		console.log('hello world');
+	},
+	social_login:function(){
+		console.log("xxx");
+		$("#signin_facebook").on('click',function(){
+			console.log("hello world");
+
+			var fbLoginSuccess = function (userData) {
+				console.log("UserInfo: ", userData);
+			}
+
+			console.log(facebookConnectPlugin);
+			facebookConnectPlugin.login(["public_profile"], 
+				function(user){
+					console.log(user);
+				},
+				function loginError (error) {
+					console.error(error)
+				}
+			);
+		});	
 	}
 }
 
