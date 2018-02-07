@@ -1,29 +1,29 @@
 {
-    "name": "helloworld",
-    "displayName": "HelloCordova",
-    "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "helloworld",
+  "displayName": "HelloCordova",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-facebook5": {
+        "APP_ID": "2045233702379585",
+        "APP_NAME": "Kareer"
+      }
     },
-    "author": "Apache Cordova Team",
-    "license": "Apache-2.0",
-    "cordova": {
-        "plugins": {
-            "cordova-plugin-whitelist": {},
-            "cordova-plugin-facebook5": {
-                "APP_ID": "2045233702379585",
-                "APP_NAME": "Kareer"
-            }
-        },
-        "platforms": [
-            "android"
-        ]
-    },
-    "dependencies": {
-        "cordova-android": "^6.2.3",
-        "cordova-plugin-facebook5": "git+https://github.com/lenguyentrang/cordova-plugin-facebook5.git",
-        "cordova-plugin-whitelist": "1"
-    }
+    "platforms": [
+      "android"
+    ]
+  },
+  "dependencies": {
+    "cordova-android": "^6.2.3",
+    "cordova-plugin-facebook5": "git+https://github.com/lenguyentrang/cordova-plugin-facebook5.git",
+    "cordova-plugin-whitelist": "1"
+  }
 }

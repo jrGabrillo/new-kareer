@@ -9,6 +9,7 @@
  *
  */
 document.addEventListener("deviceready", function(){
+    console.log("xxx");
     if (cordova.platformId == "browser") {
 
         var facebookConnectPlugin = {
@@ -176,7 +177,6 @@ document.addEventListener("deviceready", function(){
         module.exports = facebookConnectPlugin;
     } 
     else {
-
         var exec = require("cordova/exec");
 
         var facebookConnectPlugin = {

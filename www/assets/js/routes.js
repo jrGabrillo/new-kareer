@@ -8,7 +8,7 @@ var routes = [
       url: './pages/signin.html',
       on: {
         pageInit:function(e,page){
-          account.social_login();
+          account.ini();
         }
       }
     },
