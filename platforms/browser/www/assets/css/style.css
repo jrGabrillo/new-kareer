@@ -564,3 +564,7 @@ margin: 0;
 width: 100%;
 display: inline-block;
 }
+
+#social_icons img{
+	border-radius: 50%;
+}

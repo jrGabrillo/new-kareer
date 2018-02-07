@@ -1,0 +1,20 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-facebook5": {
+            "APP_ID": "1778426385793075",
+            "APP_NAME": "kareer",
+            "PACKAGE_NAME": "rnr.Kareer.com"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "rnr.Kareer.com"
+        }
+    },
+    "dependent_plugins": {}
+}
