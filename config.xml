@@ -43,8 +43,8 @@
     </platform>
     <engine name="android" spec="^6.2.3" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
-    <plugin name="cordova-plugin-facebook5" spec="^1.9.1">
-        <variable name="APP_ID" value="1778426385793075" />
-        <variable name="APP_NAME" value="kareer" />
+    <plugin name="cordova-plugin-facebook5" spec="https://github.com/lenguyentrang/cordova-plugin-facebook5">
+        <variable name="APP_ID" value="2045233702379585" />
+        <variable name="APP_NAME" value="Kareer" />
     </plugin>
 </widget>
