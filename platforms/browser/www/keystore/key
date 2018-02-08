@@ -1,0 +1,10 @@
+keytool -genkey -v -keystore kareer.keystore -alias kareer -keyalg RSA -keysize 2048 -validity 10000
+no time for love
+CN: Rufo N. Gabrillo Jr.
+OU: RNR Digital Consultancy
+O: RNR Digital Consultancy
+L: Lingayen
+ST: Pangasinan
+C: PH
+
+keytool -exportcert -alias kareer_key -keystore kareer.keystore | C:\OpenSSL\bin\openssl sha1 -binary | C:\OpenSSL\bin\openssl base64 > hash.txt

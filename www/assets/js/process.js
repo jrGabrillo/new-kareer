@@ -1,65 +1,14 @@
 account = {
 	ini:function(){
-		console.log('hello world');
-		window.fbAsyncInit = function() {
-            FB.init({
-                appId      : '407673386340765',
-                cookie     : true,
-                xfbml      : true,
-                version    : 'v2.8'
-            });
-			FB.AppEvents.logPageView();   
-		};
-		(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "https://connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
+
 
 		this.social_login();
 	},
 	social_login:function(){
 		console.log("xxx");
-
 		$("#signin_facebook").on('click',function(){
 			console.log("hello world");
 
-            FB.getLoginStatus(function(response) {
-                if (response.status === 'connected') {
-                    console.log(response.status);
-                    Login();
-                } else if (response.status === 'not_authorized') {
-                    console.log(response.status);
-                } else {
-                    console.log(response.status);
-                }
-            });
-            function Login() {  
-                FB.api('/me', {fields: 'id,first_name,last_name,email,gender'}, function (response){
-                    var data = $.map(response, function(value, index) {
-                        return [value];
-                    });
-
-                    $("#fb_respond").html(data);
-                    // var data = system.ajax(processor+'do-logInFB',data);
-                    // data.done(function(data){
-                    //     console.log(data);
-                    //     if(data != 0){
-                    //         $$("input").val("");
-                    //         system.notification("Kareer","Success. Please wait.",false,2000,true,false,function(){
-                    //             app.closeModal('.popup-login', true);
-                    //             localStorage.setItem('applicant',data);
-                    //             content.ini();
-                    //         });
-                    //     }
-                    //     else{
-                    //         system.notification("Kareer","Failed.",false,3000,true,false,false);
-                    //     }
-                    // })
-                });
-            }
 		});	
 	}
 }

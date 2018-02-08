@@ -9,18 +9,17 @@
  *
  */
 document.addEventListener("deviceready", function(){
-    console.log("xxx");
+    console.log('xxx');
     if (cordova.platformId == "browser") {
 
         var facebookConnectPlugin = {
-
             getLoginStatus: function (s, f) {
-                // Try will catch errors when SDK has not been init
                 try {
                     FB.getLoginStatus(function (response) {
                         s(response);
                     });
-                } catch (error) {
+                } 
+                catch (error) {
                     if (!f) {
                         console.error(error.message);
                     } else {
@@ -28,9 +27,7 @@ document.addEventListener("deviceready", function(){
                     }
                 }
             },
-
             showDialog: function (options, s, f) {
-
                 if (!options.name) {
                     options.name = "";
                 }
@@ -49,8 +46,7 @@ document.addEventListener("deviceready", function(){
                 if (!options.picture) {
                     options.picture = "";
                 }
-                
-                // Try will catch errors when SDK has not been init
+
                 try {
                     FB.ui(options,
                     function (response) {
@@ -68,14 +64,11 @@ document.addEventListener("deviceready", function(){
                     }
                 }
             },
-            // Attach this to a UI element, this requires user interaction.
             login: function (permissions, s, f) {
-                // JS SDK takes an object here but the native SDKs use array.
                 var permissionObj = {};
                 if (permissions && permissions.length > 0) {
                     permissionObj.scope = permissions.toString();
                 }
-                
                 FB.login(function (response) {
                     if (response.authResponse) {
                         s(response);
@@ -84,7 +77,6 @@ document.addEventListener("deviceready", function(){
                     }
                 }, permissionObj);
             },
-
             getAccessToken: function (s, f) {
                 var response = FB.getAccessToken();
                 if (!response) {
@@ -97,19 +89,13 @@ document.addEventListener("deviceready", function(){
                     s(response);
                 }
             },
-
             logEvent: function (eventName, params, valueToSum, s, f) {
-                // AppEvents are not avaliable in JS.
                 s();
             },
-
             logPurchase: function (value, currency, s, f) {
-                // AppEvents are not avaliable in JS.
                 s();
             },
-
             logout: function (s, f) {
-                // Try will catch errors when SDK has not been init
                 try {
                     FB.logout( function (response) {
                         s(response);
@@ -122,11 +108,7 @@ document.addEventListener("deviceready", function(){
                     }
                 }
             },
-
             api: function (graphPath, permissions, s, f) {
-                // JS API does not take additional permissions
-                
-                // Try will catch errors when SDK has not been init
                 try {
                     FB.api(graphPath, function (response) {
                         if (response.error) {
@@ -135,7 +117,8 @@ document.addEventListener("deviceready", function(){
                             s(response);
                         }
                     });
-                } catch (error) {
+                } 
+                catch (error) {
                     if (!f) {
                         console.error(error.message);
                     } else {
@@ -143,8 +126,6 @@ document.addEventListener("deviceready", function(){
                     }
                 }
             },
-
-            // Browser wrapper API ONLY
             browserInit: function (appId, version) {
                 if (!version) {
                     version = "v2.0";
@@ -157,8 +138,7 @@ document.addEventListener("deviceready", function(){
                 });
             }
         };
-        
-        // Bake in the JS SDK
+            
         (function () {
             if (!window.FB) {
                 console.log("launching FB SDK");
@@ -167,63 +147,55 @@ document.addEventListener("deviceready", function(){
                 e.async = true;
                 document.getElementById('fb-root').appendChild(e);
                 if (!window.FB) {
-                    // Probably not on server, use the sample sdk
-                    e.src = 'phonegap/plugin/facebookConnectPlugin/fbsdk.js';
+                    // e.src = 'phonegap/plugin/facebookConnectPlugin/fbsdk.js';
+                    e.src = 'https://connect.facebook.net/en_US/all.js';
                     document.getElementById('fb-root').appendChild(e);
                     console.log("Attempt local load: ", e);
                 }
             }
         }());
-        module.exports = facebookConnectPlugin;
+        return facebookConnectPlugin;
     } 
     else {
         var exec = require("cordova/exec");
-
         var facebookConnectPlugin = {
-
             getLoginStatus: function (s, f) {
                 exec(s, f, "FacebookConnectPlugin", "getLoginStatus", []);
             },
-
             showDialog: function (options, s, f) {
                 exec(s, f, "FacebookConnectPlugin", "showDialog", [options]);
             },
-
             login: function (permissions, s, f) {
                 exec(s, f, "FacebookConnectPlugin", "login", permissions);
             },
-
             logEvent: function(name, params, valueToSum, s, f) {
-                // Prevent NSNulls getting into iOS, messes up our [command.argument count]
                 if (!params && !valueToSum) {
                     exec(s, f, "FacebookConnectPlugin", "logEvent", [name]);
-                } else if (params && !valueToSum) {
+                } 
+                else if (params && !valueToSum) {
                     exec(s, f, "FacebookConnectPlugin", "logEvent", [name, params]);
-                } else if (params && valueToSum) {
+                } 
+                else if (params && valueToSum) {
                     exec(s, f, "FacebookConnectPlugin", "logEvent", [name, params, valueToSum]);
-                } else {
+                } 
+                else {
                     f("Invalid arguments");
                 }
             },
-
             logPurchase: function(value, currency, s, f) {
                 exec(s, f, "FacebookConnectPlugin", "logPurchase", [value, currency]);
             },
-
             getAccessToken: function(s, f) {
                 exec(s, f, "FacebookConnectPlugin", "getAccessToken", []);
             },
-
             logout: function (s, f) {
                 exec(s, f, "FacebookConnectPlugin", "logout", []);
             },
-
             api: function (graphPath, permissions, s, f) {
                 if (!permissions) { permissions = []; }
                 exec(s, f, "FacebookConnectPlugin", "graphApi", [graphPath, permissions]);
             }
         };
-
-        module.exports = facebookConnectPlugin;
+        return facebookConnectPlugin;
     }
 }, false);

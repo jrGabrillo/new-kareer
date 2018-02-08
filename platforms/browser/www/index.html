@@ -6,7 +6,6 @@
         <meta content="yes" name="apple-mobile-web-app-capable">
         <meta content="default" name="apple-mobile-web-app-status-bar-style">
         <meta content="#2196f3" name="theme-color">
-        <meta content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:" http-equiv="Content-Security-Policy">
         <title>Kareer</title>
         <link href="assets/img/icons/icon.png" rel="icon">
         <link href="assets/css/framework7.min.css" rel="stylesheet">
@@ -15,6 +14,7 @@
         <link href="assets/css/style.css" rel="stylesheet">
     </head>
     <body>
+        <div id="fb-root"></div>
         <div id="app">
             <div class="statusbar"></div>
             <div class="view view-main view-init" data-url="/">
@@ -27,14 +27,14 @@
                 </div>
             </div>
         </div>
-        <div id="fb-root"></div>
-        <!-- <script src="cordova.js"></script> -->
+        <script src="cordova.js"></script>
         <script src="assets/js/jquery.js"></script> 
         <script src="assets/js/scroll.min.js"></script> 
         <script src="assets/js/framework7.min.js"></script> 
         <script src="assets/js/routes.js"></script> 
         <script src="assets/js/app.js"></script>
         <!-- <script src="assets/js/facebookConnectPlugin.js"></script> -->
+        <script src="assets/js/phonegap.facebook.inappbrowser.js"></script>
         <script src="assets/js/process.js"></script> 
     </body>
 </html>
