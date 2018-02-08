@@ -104,6 +104,15 @@ var routes = [
       }
     },
     {
+      path: '/resume-builder/',
+      url: './pages/resume-builder.html',
+      on: {
+        pageInit:function(e,page){
+          console.log('resume');
+        }
+      }
+    },
+    {
       path: '/messages/',
       url: './pages/messages.html',
       on: {

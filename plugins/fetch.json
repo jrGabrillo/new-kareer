@@ -6,16 +6,5 @@
         },
         "is_top_level": true,
         "variables": {}
-    },
-    "cordova-plugin-facebook5": {
-        "source": {
-            "type": "registry",
-            "id": "https://github.com/lenguyentrang/cordova-plugin-facebook5"
-        },
-        "is_top_level": true,
-        "variables": {
-            "APP_ID": "2045233702379585",
-            "APP_NAME": "Kareer"
-        }
     }
 }

@@ -9,11 +9,6 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "rnr.Kareer.com"
-        },
-        "cordova-plugin-facebook5": {
-            "APP_ID": "2045233702379585",
-            "APP_NAME": "Kareer",
-            "PACKAGE_NAME": "rnr.Kareer.com"
         }
     },
     "dependent_plugins": {}

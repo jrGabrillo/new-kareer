@@ -1,8 +1,6 @@
 account = {
 	ini:function(){
-		FacebookInAppBrowser.settings.appId = '407673386340765';
-		FacebookInAppBrowser.settings.redirectUrl = 'http://192.168.254.103/';
-		FacebookInAppBrowser.settings.permissions = 'email';
+
 
 		this.social_login();
 	},
@@ -10,38 +8,6 @@ account = {
 		console.log("xxx");
 		$("#signin_facebook").on('click',function(){
 			console.log("hello world");
-
-FacebookInAppBrowser.login({
-	send: function() {
-		console.log('login opened');
-	},
-	success: function(access_token) {
-		console.log('done, access token: ' + access_token);
-	},
-	denied: function() {
-		console.log('user denied');
-	},
-	timeout: function(){
-	    console.log('a timeout has occurred, probably a bad internet connection');
-	},
-	complete: function(access_token) {
-		console.log('window closed');
-		if(access_token) {
-			console.log(access_token);
-		} else {
-			console.log('no access token');
-		}
-	},
-	userInfo: function(userInfo) {
-		if(userInfo) {
-			console.log(JSON.stringify(userInfo));
-		} else {
-			console.log('no user info');
-		}
-	}
-});
-
-
 
 		});	
 	}
