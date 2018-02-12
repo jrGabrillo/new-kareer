@@ -8,11 +8,10 @@
  * @version 0.5
  */
 
-document.addEventListener("deviceready", function(){
-    window.open = cordova.InAppBrowser.open;
-}, false);
-
 var openFB = (function () {
+    document.addEventListener("deviceready", function(){
+        window.open = cordova.InAppBrowser.open;
+    }, false);
 
     let loginURL = 'https://www.facebook.com/dialog/oauth',
         logoutURL = 'https://www.facebook.com/logout.php',

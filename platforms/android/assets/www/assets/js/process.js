@@ -1,15 +1,7 @@
 account = {
 	ini:function(){
-
-		fb.ini();
-		this.social_login();
 	},
 	social_login:function(){
-		console.log("xxx");
-		$("#signin_facebook").on('click',function(){
-			console.log("hello world");
-			fb.login();
-		});	
 	}
 }
 
@@ -197,67 +189,52 @@ search = {
 	}
 }
 
-fb = {
+signin = {
 	ini:function(){
-	     openFB.init({appId: '407673386340765'});
+		this.form();
 	},
-    login:function(){
-        openFB.login(
-                function(response){
-                    if(response.status === 'connected') {
-                        alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
-                    } else {
-                        alert('Facebook login failed: ' + response.error);
-                    }
-                }, {scope: 'email'});
-    },
-    getInfo:function(){
-        openFB.api({
-            path: '/me',
-            success: function(data) {
-                console.log(JSON.stringify(data));
-                document.getElementById("userName").innerHTML = data.name;
-                document.getElementById("userPic").src = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
-            },
-            error: errorHandler});
-    },
-    share:function(){
-        openFB.api({
-            method: 'POST',
-            path: '/me/feed',
-            params: {
-                message: document.getElementById('Message').value || 'Testing Facebook APIs'
-            },
-            success: function() {
-                alert('the item was posted on Facebook');
-            },
-            error: errorHandler});
-    },
-    readPermissions:function(){
-        openFB.api({
-            method: 'GET',
-            path: '/me/permissions',
-            success: function(result) {
-                alert(JSON.stringify(result.data));
-            },
-            error: errorHandler
-        });
-    },
-    revoke:function(){
-        openFB.revokePermissions(
-                function() {
-                    alert('Permissions revoked');
-                },
-                errorHandler);
-    },
-    logout:function(){
-        openFB.logout(
-                function() {
-                    alert('Logout successful');
-                },
-                errorHandler);
-    },
-    errorHandler:function(error){
-        alert(error.message);
-    }
+	form:function(){
+		$("#form_signin").validate({
+		    rules: {
+		        field_email: {required: true, maxlength: 50, email:true, validateEmail:true},
+		        field_password: {required: true, maxlength: 50},
+		    },
+		    errorElement : 'div',
+		    errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray();
+				form = [form[0].value,form[1].value];
+				console.log(form);
+                var data = system.ajax(system.host('do-logIn'),form);
+                data.done(function(data){
+                    console.log(data);
+                    // if(data != 0){
+                    //     $$("input").val("");
+                    //     system.notification("Kareer","Success. Please wait.",false,2000,true,false,function(){
+                    //         app.closeModal('.popup-login', true);
+                    //         localStorage.setItem('applicant',data);
+                    //         content.ini();
+                    //     });
+                    // }
+                    // else{
+                    //     system.notification("Kareer","Failed.",false,3000,true,false,false);
+                    // }
+                });
+		    }
+		}); 
+	}
+}
+
+signup = {
+	ini:function(){
+
+	}
 }

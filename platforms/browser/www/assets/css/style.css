@@ -95,7 +95,7 @@ body {
 }
 
 .welcome-screen-content{
-	background: url('../img/bg/shakehand.png') center/cover no-repeat !important;
+	/* background: url('../img/bg/shakehand.png') center/cover no-repeat !important; */
 	text-align: center;
 }
 .welcome-screen-content .page-content{
@@ -119,10 +119,10 @@ body {
 }
 
 .login-screen-content{
-	background: url('../img/bg/kareer_bg1.png') center/cover no-repeat  !important;
+	/* background: url('../img/bg/kareer_bg1.png') center/cover no-repeat  !important; */
 }
 .login-screen-title{
-	margin: 0px 0px 50px 0px !important;
+	margin: auto !important;
 }
 
 .block-login{
@@ -404,7 +404,7 @@ margin: 0;
 	background: #f1f1f163;
 	border: 1px solid #f0f0f0;
 	border-radius: 2px;
-	padding: 2px;
+	padding: 2px 2px 2px 5px;
 }
 
 #list_schools .item-media i{
@@ -585,4 +585,9 @@ margin: 0;
 }
 .resizable{
 	white-space: normal !important;
+}
+
+.error{
+	
+font-size:  10px;
 }

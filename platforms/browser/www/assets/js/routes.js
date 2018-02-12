@@ -8,7 +8,14 @@ var routes = [
       url: './pages/signin.html',
       on: {
         pageInit:function(e,page){
-          account.ini();
+          openFB.init({appId: '407673386340765'});
+          signin.ini();
+          console.log("xxx");
+
+          $("#signin_facebook").on('click',function(){
+            console.log("hello world");
+            fb.login();
+          }); 
         }
       }
     },
