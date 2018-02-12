@@ -1,0 +1,105 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+1 verbose cli   '--production',
+1 verbose cli   '--save' ]
+2 info using npm@3.10.3
+3 info using node@v6.5.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+8 silly fetchOtherPackageData https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+9 silly cache add args [ 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+9 silly cache add   null ]
+10 verbose cache add spec https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+11 silly cache add parsed spec Result {
+11 silly cache add   raw: 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+11 silly cache add   scope: null,
+11 silly cache add   escapedName: null,
+11 silly cache add   name: null,
+11 silly cache add   rawSpec: 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+11 silly cache add   spec: 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+11 silly cache add   type: 'remote' }
+12 silly mapToRegistry name https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry data Result {
+15 silly mapToRegistry   raw: 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+15 silly mapToRegistry   scope: null,
+15 silly mapToRegistry   escapedName: null,
+15 silly mapToRegistry   name: null,
+15 silly mapToRegistry   rawSpec: 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+15 silly mapToRegistry   spec: 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+15 silly mapToRegistry   type: 'remote' }
+16 silly mapToRegistry uri https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+17 verbose addRemoteTarball https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git not in flight; adding
+18 verbose addRemoteTarball [ 'https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git',
+18 verbose addRemoteTarball   null ]
+19 info retry fetch attempt 1 at 5:51:04 AM
+20 info attempt registry request try #1 at 5:51:04 AM
+21 http fetch GET https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+22 verbose request id a3a4f2dd5be43659
+23 http fetch 404 https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+24 error fetch failed https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+25 warn retry will retry, error on last attempt: Error: fetch failed with status code 404
+26 info retry fetch attempt 2 at 5:51:16 AM
+27 info attempt registry request try #1 at 5:51:16 AM
+28 http fetch GET https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+29 http fetch 404 https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+30 error fetch failed https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+31 warn retry will retry, error on last attempt: Error: fetch failed with status code 404
+32 info retry fetch attempt 3 at 5:52:17 AM
+33 info attempt registry request try #1 at 5:52:17 AM
+34 http fetch GET https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+35 http fetch 404 https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+36 error fetch failed https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+37 silly fetchPackageMetaData Error: fetch failed with status code 404
+37 silly fetchPackageMetaData     at Request.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\fetch.js:51:14)
+37 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+37 silly fetchPackageMetaData     at Request.emit (events.js:188:7)
+37 silly fetchPackageMetaData     at Request.onRequestResponse (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:977:10)
+37 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+37 silly fetchPackageMetaData     at ClientRequest.emit (events.js:188:7)
+37 silly fetchPackageMetaData     at HTTPParser.parserOnIncomingClient [as onIncoming] (_http_client.js:472:21)
+37 silly fetchPackageMetaData     at HTTPParser.parserOnHeadersComplete (_http_common.js:105:23)
+37 silly fetchPackageMetaData     at TLSSocket.socketOnData (_http_client.js:361:20)
+37 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+37 silly fetchPackageMetaData  error for https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git Error: fetch failed with status code 404
+37 silly fetchPackageMetaData     at Request.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\fetch.js:51:14)
+37 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+37 silly fetchPackageMetaData     at Request.emit (events.js:188:7)
+37 silly fetchPackageMetaData     at Request.onRequestResponse (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:977:10)
+37 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+37 silly fetchPackageMetaData     at ClientRequest.emit (events.js:188:7)
+37 silly fetchPackageMetaData     at HTTPParser.parserOnIncomingClient [as onIncoming] (_http_client.js:472:21)
+37 silly fetchPackageMetaData     at HTTPParser.parserOnHeadersComplete (_http_common.js:105:23)
+37 silly fetchPackageMetaData     at TLSSocket.socketOnData (_http_client.js:361:20)
+37 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+38 silly rollbackFailedOptional Starting
+39 silly rollbackFailedOptional Finishing
+40 silly runTopLevelLifecycles Starting
+41 silly runTopLevelLifecycles Finishing
+42 silly install printInstalled
+43 verbose stack Error: fetch failed with status code 404
+43 verbose stack     at Request.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\fetch.js:51:14)
+43 verbose stack     at emitOne (events.js:96:13)
+43 verbose stack     at Request.emit (events.js:188:7)
+43 verbose stack     at Request.onRequestResponse (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:977:10)
+43 verbose stack     at emitOne (events.js:96:13)
+43 verbose stack     at ClientRequest.emit (events.js:188:7)
+43 verbose stack     at HTTPParser.parserOnIncomingClient [as onIncoming] (_http_client.js:472:21)
+43 verbose stack     at HTTPParser.parserOnHeadersComplete (_http_common.js:105:23)
+43 verbose stack     at TLSSocket.socketOnData (_http_client.js:361:20)
+43 verbose stack     at emitOne (events.js:96:13)
+44 verbose cwd C:\wamp64\www\kareers
+45 error Windows_NT 6.3.9600
+46 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git" "--production" "--save"
+47 error node v6.5.0
+48 error npm  v3.10.3
+49 error fetch failed with status code 404
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]

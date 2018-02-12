@@ -1,6 +1,5 @@
 account = {
 	ini:function(){
-
 		fb.ini();
 		this.social_login();
 	},
@@ -260,4 +259,54 @@ fb = {
     errorHandler:function(error){
         alert(error.message);
     }
+}
+
+signin = {
+	ini:function(){
+		this.form();
+	},
+	form:function(){
+		$("#form_signin").validate({
+		    rules: {
+		        field_email: {required: true, maxlength: 50, email:true, validateEmail:true},
+		        field_password: {required: true, maxlength: 50},
+		    },
+		    errorElement : 'div',
+		    errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray();
+				form = [form[0].value,form[1].value];
+				console.log(form);
+                var data = system.ajax(system.host('do-logIn'),form);
+                data.done(function(data){
+                    console.log(data);
+                    // if(data != 0){
+                    //     $$("input").val("");
+                    //     system.notification("Kareer","Success. Please wait.",false,2000,true,false,function(){
+                    //         app.closeModal('.popup-login', true);
+                    //         localStorage.setItem('applicant',data);
+                    //         content.ini();
+                    //     });
+                    // }
+                    // else{
+                    //     system.notification("Kareer","Failed.",false,3000,true,false,false);
+                    // }
+                });
+		    }
+		}); 
+	}
+}
+
+signup = {
+	ini:function(){
+
+	}
 }

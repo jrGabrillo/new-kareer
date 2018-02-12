@@ -9,6 +9,7 @@ var routes = [
       on: {
         pageInit:function(e,page){
           account.ini();
+          signin.ini();
         }
       }
     },

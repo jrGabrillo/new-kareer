@@ -7,6 +7,11 @@
  * @author Christophe Coenraets @ccoenraets
  * @version 0.5
  */
+
+document.addEventListener("deviceready", function(){
+    window.open = cordova.InAppBrowser.open;
+}, false);
+
 var openFB = (function () {
 
     let loginURL = 'https://www.facebook.com/dialog/oauth',
