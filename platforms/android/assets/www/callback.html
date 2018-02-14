@@ -1,0 +1,14 @@
+<html>
+	<body>
+		<script>
+	        let get = localStorage.getItem('callback');
+	        if(get == "oauth"){
+	            window.opener.openFB.oauthCallback(window.location.href);
+	            window.close();
+	        }
+	        else{
+	            window.close();
+	        }
+		</script>
+	</body>
+</html>

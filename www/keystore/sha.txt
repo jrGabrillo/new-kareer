@@ -1,0 +1,26 @@
+Alias name: kareer
+Creation date: 02 7, 18
+Entry type: PrivateKeyEntry
+Certificate chain length: 1
+Certificate[1]:
+Owner: CN=Rufo N. Gabrillo Jr., OU=RNR Digital Consultancy, O=RNR Digital Consultancy, L=Lingayen, ST=Pangasinan, C=PH
+Issuer: CN=Rufo N. Gabrillo Jr., OU=RNR Digital Consultancy, O=RNR Digital Consultancy, L=Lingayen, ST=Pangasinan, C=PH
+Serial number: 44a81147
+Valid from: Wed Feb 07 18:28:41 CST 2018 until: Sun Jun 25 18:28:41 CST 2045
+Certificate fingerprints:
+	 MD5:  55:0D:17:B9:2A:9F:A5:DB:C2:4E:21:92:84:28:29:9D
+	 SHA1: EC:71:1E:C4:58:D1:FC:75:C2:50:46:A7:08:48:A6:2C:35:01:49:D1
+	 SHA256: 84:00:08:81:6B:4A:EC:06:AC:36:39:EB:B6:44:D8:C0:BF:E1:F9:26:25:13:D3:50:F7:1B:D7:12:2F:02:74:4B
+	 Signature algorithm name: SHA256withRSA
+	 Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 71 72 55 ED B7 7A 3E 08   26 D9 F3 A3 55 70 5D 8E  qrU..z>.&...Up].
+0010: 8D EF E3 DB                                        ....
+]
+]
+

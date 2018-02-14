@@ -41,7 +41,10 @@
         <icon height="58" platform="ios" src="www/assets/img/icons/icon.png" width="58" />
         <icon height="87" platform="ios" src="www/assets/img/icons/icon.png" width="87" />
     </platform>
-    <engine name="android" spec="^6.2.3" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-inappbrowser" spec="^2.0.2" />
+    <plugin name="cordova-plugin-googleplus" source="npm" spec="^5.2.1">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.17844365769-g9dr1gmokhvv2oi5qrusj6b796q1l1e8" />
+    </plugin>
+    <engine name="android" spec="^6.2.3" />
 </widget>

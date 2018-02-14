@@ -12,7 +12,10 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-inappbrowser": {}
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.17844365769-g9dr1gmokhvv2oi5qrusj6b796q1l1e8"
+      }
     },
     "platforms": [
       "android"
@@ -20,6 +23,7 @@
   },
   "dependencies": {
     "cordova-android": "^6.2.3",
+    "cordova-plugin-googleplus": "^5.2.1",
     "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-whitelist": "1"
   }

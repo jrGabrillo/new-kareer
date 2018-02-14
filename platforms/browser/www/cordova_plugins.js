@@ -14,13 +14,22 @@ module.exports = [
         "id": "cordova-plugin-inappbrowser.InAppBrowserProxy",
         "pluginId": "cordova-plugin-inappbrowser",
         "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-googleplus/www/GooglePlus.js",
+        "id": "cordova-plugin-googleplus.GooglePlus",
+        "pluginId": "cordova-plugin-googleplus",
+        "clobbers": [
+            "window.plugins.googleplus"
+        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
     "cordova-plugin-whitelist": "1.3.3",
-    "cordova-plugin-inappbrowser": "2.0.2"
+    "cordova-plugin-inappbrowser": "2.0.2",
+    "cordova-plugin-googleplus": "5.2.1"
 }
 // BOTTOM OF METADATA
 });

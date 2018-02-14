@@ -10,12 +10,12 @@ var routes = [
         pageInit:function(e,page){
           openFB.init({appId: '407673386340765'});
           signin.ini();
-          console.log("xxx");
+          fb.ini();
 
           $("#signin_facebook").on('click',function(){
             console.log("hello world");
             fb.login();
-          }); 
+          });
         }
       }
     },

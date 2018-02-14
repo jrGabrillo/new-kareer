@@ -8,3 +8,5 @@ ST: Pangasinan
 C: PH
 
 keytool -exportcert -alias kareer_key -keystore kareer.keystore | C:\OpenSSL\bin\openssl sha1 -binary | C:\OpenSSL\bin\openssl base64 > hash.txt
+
+keytool -exportcert -list -v -alias kareer -keystore kareer.keystore > sha1.txt
