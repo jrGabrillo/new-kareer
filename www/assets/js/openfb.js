@@ -11,6 +11,7 @@
 var openFB = (function () {
     document.addEventListener("deviceready", function(){
         window.open = cordova.InAppBrowser.open;
+        runningInCordova = true;
     }, false);
 
     let loginURL = 'https://www.facebook.com/dialog/oauth',
@@ -19,15 +20,12 @@ var openFB = (function () {
         fbAppId,
         context = window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")),
         baseURL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + context,
-        oauthRedirectURL = baseURL + '/oauthcallback.html',
+        oauthRedirectURL = baseURL + '/callback.html',
         cordovaOAuthRedirectURL = "https://www.facebook.com/connect/login_success.html",
-        logoutRedirectURL = baseURL + '/logoutcallback.html',
+        logoutRedirectURL = baseURL + '/callback.html',
         loginCallback,
         runningInCordova,
         loginProcessed;
-    document.addEventListener("deviceready", function () {
-        runningInCordova = true;
-    }, false);
 
     function init(params) {
         if (params.appId){
@@ -113,18 +111,22 @@ var openFB = (function () {
     function oauthCallback(url) {
         var queryString,
             obj;
+        console.log(url.indexOf("access_token="));        
 
         loginProcessed = true;
         if (url.indexOf("access_token=") > 0) {
+            console.log('xxx');
             queryString = url.substr(url.indexOf('#') + 1);
             obj = parseQueryString(queryString);
             tokenStore.fbAccessToken = obj['access_token'];
             if (loginCallback) loginCallback({status: 'connected', authResponse: {accessToken: obj['access_token']}});
         } else if (url.indexOf("error=") > 0) {
+            console.log('xxx');
             queryString = url.substring(url.indexOf('?') + 1, url.indexOf('#'));
             obj = parseQueryString(queryString);
             if (loginCallback) loginCallback({status: 'not_authorized', error: obj.error});
         } else {
+            console.log('xxx');
             if (loginCallback) loginCallback({status: 'not_authorized'});
         }
     }
@@ -151,11 +153,12 @@ var openFB = (function () {
     }
 
     function api(obj) {
+        console.log(obj);
         var method = obj.method || 'GET',
             params = obj.params || {},
             xhr = new XMLHttpRequest(),
             url;
-
+        console.log(params);
         params['access_token'] = tokenStore.fbAccessToken;
 
         url = 'https://graph.facebook.com' + obj.path + '?' + toQueryString(params);
