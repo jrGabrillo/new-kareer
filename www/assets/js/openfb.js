@@ -49,7 +49,6 @@ var openFB = (function () {
         cordovaOAuthRedirectURL = params.cordovaOAuthRedirectURL || cordovaOAuthRedirectURL;
         logoutRedirectURL = params.logoutRedirectURL || logoutRedirectURL;
     }
-
     function getLoginStatus(callback) {
         var token = tokenStore.fbAccessToken,
             loginStatus = {};
@@ -107,7 +106,6 @@ var openFB = (function () {
             loginWindow.addEventListener('exit', loginWindow_exitHandler);
         }
     }
-
     function oauthCallback(url) {
         var queryString,
             obj;
@@ -130,13 +128,11 @@ var openFB = (function () {
             if (loginCallback) loginCallback({status: 'not_authorized'});
         }
     }
-
     function logout(callback) {
         var logoutWindow,
             token = tokenStore.fbAccessToken;
 
         tokenStore.removeItem('fbtoken');
-
         if (token) {
             logoutWindow = window.open(logoutURL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no,clearcache=yes');
             if (runningInCordova) {
@@ -149,9 +145,7 @@ var openFB = (function () {
         if (callback) {
             callback();
         }
-
     }
-
     function api(obj) {
         console.log(obj);
         var method = obj.method || 'GET',
@@ -177,7 +171,6 @@ var openFB = (function () {
         xhr.open(method, url, true);
         xhr.send();
     }
-
     function revokePermissions(success, error) {
         return api({method: 'DELETE',
             path: '/me/permissions',
@@ -186,7 +179,6 @@ var openFB = (function () {
             },
             error: error});
     }
-
     function parseQueryString(queryString) {
         var qs = decodeURIComponent(queryString),
             obj = {},
@@ -197,7 +189,6 @@ var openFB = (function () {
         });
         return obj;
     }
-
     function toQueryString(obj) {
         var parts = [];
         for (var i in obj) {
@@ -218,3 +209,69 @@ var openFB = (function () {
         getLoginStatus: getLoginStatus
     }
 }());
+
+openFB.init({appId: '407673386340765'});
+fb = {
+    login:function(){
+        localStorage.setItem('callback','oauth');
+        openFB.login(
+            function(response){
+                console.log(response);
+                if(response.status === 'connected') {
+                    alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
+                } else {
+                    alert('Facebook login failed: ' + response.error);
+                }
+            }, {scope: 'email'});
+    },
+    getInfo:function(){
+        openFB.api({
+            path: '/me',
+            success: function(data){
+                console.log(JSON.stringify(data));
+                document.getElementById("userName").innerHTML = data.name;
+                document.getElementById("userPic").src = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
+            },
+            error: fb.errorHandler});
+    },
+    share:function(){
+        openFB.api({
+            method: 'POST',
+            path: '/me/feed',
+            params: {
+                message: document.getElementById('Message').value || 'Testing Facebook APIs'
+            },
+            success: function() {
+                alert('the item was posted on Facebook');
+            },
+            error: fb.errorHandler});
+    },
+    readPermissions:function(){
+        openFB.api({
+            method: 'GET',
+            path: '/me/permissions',
+            success: function(result){
+                alert(JSON.stringify(result.data));
+            },
+            error: fb.errorHandler
+        });
+    },
+    revoke:function(){
+        openFB.revokePermissions(
+            function() {
+                alert('Permissions revoked');
+            },
+            fb.errorHandler);
+    },
+    logout:function(){
+        localStorage.setItem('callback','logout');
+        openFB.logout(
+            function() {
+                alert('Logout successful');
+            },
+            fb.errorHandler);
+    },
+    errorHandler:function(error){
+        alert(error.message);
+    }
+}
