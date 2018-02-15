@@ -45,6 +45,6 @@
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-inappbrowser" spec="^2.0.2" />
     <plugin name="cordova-plugin-googleplus" spec="^5.2.1">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.17844365769-g9dr1gmokhvv2oi5qrusj6b796q1l1e8" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.915369297997-5shsmm9miju7n1c8pf59kj2ih2h9h68j" />
     </plugin>
 </widget>

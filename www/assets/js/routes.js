@@ -9,7 +9,7 @@ var routes = [
         on: {
             pageInit: function(e, page) {
                 openFB.init({appId: '407673386340765'});
-                gl = new GoogleLogin('17844365769-ndbmdu1iq9usf448en4fss5h37ris0qh.apps.googleusercontent.com', 'quV6OomZghZuWh9Ns8CWQFBw');
+                gl = new GoogleLogin('960874719503-dualg3i5m7tjra57nok58lpsm0j7738g.apps.googleusercontent.com', '1rRlZrDc3rCaLJPvNQGUJm99');
                 gl.isLoggedIn(google.endLoginCheck);
 
                 signin.ini();
@@ -17,8 +17,6 @@ var routes = [
                     console.log("hello world");
                     fb.login();
                 });
-
-
 
                 $("#signin_gmail").on('click', function() {
                     console.log("xxx");

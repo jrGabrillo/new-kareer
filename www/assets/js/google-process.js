@@ -1,6 +1,3 @@
-document.addEventListener("deviceready", function() {
-}, false);
-
 google = {
 	endLoginCheck:function(status){
 		if (status === -1){

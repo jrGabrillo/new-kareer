@@ -13,13 +13,7 @@ var GoogleLogin = function(id,secret){
 	var endSignin = {};
 
 	var openAuthWindow = function(){
-		var urlAuth = "https://accounts.google.com/o/oauth2/auth?"
-			+ "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&"
-			+ "redirect_uri=http://localhost&"
-			+ "response_type=code&"
-			+ "client_id=" + clientId;
-			
-		// Open InAppBrowser to get authorization code
+		var urlAuth = `https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&redirect_uri=http://localhost/kareers/www/&response_type=code&client_id=${clientId}`;
 		authWindow = window.open(urlAuth, '_blank', 'location=yes,toolbar=no');
 		authWindow.addEventListener('loadstart', parseRedirectUrl);
 	
