@@ -9,7 +9,7 @@ var routes = [
         on: {
             pageInit: function(e, page) {
                 openFB.init({appId: '407673386340765'});
-                gl = new GoogleLogin('960874719503-dualg3i5m7tjra57nok58lpsm0j7738g.apps.googleusercontent.com', '1rRlZrDc3rCaLJPvNQGUJm99');
+                gl = new GoogleLogin('960874719503-0dhf2g79fc8dqkoalm7r9apsujtlnblc.apps.googleusercontent.com', '4F1DdX23UFCIZAlD7itJRAQM');
                 gl.isLoggedIn(google.endLoginCheck);
 
                 signin.ini();

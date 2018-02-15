@@ -13,19 +13,19 @@ var GoogleLogin = function(id,secret){
 	var endSignin = {};
 
 	var openAuthWindow = function(){
-		var urlAuth = `https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&redirect_uri=http://localhost/kareers/www/&response_type=code&client_id=${clientId}`;
+		var urlAuth = `https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&redirect_uri=http://localhost/kareers/www/callback.html&response_type=code&client_id=${clientId}`;
 		authWindow = window.open(urlAuth, '_blank', 'location=yes,toolbar=no');
 		authWindow.addEventListener('loadstart', parseRedirectUrl);
-	
 	};
 	
 	var parseRedirectUrl = function(e){
-		var url = e.url;
+		var url = e;
 		var thereIsCode = url.indexOf("code=");
 		var thereIsError = url.indexOf("error=");
-		
+
+		console.log(thereIsCode);
 		if(thereIsCode != -1){
-			authWindow.close();
+			// window.close();
 			var toMatch = "code=([^&#]*)";
 			var regex = new RegExp(toMatch);
 			var result = regex.exec(url);
@@ -33,19 +33,16 @@ var GoogleLogin = function(id,secret){
 				var code = result[1];
 				exchangeCodeForTokens(code);
 			}
-		}else if(thereIsError != -1){
-			authWindow.close();
+		}
+		else if(thereIsError != -1){
+			window.close();
 			localStorage["accessToken"] = null;
 			endSignin(-1);
 		}		
 	};
 	
 	var exchangeCodeForTokens = function(code){
-		var dataQuery = "code=" + code + "&"
-				+ "client_id=" + clientId + "&"
-				+ "client_secret=" + clientSecret + "&"
-				+ "redirect_uri=http://localhost&"
-				+ "grant_type=authorization_code";
+		var dataQuery = `code=${code}&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=http://localhost&grant_type=authorization_code`;
 	
 		requestTokens("https://accounts.google.com/o/oauth2/token",dataQuery,callBackTokens);
 	};
@@ -53,25 +50,23 @@ var GoogleLogin = function(id,secret){
 	var callBackTokens = function(resp){
 		var tokensResp = eval('('+resp+')');
 	
+		console.log(rep);
 		if(tokensResp.access_token){
-			localStorage["accessToken"] = tokensResp.access_token;
-			localStorage["refreshToken"] = tokensResp.refresh_token;
-			localStorage["refreshTime"] = (new Date()).getTime() + 1000*tokensResp.expires_in;
+			localStorage.setItem("accessToken", tokensResp.access_token);
+			localStorage.setItem("refreshToken", tokensResp.refresh_token);
+			localStorage.setItem("refreshTime", (new Date()).getTime() + 1000*tokensResp.expires_in);
 		
 			accessToken = tokensResp.access_token;
 			endSignin(accessToken);
 		}else{
 			accessToken = null;
-			localStorage["accessToken"] = null;
+			localStorage.setItem("accessToken", null);
 			endSignin(-1);
 		}
 	};
 
 	var getAccessToken = function(refreshToken){
-		var dataQuery = "client_id=" + clientId + "&"
-				+ "client_secret=" + clientSecret + "&"
-				+ "refresh_token=" + refreshToken + "&"
-				+ "grant_type=refresh_token";
+		var dataQuery = `client_id=${clientId}&client_secret=${clientSecret}&refresh_token=${refreshToken}&grant_type=refresh_token`;
 	
 		requestTokens("https://accounts.google.com/o/oauth2/token",dataQuery,callBackRefreshToken);
 	};
@@ -123,12 +118,14 @@ var GoogleLogin = function(id,secret){
 			}else{
 				getAccessToken(refreshToken);
 			}
-		}else{
+		}
+		else{
 			endSignin(-1);
 		}
 	};
 	
 	var startSignin = function(callbackEnd){
+        localStorage.setItem('callback','google-oauth');
 		endSignin = callbackEnd;
 		openAuthWindow();
 	};
@@ -140,11 +137,15 @@ var GoogleLogin = function(id,secret){
 	};
 	
 	return {
+				openAuthWindow: openAuthWindow,
+				parseRedirectUrl: parseRedirectUrl,
+				exchangeCodeForTokens: exchangeCodeForTokens,
+				callBackTokens: callBackTokens,
+				getAccessToken: getAccessToken,
+				callBackRefreshToken: callBackRefreshToken,
+				requestTokens: requestTokens,
 				startSignin: startSignin,
 				isLoggedIn: isLoggedIn,
 				logOut: logOut
 	        };
-};
-
-
-
+}();

@@ -1,5 +1,6 @@
 google = {
 	endLoginCheck:function(status){
+		console.log(status);
 		if (status === -1){
 			console.log('not signed in');
 		}
