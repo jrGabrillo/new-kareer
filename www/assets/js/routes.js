@@ -7,21 +7,26 @@ var routes = [
         path: '/signin/',
         url: './pages/signin.html',
         on: {
-            pageInit: function(e, page) {
-                openFB.init({appId: '407673386340765'});
-                gl = new GoogleLogin('960874719503-0dhf2g79fc8dqkoalm7r9apsujtlnblc.apps.googleusercontent.com', '4F1DdX23UFCIZAlD7itJRAQM');
-                gl.isLoggedIn(google.endLoginCheck);
-
+            pageInit: function(e,page){
                 signin.ini();
+                auth.facebook();
+                auth.google();
                 $("#signin_facebook").on('click', function() {
                     console.log("hello world");
                     fb.login();
                 });
 
-                $("#signin_gmail").on('click', function() {
-                    console.log("xxx");
-                    gl.startSignin(google.endLogin);
-                });
+                setTimeout(function(){
+                    let getauth = localStorage.getItem('callback');
+
+                    if(getauth == 'google-auth'){
+                        let token = sessionStorage.getItem('googleAccessToken');
+                        console.log(token);
+                        auth.googleGetAccount(token);
+                    }
+
+                },1000);
+
             }
         }
     },
@@ -33,7 +38,7 @@ var routes = [
         path: '/account/',
         url: './pages/account.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 // account.ini();
                 jobs.display();
                 var mySwiper = new Swiper('#tab_jobs .swiper-container', {
@@ -55,7 +60,7 @@ var routes = [
         path: '/account-info/',
         url: './pages/account-info.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('info');
             }
         }
@@ -64,7 +69,7 @@ var routes = [
         path: '/career-info/',
         url: './pages/career-info.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('career');
             }
         }
@@ -73,7 +78,7 @@ var routes = [
         path: '/academic-info/',
         url: './pages/academic-info.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('academic');
             }
         }
@@ -82,7 +87,7 @@ var routes = [
         path: '/bookmarks/',
         url: './pages/bookmarks.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('bookmark');
             }
         }
@@ -91,7 +96,7 @@ var routes = [
         path: '/settings/',
         url: './pages/settings.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('info');
             }
         }
@@ -100,7 +105,7 @@ var routes = [
         path: '/notifications/',
         url: './pages/notifications.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 let ps = new PerfectScrollbar('#list_jobs');
             }
         }
@@ -109,7 +114,7 @@ var routes = [
         path: '/resume/',
         url: './pages/resume.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('resume');
             }
         }
@@ -118,7 +123,7 @@ var routes = [
         path: '/resume-builder/',
         url: './pages/resume-builder.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('resume');
             }
         }
@@ -127,7 +132,7 @@ var routes = [
         path: '/messages/',
         url: './pages/messages.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 console.log('messages');
             }
         }
@@ -136,7 +141,7 @@ var routes = [
         path: '/message/',
         url: './pages/message.html',
         on: {
-            pageInit: function(e, page) {
+            pageInit: function(e, page){
                 let ps = new PerfectScrollbar('.messages-content');
             }
         }

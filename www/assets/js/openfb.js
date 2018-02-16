@@ -149,7 +149,7 @@ var openFB = (function () {
             params = obj.params || {},
             xhr = new XMLHttpRequest(),
             url;
-        console.log(params);
+
         params['access_token'] = tokenStore.fbAccessToken;
         url = 'https://graph.facebook.com' + obj.path + '?' + toQueryString(params);
         xhr.onreadystatechange = function () {
@@ -223,8 +223,6 @@ fb = {
             path: '/me',
             success: function(data){
                 console.log(JSON.stringify(data));
-                document.getElementById("userName").innerHTML = data.name;
-                document.getElementById("userPic").src = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
             },
             error: fb.errorHandler});
     },
@@ -251,6 +249,7 @@ fb = {
         });
     },
     revoke:function(){
+        localStorage.removeItem('callback');
         openFB.revokePermissions(
             function() {
                 alert('Permissions revoked');
@@ -258,7 +257,7 @@ fb = {
             fb.errorHandler);
     },
     logout:function(){
-        localStorage.setItem('callback','logout');
+        localStorage.removeItem('callback');
         openFB.logout(
             function() {
                 alert('Logout successful');

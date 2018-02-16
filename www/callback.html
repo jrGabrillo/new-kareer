@@ -1,19 +1,9 @@
 <html>
 	<body>
-        <script src="assets/js/google.js"></script>
 		<script>
 	        let get = localStorage.getItem('callback');
 
-	        console.log(get);
-	        console.log(GoogleLogin);
-	        GoogleLogin.parseRedirectUrl(window.location.href);
-	        /*
 	        if(get == "fb-oauth"){
-	            window.opener.openFB.oauthCallback(window.location.href);
-	            localStorage.removeItem('callback');
-	            window.close();
-	        }
-	        if(get == "google-oauth"){
 	            window.opener.openFB.oauthCallback(window.location.href);
 	            localStorage.removeItem('callback');
 	            window.close();
@@ -22,7 +12,6 @@
 	        	localStorage.removeItem('callback');
 	            window.close();
 	        }
-	        */
 		</script>
 	</body>
 </html>
