@@ -12,9 +12,6 @@
     },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "rnr.Kareer.com"
-    },
-    "cordova-plugin-googleplus": {
-      "PACKAGE_NAME": "rnr.Kareer.com"
     }
   },
   "dependent_plugins": {}

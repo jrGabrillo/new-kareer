@@ -191,7 +191,7 @@ search = {
 
 signin = {
 	ini:function(){
-		this.form();
+        this.form();
 	},
 	form:function(){
 		$("#form_signin").validate({
@@ -236,5 +236,67 @@ signin = {
 signup = {
 	ini:function(){
 
+	}
+}
+
+auth = {
+	ini:function(){
+	},
+	google:function(){
+		console.log("hello world");
+
+		gapi.load('auth2', function() {
+			auth2 = gapi.auth2.init({
+				client_id: '960874719503-0dhf2g79fc8dqkoalm7r9apsujtlnblc.apps.googleusercontent.com',
+				cookiepolicy: 'single_host_origin',
+			});
+
+			auth.googleSignIn(document.getElementById('signin_gmail'));
+		});
+	},
+	googleSignIn:function(element){
+		localStorage.setItem('callback','google-auth');
+		auth2.attachClickHandler(element,{},
+		function(googleUser){
+			let profile = googleUser.getBasicProfile();
+			sessionStorage.setItem('googleAccessToken', googleUser.getAuthResponse().id_token);
+
+			console.log(profile);
+			document.getElementById('name').innerText = "Signed in: " + profile.getName();
+			console.log(profile.getId());
+			// console.log('ID: ' + profile.getId());
+			// console.log('Name: ' + profile.getName());
+			// console.log('Image URL: ' + profile.getImageUrl());
+			// console.log('Email: ' + profile.getEmail());
+
+
+		}, 
+		function(error){
+			console.log('canceled by user');
+		});
+	},
+	googleGetAccount:function(token){
+		if (token !== null && typeof(token) !== 'undefined') {
+			var urlAPI = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + token;
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.onreadystatechange = function() {
+				if (xmlreq.readyState == 4 && xmlreq.status == 200) {
+					var response = eval('(' + xmlreq.responseText + ')');
+
+					console.log(response);
+					if (response.name) {
+						document.getElementById("profile-name").innerHTML = response.name + '<br>Id: ' + response.id;
+					}
+				}
+			};
+			xmlreq.open("GET", urlAPI, true);
+			xmlreq.send();
+		}
+	},
+	googleSignOut:function(){
+		auth2.disconnect();
+	},
+	facebook:function(){
+        openFB.init({appId: '407673386340765'});
 	}
 }

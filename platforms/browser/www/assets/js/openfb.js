@@ -109,22 +109,20 @@ var openFB = (function () {
     function oauthCallback(url) {
         var queryString,
             obj;
-        console.log(url.indexOf("access_token="));        
 
         loginProcessed = true;
         if (url.indexOf("access_token=") > 0) {
-            console.log('xxx');
             queryString = url.substr(url.indexOf('#') + 1);
             obj = parseQueryString(queryString);
             tokenStore.fbAccessToken = obj['access_token'];
             if (loginCallback) loginCallback({status: 'connected', authResponse: {accessToken: obj['access_token']}});
-        } else if (url.indexOf("error=") > 0) {
-            console.log('xxx');
+        } 
+        else if (url.indexOf("error=") > 0) {
             queryString = url.substring(url.indexOf('?') + 1, url.indexOf('#'));
             obj = parseQueryString(queryString);
             if (loginCallback) loginCallback({status: 'not_authorized', error: obj.error});
-        } else {
-            console.log('xxx');
+        } 
+        else {
             if (loginCallback) loginCallback({status: 'not_authorized'});
         }
     }
@@ -147,16 +145,13 @@ var openFB = (function () {
         }
     }
     function api(obj) {
-        console.log(obj);
         var method = obj.method || 'GET',
             params = obj.params || {},
             xhr = new XMLHttpRequest(),
             url;
-        console.log(params);
+
         params['access_token'] = tokenStore.fbAccessToken;
-
         url = 'https://graph.facebook.com' + obj.path + '?' + toQueryString(params);
-
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -213,10 +208,9 @@ var openFB = (function () {
 openFB.init({appId: '407673386340765'});
 fb = {
     login:function(){
-        localStorage.setItem('callback','oauth');
+        localStorage.setItem('callback','fb-oauth');
         openFB.login(
             function(response){
-                console.log(response);
                 if(response.status === 'connected') {
                     alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
                 } else {
@@ -229,8 +223,6 @@ fb = {
             path: '/me',
             success: function(data){
                 console.log(JSON.stringify(data));
-                document.getElementById("userName").innerHTML = data.name;
-                document.getElementById("userPic").src = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
             },
             error: fb.errorHandler});
     },
@@ -257,6 +249,7 @@ fb = {
         });
     },
     revoke:function(){
+        localStorage.removeItem('callback');
         openFB.revokePermissions(
             function() {
                 alert('Permissions revoked');
@@ -264,7 +257,7 @@ fb = {
             fb.errorHandler);
     },
     logout:function(){
-        localStorage.setItem('callback','logout');
+        localStorage.removeItem('callback');
         openFB.logout(
             function() {
                 alert('Logout successful');
