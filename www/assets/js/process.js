@@ -238,28 +238,18 @@ signin = {
 
 signup = {
 	form:function(){
-
-		// var image = document.getElementById('display_picture');
-		// var cropper = new Cropper(image, {
-		// 	aspectRatio: 1/1,
-		// 	dragMode:'none';
-		// 	guides:false,
-		// 	scalable:false,
-		// 	zoomable:false,
-		// 	autoCropArea:1,
-		// 	cropBoxResizable:false,
-		// });
-
-        var $image = $("#display_picture");
-        $($image).cropper({
-			aspectRatio: 1/1,
-			dragMode:'none',
-			guides:false,
-			scalable:false,
-			zoomable:false,
-			autoCropArea:1,
-			cropBoxResizable:false,
-		});
+        let c = 0;
+        $(".item-input-password-preview").on('click',function(){
+            c++;
+            if((c%2)==0){
+                $(this).children('i').html('visibility_off');
+                $("#display_form input[name='field_password']").attr({'type':'password'});
+            }
+            else{
+                $(this).children('i').html('visibility');
+                $("#display_form input[name='field_password']").attr({'type':'text'});
+            }
+        });
 
 		$("#form_signup").validate({
 		    rules: {
@@ -282,26 +272,21 @@ signup = {
 				let _form = $(form).serializeArray();
 				let auth = localStorage.getItem('callback');
 				let profile = JSON.parse(localStorage.getItem('account'));
-				form = [form[0].value, form[1].value, form[2].value, form[3].value, auth, profile.id];
-              
-		let picture = $image.cropper("getDataURL");
-		console.log(picture);
-
-
-
-                // let data = system.ajax(system.host('do-signUp'),form);
-                // data.done(function(data){
-                //     if(data == 1){
-                //         system.notification("Kareer","Success. You are now officially registered.");
-                //         view.router.navigate('/home/');                        
-                //     }
-                //     else if(data == 2){
-                //         system.notification("Kareer","You are already signed in. Try signing in using your email.");
-                //     }
-                //     else{
-                //         system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
-                //     }
-                // });
+				form = [form[0].value, form[1].value, form[2].value, form[3].value, auth, profile.id, profile.picture];
+                let data = system.ajax(system.host('do-signUp'),form);
+                data.done(function(data){
+                	console.log(data);
+                    if(data == 1){
+                        system.notification("Kareer","Success. You are now officially registered.");
+                        view.router.navigate('/home/');                        
+                    }
+                    else if(data == 2){
+                        system.notification("Kareer","You are already signed in. Try signing in using your email.");
+                    }
+                    else{
+                        system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
+                    }
+                });
 		    }
 		}); 
 	},

@@ -71,22 +71,26 @@ var routes = [
                         $("#display_form .loader").attr({style:'display:none;'});
                         $("#display_form form").attr({style:'display:block;'});
 
-                        $("#display_form button").removeAttr('disabled');
-                        signup.form();
+                        // let _form = $(form).serializeArray();
+                        // let auth = localStorage.getItem('callback');
+                        // let profile = JSON.parse(localStorage.getItem('account'));
+                        // form = [form[0].value, form[1].value, form[2].value, form[3].value, auth, profile.id, profile.picture];
+                        // let data = system.ajax(system.host('do-signUp'),form);
+                        // data.done(function(data){
+                        //     console.log(data);
+                        //     if(data == 1){
+                        //         system.notification("Kareer","Success. You are now officially registered.");
+                        //         view.router.navigate('/home/');                        
+                        //     }
+                        //     else if(data == 2){
+                        //         system.notification("Kareer","You are already signed in. Try signing in using your email.");
+                        //     }
+                        //     else{
+                        //         system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
+                        //     }
+                        // });
                     },2000);
 
-                    let c = 0;
-                    $(".item-input-password-preview").on('click',function(){
-                        c++;
-                        if((c%2)==0){
-                            $(this).children('i').html('visibility_off');
-                            $("#display_form input[name='field_password']").attr({'type':'password'});
-                        }
-                        else{
-                            $(this).children('i').html('visibility');
-                            $("#display_form input[name='field_password']").attr({'type':'text'});
-                        }
-                    });
                 }
             }
         }

@@ -131,9 +131,12 @@ body {
 
 .block-login{
 	width: 150px;
+	margin: 50px;
+	position:  relative;
 }
 .block-create-account{
 	text-align:  center;
+	margin-top: 10px;
 }
 
 .tab-link{
