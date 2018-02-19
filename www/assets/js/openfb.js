@@ -127,9 +127,7 @@ var openFB = (function () {
         }
     }
     function logout(callback) {
-        var logoutWindow,
-            token = tokenStore.fbAccessToken;
-
+        var logoutWindow, token = tokenStore.fbAccessToken;
         tokenStore.removeItem('fbtoken');
         if (token) {
             logoutWindow = window.open(logoutURL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no,clearcache=yes');
@@ -209,62 +207,80 @@ openFB.init({appId: '407673386340765'});
 fb = {
     login:function(){
         localStorage.setItem('callback','fb-oauth');
-        openFB.login(
-            function(response){
-                if(response.status === 'connected') {
-                    alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
-                } else {
-                    alert('Facebook login failed: ' + response.error);
-                }
-            }, {scope: 'email'});
+        openFB.login(function(response){
+            if(response.status == 'connected'){
+                fb.getProfile(response.authResponse.accessToken);
+                system.notification('Facebook','You are now signed in');
+                account.ini();
+            }
+            else{
+                system.notification('Facebook','Sign in failed');
+            }
+        },
+        {scope: 'public_profile,email,user_birthday'});
     },
     getInfo:function(){
         openFB.api({
-            path: '/me',
-            success: function(data){
-                console.log(JSON.stringify(data));
+        path: '/v2.12/me',
+        success: function(data){
+            let picture = `http://graph.facebook.com/${data.id}/picture?type=large`;
+            // document.getElementById('display_picture').src = picture;
+            localStorage.setItem('account',JSON.stringify(data));
+        },
+        error: fb.errorHandler});
+    },
+    getProfile:function(token){
+        openFB.api({
+            path: '/v2.12/me',
+            params:{"access_token": token, "fields": `id,last_name,first_name,email`},
+            success: function(data) {
+                let profile = {id: data.id, last_name:data.last_name, first_name:data.first_name, email:((typeof data.email=='undefined')?"":data.email), picture:`http://graph.facebook.com/${data.id}/picture?type=large`};
+                localStorage.setItem('account',JSON.stringify(profile));
             },
-            error: fb.errorHandler});
+            error: fb.errorHandler
+        });
     },
     share:function(){
         openFB.api({
             method: 'POST',
             path: '/me/feed',
             params: {
-                message: document.getElementById('Message').value || 'Testing Facebook APIs'
+                message: 'Testing Facebook APIs'
             },
             success: function() {
-                alert('the item was posted on Facebook');
+                system.notification('Facebook','The item was posted on Facebook');
             },
-            error: fb.errorHandler});
+            error: fb.errorHandler
+        });
     },
     readPermissions:function(){
         openFB.api({
             method: 'GET',
             path: '/me/permissions',
             success: function(result){
-                alert(JSON.stringify(result.data));
+                console.log(result.data);
+                system.notification('Facebook',result.data);
             },
             error: fb.errorHandler
         });
     },
     revoke:function(){
-        localStorage.removeItem('callback');
+        // localStorage.removeItem('callback');
         openFB.revokePermissions(
             function() {
-                alert('Permissions revoked');
+                system.notification('Facebook','Permissions revoked');
             },
             fb.errorHandler);
     },
     logout:function(){
-        localStorage.removeItem('callback');
+        // localStorage.removeItem('callback');
         openFB.logout(
             function() {
-                alert('Logout successful');
+                system.notification('Facebook','Logout successful');
             },
             fb.errorHandler);
     },
     errorHandler:function(error){
-        alert(error.message);
+        system.notification('Facebook','Your access has been denied.');
     }
 }

@@ -5,23 +5,32 @@
         </div>
         <div id="display_form">
             <div class="login-screen-title">
-                <h4 class="text-color-gray">Register</h4>
+                <h4 class="text-color-gray">Almost there</h4>
             </div>
-            <!-- <form action="#" method="POST" id='form_signup'>
+            <div class="loader">
+                <div class="preloader color-multi"></div>
+            </div>
+            <form style="display: none;" action="#" method="POST" id='form_signup'>
                 <div class="list">
                     <ul>
                         <li class="item-content item-input">
                             <div class="item-inner">
+                                <div style="width:50px; height: 50px; max-width: 100%; "><img src='assets/img/bg/avatar.jpg' id='display_picture'></div>
+                                
+                            </div>
+                        </li>
+                        <li class="item-content item-input item-input-focused">
+                            <div class="item-inner">
                                 <div class="item-title item-floating-label">First Name</div>
                                 <div class="item-input-wrap">
-                                    <input class="" type="text" id="field_firstname" name="field_firstname" data-error=".error_field_firstname">
+                                    <input class="" type="text" name="field_firstname" data-error=".error_field_firstname">
                                     <div class="item-input-info error_field_firstname"></div>
                                 </div>
                             </div>
                             <div class="item-inner">
                                 <div class="item-title item-floating-label">Last Name</div>
                                 <div class="item-input-wrap">
-                                    <input class="" type="text" id="field_lastname" name="field_lastname" data-error=".error_field_lastname">
+                                    <input class="" type="text" name="field_lastname" data-error=".error_field_lastname">
                                     <div class="item-input-info error_field_lastname"></div>
                                 </div>
                             </div>
@@ -30,7 +39,7 @@
                             <div class="item-inner">
                                 <div class="item-title item-floating-label">Email</div>
                                 <div class="item-input-wrap">
-                                    <input class="" type="text" id="field_email" name="field_email" data-error=".error_field_email">
+                                    <input class="" type="text" name="field_email" data-error=".error_field_email">
                                     <div class="item-input-info error_field_email"></div>
                                 </div>
                             </div>
@@ -39,7 +48,7 @@
                             <div class="item-inner">
                                 <div class="item-title item-floating-label">Password</div>
                                 <div class="item-input-wrap">
-                                    <input class="" type="password" id="field_password" name="field_password" data-error=".error_field_password">
+                                    <input class="" type="password" name="field_password" data-error=".error_field_password">
                                     <div class="item-input-password-preview">
                                         <i class='material-icons'>visibility_off</i>
                                     </div>
@@ -54,27 +63,10 @@
                         </li>
                     </ul>
                 </div>
-            </form> -->
-        </div>
-        <div class="block">
-            <div class="block-footer block-login">
-                <p>or Register with</p>
-                <div class="row" id="social_icons">
-                    <div class="col">
-                        <a class="link">
-                            <div class="" id='signin_facebook' style="background:url(assets/img/icons/facebook.png) center/cover no-repeat;"></div>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a class="link">
-                            <div class="" id='signin_gmail' style="background:url(assets/img/icons/google.png) center/cover no-repeat;"></div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
         <div class="block block-create-account text-align-center">
-            <a class="link" href='/signin/'>I have an account</a>
+            <a class="link" href='/signin/'>Cancel sign up</a>
         </div>
     </div>
 </div>

@@ -12,27 +12,84 @@ var routes = [
                 auth.facebook();
                 auth.google();
                 $("#signin_facebook").on('click', function() {
-                    console.log("hello world");
                     fb.login();
                 });
-
-                setTimeout(function(){
-                    let getauth = localStorage.getItem('callback');
-
-                    if(getauth == 'google-auth'){
-                        let token = sessionStorage.getItem('googleAccessToken');
-                        console.log(token);
-                        auth.googleGetAccount(token);
-                    }
-
-                },1000);
-
             }
         }
     },
     {
         path: '/signup/',
         url: './pages/signup.html',
+        on: {
+            pageInit: function(e,page){
+                console.log('sss');
+                signup.form();
+
+                // signin.ini();
+                auth.facebook();
+                auth.google();
+                $("#signin_facebook").on('click', function() {
+                    fb.login();
+                });
+            }
+        }
+    },
+    {
+        path: '/signin-auth/',
+        url: './pages/signinAuth.html',
+        on: {
+            pageInit: function(e,page){
+                console.log('hello world. Sign in');
+            }
+        }
+    },
+    {
+        path: '/signup-auth/',
+        url: './pages/signupAuth.html',
+        on: {
+            pageInit: function(e,page){
+                let isSigned = (localStorage.getItem('account') != null)?localStorage.getItem('account'):false;
+                if(!isSigned){
+                    setTimeout(function(){
+                        view.router.navigate('/home/');
+                    },1000);
+                }
+                else{
+                    setTimeout(function(){
+                        let profile = JSON.parse(localStorage.getItem('account'));
+                        $("#display_form img").attr({'src':profile.picture});
+
+                        $("#display_form input[name='field_firstname']").val(profile.first_name);
+                        $("#display_form input[name='field_lastname']").val(profile.last_name);
+                        $("#display_form input[name='field_firstname']").parents('.item-content').addClass('item-input-focused');
+
+                        if(profile.email != ""){
+                            $("#display_form input[name='field_email']").val(profile.email);
+                            $("#display_form input[name='field_email']").parents('.item-content').addClass('item-input-focused');
+                        }
+
+                        $("#display_form .loader").attr({style:'display:none;'});
+                        $("#display_form form").attr({style:'display:block;'});
+
+                        $("#display_form button").removeAttr('disabled');
+                        signup.form();
+                    },2000);
+
+                    let c = 0;
+                    $(".item-input-password-preview").on('click',function(){
+                        c++;
+                        if((c%2)==0){
+                            $(this).children('i').html('visibility_off');
+                            $("#display_form input[name='field_password']").attr({'type':'password'});
+                        }
+                        else{
+                            $(this).children('i').html('visibility');
+                            $("#display_form input[name='field_password']").attr({'type':'text'});
+                        }
+                    });
+                }
+            }
+        }
     },
     {
         path: '/account/',
