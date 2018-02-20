@@ -113,18 +113,12 @@ var routes = [
         url: './pages/account.html',
         on: {
             pageInit: function(e, page){
-                // account.ini();
                 jobs.display();
                 var mySwiper = new Swiper('#tab_jobs .swiper-container', {
                     speed: 800,
                     spaceBetween: 10,
                 });
-                let ps = new PerfectScrollbar("#about p");
-                $('#display_jobs .card-content')
-                    .each(function() {
-                        ps = new PerfectScrollbar(this);
-                    })
-                app.tab.show('#tab_jobs', true);
+                // app.tab.show('#tab_jobs', true);
                 // var view = app.views.create('#tab_jobs');
                 // view.router.navigate('/signup/');
             }
