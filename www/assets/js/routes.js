@@ -8,11 +8,25 @@ var routes = [
         url: './pages/signin.html',
         on: {
             pageInit: function(e,page){
-                signin.ini();
-                auth.facebook();
-                auth.google();
+                signin.form();
+                auth.google(function(){
+                    auth.googleSignIn(
+                        document.getElementById('signin_gmail'),
+                        function(){
+                            system.notification('Google','You are now signed in');
+                            let profile = JSON.parse(localStorage.getItem('account'));
+                            let form = [profile.email,profile.id];
+                            signup.auth(form);
+                    });
+                });
                 $("#signin_facebook").on('click', function() {
-                    fb.login();
+                    fb.login(function(){
+                        system.notification('Facebook','You are now signed in');
+                        console.log('hello world');
+                            let profile = JSON.parse(localStorage.getItem('account'));
+                            let form = [profile.email,profile.id];
+                            signup.auth(form);
+                    });
                 });
             }
         }
@@ -22,24 +36,21 @@ var routes = [
         url: './pages/signup.html',
         on: {
             pageInit: function(e,page){
-                console.log('sss');
                 signup.form();
-
-                // signin.ini();
-                auth.facebook();
-                auth.google();
-                $("#signin_facebook").on('click', function() {
-                    fb.login();
+                auth.google(function(){
+                    auth.googleSignIn(
+                        document.getElementById('signin_gmail'),
+                        function(){
+                            system.notification('Google','You are now signed in');
+                            view.router.navigate('/signup-auth/');
+                    });
                 });
-            }
-        }
-    },
-    {
-        path: '/signin-auth/',
-        url: './pages/signinAuth.html',
-        on: {
-            pageInit: function(e,page){
-                console.log('hello world. Sign in');
+                $("#signin_facebook").on('click', function() {
+                    fb.login(function(){
+                        system.notification('Facebook','You are now signed in');
+                        view.router.navigate('/signup-auth/');
+                    });
+                });
             }
         }
     },
@@ -56,41 +67,43 @@ var routes = [
                 }
                 else{
                     setTimeout(function(){
-                        let profile = JSON.parse(localStorage.getItem('account'));
-                        $("#display_form img").attr({'src':profile.picture});
+                        let profile = JSON.parse(localStorage.getItem('account')),auth = localStorage.getItem('callback');
+                        if(auth == 'google-auth')
+                            $("#form_signupAuth img#display_logo").attr({'src':'assets/img/icons/google.png'});
+                        else
+                            $("#form_signupAuth img#display_logo").attr({'src':'assets/img/icons/facebook.png'});
 
-                        $("#display_form input[name='field_firstname']").val(profile.first_name);
-                        $("#display_form input[name='field_lastname']").val(profile.last_name);
-                        $("#display_form input[name='field_firstname']").parents('.item-content').addClass('item-input-focused');
+                        $("#form_signupAuth img#display_picture").attr({'src':profile.picture});
+
+                        $("#form_signupAuth input[name='field_firstname']").val(profile.first_name);
+                        $("#form_signupAuth input[name='field_lastname']").val(profile.last_name);
+                        $("#form_signupAuth input[name='field_firstname']").parents('.item-content').addClass('item-input-focused');
 
                         if(profile.email != ""){
-                            $("#display_form input[name='field_email']").val(profile.email);
-                            $("#display_form input[name='field_email']").parents('.item-content').addClass('item-input-focused');
+                            $("#form_signupAuth input[name='field_email']").val(profile.email);
+                            $("#form_signupAuth input[name='field_email']").parents('.item-content').addClass('item-input-focused');
                         }
 
-                        $("#display_form .loader").attr({style:'display:none;'});
-                        $("#display_form form").attr({style:'display:block;'});
+                        $("#form_signupAuth form").attr({style:'display:block;'});
 
-                        // let _form = $(form).serializeArray();
-                        // let auth = localStorage.getItem('callback');
-                        // let profile = JSON.parse(localStorage.getItem('account'));
-                        // form = [form[0].value, form[1].value, form[2].value, form[3].value, auth, profile.id, profile.picture];
-                        // let data = system.ajax(system.host('do-signUp'),form);
-                        // data.done(function(data){
-                        //     console.log(data);
-                        //     if(data == 1){
-                        //         system.notification("Kareer","Success. You are now officially registered.");
-                        //         view.router.navigate('/home/');                        
-                        //     }
-                        //     else if(data == 2){
-                        //         system.notification("Kareer","You are already signed in. Try signing in using your email.");
-                        //     }
-                        //     else{
-                        //         system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
-                        //     }
-                        // });
-                    },2000);
-
+                        setTimeout(function(){
+                            form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
+                            let data = system.ajax(system.host('do-signUp'),form);
+                            data.done(function(data){
+                                if(data == 1){
+                                    system.notification("Kareer","Success. You are now officially registered.");
+                                    view.router.navigate('/account/');                        
+                                }
+                                else if(data == 2){
+                                    view.router.navigate('/signin/');                        
+                                    system.notification("Kareer","You are already signed in. Try signing in using your email.");
+                                }
+                                else{
+                                    system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
+                                }
+                            });
+                        },2000);
+                    },1000);
                 }
             }
         }

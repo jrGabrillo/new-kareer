@@ -598,20 +598,20 @@ margin: 0;
 	font-size:  10px;
 }
 
-#display_picture{
-	width: 100px;
+#display_picture, #display_logo{
+	width: 80px;
 	/* max-width: 100%; */
-	height:  100px;
-	margin: auto;
+	height: 80px;
+	margin: 0 auto;
 	position:  relative;
 	left: 50%;
-	transform: translate(-50px);
+	transform: translate(-80px);
 	border: solid 1px #ccc;
-	border-radius: 0px;
+	border-radius: 50%;
 }
 
-#display_form {
-    height: 50%;
+#form_signupAuth {
+    height: 30%;
 }
 
 .item-input-password-preview{

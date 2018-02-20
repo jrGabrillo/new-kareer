@@ -111,18 +111,18 @@ var openFB = (function () {
             obj;
 
         loginProcessed = true;
-        if (url.indexOf("access_token=") > 0) {
+        if (url.indexOf("access_token=") > 0){
             queryString = url.substr(url.indexOf('#') + 1);
             obj = parseQueryString(queryString);
             tokenStore.fbAccessToken = obj['access_token'];
             if (loginCallback) loginCallback({status: 'connected', authResponse: {accessToken: obj['access_token']}});
         } 
-        else if (url.indexOf("error=") > 0) {
+        else if (url.indexOf("error=") > 0){
             queryString = url.substring(url.indexOf('?') + 1, url.indexOf('#'));
             obj = parseQueryString(queryString);
             if (loginCallback) loginCallback({status: 'not_authorized', error: obj.error});
         } 
-        else {
+        else{
             if (loginCallback) loginCallback({status: 'not_authorized'});
         }
     }
@@ -137,7 +137,6 @@ var openFB = (function () {
                 }, 700);
             }
         }
-
         if (callback) {
             callback();
         }
@@ -154,7 +153,8 @@ var openFB = (function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     if (obj.success) obj.success(JSON.parse(xhr.responseText));
-                } else {
+                } 
+                else{
                     var error = xhr.responseText ? JSON.parse(xhr.responseText).error : {message: 'An error has occurred'};
                     if (obj.error) obj.error(error);
                 }
@@ -205,13 +205,12 @@ var openFB = (function () {
 
 openFB.init({appId: '407673386340765'});
 fb = {
-    login:function(){
+    login:function(callback){
         localStorage.setItem('callback','fb-oauth');
         openFB.login(function(response){
             if(response.status == 'connected'){
                 fb.getProfile(response.authResponse.accessToken);
-                system.notification('Facebook','You are now signed in');
-                account.ini();
+                callback();
             }
             else{
                 system.notification('Facebook','Sign in failed');
@@ -224,7 +223,6 @@ fb = {
         path: '/v2.12/me',
         success: function(data){
             let picture = `http://graph.facebook.com/${data.id}/picture?type=large`;
-            // document.getElementById('display_picture').src = picture;
             localStorage.setItem('account',JSON.stringify(data));
         },
         error: fb.errorHandler});
@@ -265,7 +263,7 @@ fb = {
         });
     },
     revoke:function(){
-        // localStorage.removeItem('callback');
+        localStorage.removeItem('callback');
         openFB.revokePermissions(
             function() {
                 system.notification('Facebook','Permissions revoked');
@@ -273,7 +271,7 @@ fb = {
             fb.errorHandler);
     },
     logout:function(){
-        // localStorage.removeItem('callback');
+        localStorage.removeItem('callback');
         openFB.logout(
             function() {
                 system.notification('Facebook','Logout successful');

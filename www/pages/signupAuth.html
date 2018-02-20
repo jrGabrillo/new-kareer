@@ -3,19 +3,17 @@
         <div class="block">
             <a class="link" href='/home/'>Close</a>
         </div>
-        <div id="display_form">
+        <div id="form_signupAuth">
             <div class="login-screen-title">
                 <h4 class="text-color-gray">Almost there</h4>
             </div>
-            <div class="loader">
-                <div class="preloader color-multi"></div>
-            </div>
-            <form style="display: none;" action="#" method="POST" id='form_signup'>
+            <form style="display: none;" action="#" method="POST">
                 <div class="list">
                     <ul>
                         <li class="item-content item-input">
                             <div class="item-inner">
                                 <img src='assets/img/bg/avatar.jpg' id='display_picture'>
+                                <img src='assets/img/bg/avatar.jpg' id='display_logo'>
                             </div>
                         </li>
                         <li class="item-content item-input item-input-focused">
@@ -34,7 +32,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="item-content item-input item-input-with-value">
+                        <li class="item-content item-input item-input-focused">
                             <div class="item-inner">
                                 <div class="item-title item-floating-label">Email</div>
                                 <div class="item-input-wrap">
@@ -43,29 +41,12 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-floating-label">Password</div>
-                                <div class="item-input-wrap">
-                                    <input class="" type="password" name="field_password" data-error=".error_field_password">
-                                    <div class="item-input-password-preview">
-                                        <i class='material-icons'>visibility_off</i>
-                                    </div>
-                                    <div class="item-input-info error_field_password"></div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="item-content item-input">
-                            <div class="item-inner">
-                                <button class="col button button-fill button-round" disabled>Save</button>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </form>
-        </div>
-        <div class="block block-create-account text-align-center">
-            <a class="link" href='/signin/'>Cancel sign up</a>
+            <div class="loader">
+                <div class="preloader color-multi"></div>
+            </div>
         </div>
     </div>
 </div>
