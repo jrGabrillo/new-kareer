@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 19, 2018 at 01:19 PM
+-- Generation Time: Feb 20, 2018 at 11:27 AM
 -- Server version: 5.7.19
 -- PHP Version: 7.0.23
 
@@ -121,9 +121,9 @@ CREATE TABLE IF NOT EXISTS `tbl_applicant` (
 --
 
 INSERT INTO `tbl_applicant` (`id`, `description`, `email`, `password`, `auth_type`, `auth_id`, `status`) VALUES
-('356a192b7913b04c54574d18c28d46e6395428ab', '', 'jl@gmail.com', '$2y$11$Ri.qUbuuCa0hRKdStqKR0OSIaJAjnWhfPmUq7u/LDEPxZChp7IIhe', '', '', '1'),
-('77de68daecd823babbb58edb1c8e14d7106e83bb', '', 'rufo.gabrillo@rnrdigitalconsultancy.com', '$2y$11$sSqB0X5UFCl.02.ECIEtwuSG.soZTc5xdbeAtakTiwS7X75Gqo3O2', 'google-auth', '118066499412256745838', '1'),
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '', 'othan@gmail.com', '$2y$11$72WruDdqOKWp/DwVN2WIiOVIlKKCN8E2POHVz0FayQmfUsuU4jyee', '', '', '1');
+('356a192b7913b04c54574d18c28d46e6395428ab', '', '', '$2y$11$yxgAyTSn/hMhBOmXgxq2GeOrxZCO0oxrDMddWRxdqBkJFwhpsl8Y.', 'fb-oauth', '1695213090568737', '1'),
+('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '', 'rufo.gabrillo@gmail.com', '$2y$11$sGQLIqYCebYWP6QGl6kedOxsaWzWLPfWRpkjBXELkblxNLQ2kUWF2', '', '', '1'),
+('da4b9237bacccdf19c0760cab7aec4a8359010b0', '', 'rufo.gabrillo@rnrdigitalconsultancy.com', '$2y$11$kIZiLyveWEzHeAtfss5UUeSrE2I1lUs8iR/TZIL3m69dNQFHa/hQ.', 'google-auth', '118066499412256745838', '1');
 
 -- --------------------------------------------------------
 
@@ -140,38 +140,6 @@ CREATE TABLE IF NOT EXISTS `tbl_application` (
   `status` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_application`
---
-
-INSERT INTO `tbl_application` (`id`, `vacancy_id`, `applicant_id`, `date`, `status`) VALUES
-('0716d9708d321ffb6a00818614779e779925365c', '472b07b9fcf2c2451e8781e944bf5f77cd8457c8', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:57:39', '1'),
-('0ade7c2cf97f75d009975f4d720d1fa6c19f4897', '91032ad7bbcb6cf72875e8e8207dcfba80173f7c', 'b1d5781111d84f7b3fe45a0852e59758cd7a87e5', '2017-09-28 20:38:20', '1'),
-('12c6fc06c99a462375eeb3f43dfd832b08ca9e17', 'd435a6cdd786300dff204ee7c2ef942d3e9034e2', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:58:12', '1'),
-('1574bddb75c78a6fd2251d61e2993b5146201319', '12c6fc06c99a462375eeb3f43dfd832b08ca9e17', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:57:30', '1'),
-('17ba0791499db908433b80f37c5fbc89b870084b', 'b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f', 'b1d5781111d84f7b3fe45a0852e59758cd7a87e5', '2017-09-28 20:48:14', '1'),
-('1b6453892473a467d07372d45eb05abc2031647a', '7b52009b64fd0a2a49e6d8a939753077792b0554', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '2017-12-19 21:30:54', '1'),
-('356a192b7913b04c54574d18c28d46e6395428ab', 'da4b9237bacccdf19c0760cab7aec4a8359010b0', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '2017-12-19 09:54:11', '1'),
-('472b07b9fcf2c2451e8781e944bf5f77cd8457c8', 'b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:58:06', '1'),
-('4d134bc072212ace2df385dae143139da74ec0ef', 'b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f', '7b52009b64fd0a2a49e6d8a939753077792b0554', '2017-09-29 15:40:36', '1'),
-('77de68daecd823babbb58edb1c8e14d7106e83bb', '91032ad7bbcb6cf72875e8e8207dcfba80173f7c', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '2017-12-19 10:13:48', '1'),
-('7b52009b64fd0a2a49e6d8a939753077792b0554', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '2017-12-19 21:31:00', '1'),
-('887309d048beef83ad3eabf2a79a64a389ab1c9f', '17ba0791499db908433b80f37c5fbc89b870084b', '91032ad7bbcb6cf72875e8e8207dcfba80173f7c', '2017-10-30 09:50:10', '1'),
-('902ba3cda1883801594b6e1b452790cc53948fda', '91032ad7bbcb6cf72875e8e8207dcfba80173f7c', 'fe5dbbcea5ce7e2988b8c69bcfdfde8904aabc1f', '2017-09-28 20:26:49', '1'),
-('91032ad7bbcb6cf72875e8e8207dcfba80173f7c', '9e6a55b6b4563e652a23be9d623ca5055c356940', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:57:59', '1'),
-('9e6a55b6b4563e652a23be9d623ca5055c356940', '4d134bc072212ace2df385dae143139da74ec0ef', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:57:51', '1'),
-('ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'f1abd670358e036c31296e66b3b66c382ac00812', 'fe5dbbcea5ce7e2988b8c69bcfdfde8904aabc1f', '2017-09-28 20:26:30', '1'),
-('b1d5781111d84f7b3fe45a0852e59758cd7a87e5', 'f1abd670358e036c31296e66b3b66c382ac00812', 'b1d5781111d84f7b3fe45a0852e59758cd7a87e5', '2017-09-28 20:48:09', '1'),
-('b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f', '91032ad7bbcb6cf72875e8e8207dcfba80173f7c', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:57:55', '1'),
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'c1dfd96eea8cc2b62785275bca38ac261256e278', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '2017-12-19 09:29:23', '1'),
-('c1dfd96eea8cc2b62785275bca38ac261256e278', 'b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f', 'fe5dbbcea5ce7e2988b8c69bcfdfde8904aabc1f', '2017-09-28 20:26:34', '1'),
-('d435a6cdd786300dff204ee7c2ef942d3e9034e2', 'd435a6cdd786300dff204ee7c2ef942d3e9034e2', '7b52009b64fd0a2a49e6d8a939753077792b0554', '2017-09-29 15:40:22', '1'),
-('da4b9237bacccdf19c0760cab7aec4a8359010b0', '91032ad7bbcb6cf72875e8e8207dcfba80173f7c', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', '2017-12-19 09:58:10', '1'),
-('f1abd670358e036c31296e66b3b66c382ac00812', '0716d9708d321ffb6a00818614779e779925365c', '0716d9708d321ffb6a00818614779e779925365c', '2017-09-29 14:57:24', '1'),
-('f6e1126cedebf23e1463aee73f9df08783640400', '887309d048beef83ad3eabf2a79a64a389ab1c9f', '91032ad7bbcb6cf72875e8e8207dcfba80173f7c', '2017-10-16 14:47:49', '1'),
-('fa35e192121eabf3dabf9f5ea6abdbcbc107ac3b', 'fa35e192121eabf3dabf9f5ea6abdbcbc107ac3b', '1574bddb75c78a6fd2251d61e2993b5146201319', '2017-09-29 13:11:08', '1'),
-('fe5dbbcea5ce7e2988b8c69bcfdfde8904aabc1f', '0716d9708d321ffb6a00818614779e779925365c', 'b1d5781111d84f7b3fe45a0852e59758cd7a87e5', '2017-09-28 20:31:47', '1');
 
 -- --------------------------------------------------------
 
@@ -306,36 +274,6 @@ INSERT INTO `tbl_employer` (`id`, `lname`, `fname`, `address`, `contactno`, `com
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_language`
---
-
-DROP TABLE IF EXISTS `tbl_language`;
-CREATE TABLE IF NOT EXISTS `tbl_language` (
-  `id` varchar(60) NOT NULL,
-  `applicant_id` varchar(60) DEFAULT NULL,
-  `language` varchar(60) DEFAULT NULL,
-  `level` varchar(60) DEFAULT NULL,
-  `date` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_language`
---
-
-INSERT INTO `tbl_language` (`id`, `applicant_id`, `language`, `level`, `date`) VALUES
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'English', 'Fluent', '2017-11-28 13:16:09'),
-('356a192b7913b04c54574d18c28d46e6395428ab', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'Filipino', 'Native', '2017-11-28 13:16:31'),
-('da4b9237bacccdf19c0760cab7aec4a8359010b0', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Japanese', 'Beginner', '2017-12-15 03:12:11'),
-('77de68daecd823babbb58edb1c8e14d7106e83bb', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'English', 'Conversational', '2017-12-15 03:17:57'),
-('1b6453892473a467d07372d45eb05abc2031647a', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Filipino', 'Fluent', '2017-12-15 03:28:58'),
-('ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Chinese', 'Beginner', '2017-12-15 03:37:43'),
-('c1dfd96eea8cc2b62785275bca38ac261256e278', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Pangasinan', 'Native', '2017-12-15 21:29:36'),
-('902ba3cda1883801594b6e1b452790cc53948fda', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Ilokano', 'Beginner', '2017-12-19 14:17:17');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tbl_personalinfo`
 --
 
@@ -363,88 +301,9 @@ CREATE TABLE IF NOT EXISTS `tbl_personalinfo` (
 --
 
 INSERT INTO `tbl_personalinfo` (`id`, `given_name`, `family_name`, `middle_name`, `gender`, `age`, `date_of_birth`, `permanent_address`, `citizenship`, `height`, `weight`, `religion`, `picture`, `date`) VALUES
-('356a192b7913b04c54574d18c28d46e6395428ab', 'John', 'Lazy', '', '', '', '', '', '', '', '', '', '356a192b7913b04c54574d18c28d46e6395428ab_1513174532.rnr', '2017-12-13 21:47:12'),
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Othan', 'Millet', 'Binalay', 'Male', '19', '1996-04-27', 'Labrador, Pangasinan', 'Nigerian', '5 ft 4 in', '51 kg', 'Christian', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c_1513649932.rnr', '2017-12-06 18:58:04'),
-('da4b9237bacccdf19c0760cab7aec4a8359010b0', '', '', '', '', '', '', '', '', '', '', '', 'profile.png', '2017-12-19 21:17:24');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_references`
---
-
-DROP TABLE IF EXISTS `tbl_references`;
-CREATE TABLE IF NOT EXISTS `tbl_references` (
-  `id` varchar(60) NOT NULL,
-  `applicant_id` varchar(60) NOT NULL,
-  `name` varchar(60) NOT NULL,
-  `relationship` varchar(60) NOT NULL,
-  `profession` varchar(60) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `phone` varchar(15) NOT NULL,
-  `address` varchar(60) NOT NULL,
-  `date` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_references`
---
-
-INSERT INTO `tbl_references` (`id`, `applicant_id`, `name`, `relationship`, `profession`, `email`, `phone`, `address`, `date`) VALUES
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'Zyndale Jake Ramos', 'Workmate', 'Graphic Designer', 'zjake.ramos@rnrdigitalconsultancy.com', '09123456789', 'Bugallon, Pangasinan', '2017-11-28 14:08:30'),
-('356a192b7913b04c54574d18c28d46e6395428ab', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'John', 'Brother', 'Singer', 'john@gmail.com', '12345', 'Lingayen', '2017-12-15 23:03:33');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_resume`
---
-
-DROP TABLE IF EXISTS `tbl_resume`;
-CREATE TABLE IF NOT EXISTS `tbl_resume` (
-  `id` varchar(60) NOT NULL,
-  `applicant_id` varchar(60) DEFAULT NULL,
-  `resume` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_resume`
---
-
-INSERT INTO `tbl_resume` (`id`, `applicant_id`, `resume`) VALUES
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'resume.pdf'),
-('356a192b7913b04c54574d18c28d46e6395428ab', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'resume.pdf'),
-('da4b9237bacccdf19c0760cab7aec4a8359010b0', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'resume.pdf'),
-('77de68daecd823babbb58edb1c8e14d7106e83bb', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'resume.pdf'),
-('1b6453892473a467d07372d45eb05abc2031647a', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'resume.pdf'),
-('ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'resume.pdf');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_seminars`
---
-
-DROP TABLE IF EXISTS `tbl_seminars`;
-CREATE TABLE IF NOT EXISTS `tbl_seminars` (
-  `id` varchar(60) NOT NULL,
-  `applicant_id` varchar(60) DEFAULT NULL,
-  `event` varchar(60) DEFAULT NULL,
-  `location` varchar(60) DEFAULT NULL,
-  `date` varchar(60) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_seminars`
---
-
-INSERT INTO `tbl_seminars` (`id`, `applicant_id`, `event`, `location`, `date`) VALUES
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'IT on the Road 2014', 'Dagupan City', '2014-04-20'),
-('356a192b7913b04c54574d18c28d46e6395428ab', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'IT on the Road 2015', 'Dagupan city', '2015-04-20'),
-('da4b9237bacccdf19c0760cab7aec4a8359010b0', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Seminar', 'Lingayen', '2017-02-15');
+('356a192b7913b04c54574d18c28d46e6395428ab', 'Rufo', 'Gabrillo Jr.', NULL, '', NULL, '', '', '', '', '', '', 'http://graph.facebook.com/1695213090568737/picture?type=large', '2018-02-20 14:33:57'),
+('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Rufo', 'Gabrillo', NULL, '', NULL, '', '', '', '', '', '', '', '2018-02-20 10:05:48'),
+('da4b9237bacccdf19c0760cab7aec4a8359010b0', 'Rufo', 'Gabrillo Jr', NULL, '', NULL, '', '', '', '', '', '', 'https://lh5.googleusercontent.com/-h-QNWKxPuNw/AAAAAAAAAAI/AAAAAAAAAAs/UEzHjTUm8Oo/s96-c/photo.jpg', '2018-02-20 15:00:59');
 
 -- --------------------------------------------------------
 
@@ -461,22 +320,6 @@ CREATE TABLE IF NOT EXISTS `tbl_skills` (
   `date` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_skills`
---
-
-INSERT INTO `tbl_skills` (`id`, `applicant_id`, `skill`, `level`, `date`) VALUES
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'Photoshop', 'Intermediate', '2017-11-28 11:04:46'),
-('356a192b7913b04c54574d18c28d46e6395428ab', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'Web Development', 'Intermediate', '2017-11-28 11:17:59'),
-('da4b9237bacccdf19c0760cab7aec4a8359010b0', 'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'Photo Editing', 'Beginner', '2017-11-28 14:51:00'),
-('77de68daecd823babbb58edb1c8e14d7106e83bb', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'PHP', 'Intermediate', '2017-12-15 22:59:51'),
-('1b6453892473a467d07372d45eb05abc2031647a', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'HTML5', 'Intermediate', '2017-12-15 23:00:08'),
-('ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'JQuery', 'Intermediate', '2017-12-15 23:00:35'),
-('c1dfd96eea8cc2b62785275bca38ac261256e278', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'CSS3', 'Intermediate', '2017-12-15 23:01:20'),
-('902ba3cda1883801594b6e1b452790cc53948fda', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'Web Designer', 'Intermediate', '2017-12-15 23:01:52'),
-('fe5dbbcea5ce7e2988b8c69bcfdfde8904aabc1f', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'sss', 'Intermediate', '2017-12-15 23:02:44'),
-('0ade7c2cf97f75d009975f4d720d1fa6c19f4897', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'caring', 'Beginner', '2017-12-16 04:03:41');
 
 -- --------------------------------------------------------
 
@@ -498,33 +341,6 @@ CREATE TABLE IF NOT EXISTS `tbl_vacancies` (
   `status` int(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_vacancies`
---
-
-INSERT INTO `tbl_vacancies` (`id`, `employer_id`, `description`, `vacancy_date`, `job_title`, `skills`, `salary_range`, `contract`, `date`, `status`) VALUES
-('0ade7c2cf97f75d009975f4d720d1fa6c19f4897', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'I need someone who have 5 years of experience as optical technician. ', '06/14/2016', 'Expert Optical Technician', 'null', '10000', 'Full-time', '2016-03-13 14:29:52', 1),
-('17ba0791499db908433b80f37c5fbc89b870084b', 'da4b9237bacccdf19c0760cab7aec4a8359010b0', 'Subukan mo lang', '28 October, 2017', 'Hanap Ba Mo Trabaho?', '[\"hanap\",\"ka\",\"lang\"]', '12000', 'Full-time', '2017-10-14 00:59:18', 1),
-('1b6453892473a467d07372d45eb05abc2031647a', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'I need someone who have 5 years of experience as optical technician. ', '06/14/2016', 'Expert Optical Technician', 'null', '10000', 'Full-time', '2016-03-13 14:24:52', 1),
-('356a192b7913b04c54574d18c28d46e6395428ab', 'pHilMont123', 'I want someone who can make website in just two weeks. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.', '31 October, 2017', 'Web Developer', '[\"PHP\",\"JQuery\",\"HTML5\",\"CSS3\"]', '10000', 'Full-time', '2016-03-12 14:24:20', 1),
-('472b07b9fcf2c2451e8781e944bf5f77cd8457c8', '1', 'Under General direction of the VP finance and Admin, this position functionally responsible in the development, documentation, and dissemination of responsive information and workflow\'s system in the organizatiion.', '31 October, 2017', 'System Manager', 'null', '10000', 'Full-time', '2017-09-29 10:40:31', 1),
-('4d134bc072212ace2df385dae143139da74ec0ef', '1', 'We are seeking a qualified Guidance Counselor to support and educate elementary, middle and/or high school students through a well-prepared counseling program. You will serve as the facilitator for the attaining of students\' academic or career goals, and assist them in developing their social and mental capacity.', '20 October, 2018', 'Licensed Guidance Councilor (STI Dagupan)', 'null', '35000', 'Full-time', '2017-09-29 11:21:34', 1),
-('77de68daecd823babbb58edb1c8e14d7106e83bb', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'I need someone who have 5 years of experience as optical technician. ', '06/14/2016', 'Expert Optical Technician', 'null', '10000', 'Full-time', '2016-03-13 14:24:19', 1),
-('7b52009b64fd0a2a49e6d8a939753077792b0554', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'There are many variations of passages of Lorem Ipsum available ', '31 October, 2017', 'Full Stack Web Developer', '[\"Jquery\",\"CSS3\",\"HTML5\"]', '10000', 'Part-time', '2016-03-29 17:59:46', 1),
-('887309d048beef83ad3eabf2a79a64a389ab1c9f', '1', 'Description.', '20 October, 2017', 'Project Manager', '[\"skillll\",\"skkiiil\",\"sss\"]', '10000', 'Full-time', '2017-09-29 17:10:46', 1),
-('902ba3cda1883801594b6e1b452790cc53948fda', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'I need someone who have 5 years of experience as optical technician. ', '06/14/2016', 'Expert Optical Technician', 'null', '', 'Full-time', '2016-03-13 14:25:48', 1),
-('91032ad7bbcb6cf72875e8e8207dcfba80173f7c', '1', 'trained to care for sick or injured people', '2 November, 2017', 'Nurse', '[\"caring\"]', '123123', 'Part-time', '2017-09-28 16:08:58', 1),
-('9e6a55b6b4563e652a23be9d623ca5055c356940', '1', 'wanted imbalsamador.', '31 October, 2020', 'Imbalmer', 'null', '10000', 'Part-time', '2017-09-28 11:04:03', 1),
-('ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'I need someone who have 5 years of experience as optical technician. ', '06/14/2016', 'Expert Optical Technician', '[\"sss\"]', '10000', 'Full-time', '2016-03-13 14:25:07', 1),
-('b1d5781111d84f7b3fe45a0852e59758cd7a87e5', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'sdsdsddsd', '02/02/2016', 'ssdsd', '[\"sdsdsd\"]', '10000', 'Full-time', '2016-03-21 21:05:20', 1),
-('b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f', '1', 'Call respresentatives.', '31 October, 2017', 'Call Center Agent', 'null', '12000', 'Full-time', '2017-09-28 16:05:26', 1),
-('b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'pHilMont123', 'Hello, I need someone who can do all things for me. ', '07/13/2016', 'Job Title', '[\"Full Stack Web Developer\",\"Web Designer\",\"PHP\",\"JQuery\",\"HTML5\"]', '10000', 'Full-time', '2016-03-12 12:04:21', 1),
-('c1dfd96eea8cc2b62785275bca38ac261256e278', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'I need someone who have 5 years of experience as optical technician. ', '06/14/2016', 'Expert Optical Technicians', '[\"sss\"]', '10000', 'Full-time', '2016-03-13 14:25:37', 1),
-('d435a6cdd786300dff204ee7c2ef942d3e9034e2', '1', 'conduct product presentations,prepare price quotations, develop potential leaders, prepare purchase order  confirmations.', '31 October, 2017', 'Sales Engineer', 'null', '13000', 'Full-time', '2017-09-29 11:02:57', 1),
-('da4b9237bacccdf19c0760cab7aec4a8359010b0', '1', 'I am looking for a sales lady that must have the following characteristics as stated above. ', '06/14/2016', 'Sales Lady', '[\"Maganda\",\"Sexy\",\"Maputi\",\"NBSB (important)\"]', '10000', 'Full-time', '2016-03-12 15:41:51', 1),
-('f6e1126cedebf23e1463aee73f9df08783640400', '1', 'I need an HR', '10 October, 2020', 'HR Clerk', 'null', '12345', 'Full-time', '2017-09-29 16:57:52', 1),
-('fe5dbbcea5ce7e2988b8c69bcfdfde8904aabc1f', 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c', 'I need someone who have 5 years of experience as optical technician. ', '09/25/2017', 'Expert Optical Technician', 'null', '10000', 'Full-time', '2016-03-13 14:29:45', 1);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
