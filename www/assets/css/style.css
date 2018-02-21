@@ -305,18 +305,29 @@ margin: 0;
 	width: 80%;
 	float: right;
 }
+
 #tab_jobs .card .information div{
-	width: 100%;
-	height: 30px !important;
+	/*width: 100%;*/
+	/*height: 30px !important;*/
 	overflow:  hidden;
 	text-overflow:  ellipsis;
-	white-space: nowrap;
+	/* white-space: nowrap; */
+	/*font-size: 10px;*/
+	display: block;
+	display: -webkit-box;
+	max-width: 400px;
+	height: calc(12px * 1.4 * 2px);
+	margin: 0 auto;
 	font-size: 12px;
+	line-height: 1.4;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
 }
 #tab_jobs .card .card-content{
 	 height: calc(100% - 120px);
-	 border-top: 10px solid #fff;
+	 /* border-top: 10px solid #fff; */
 	 border-radius: 20px 20px 20px 20px;
+	 overflow:  h;
 }
 #tab_jobs .job-description p, #tab_jobs .job-description ul, #tab_jobs .job-description li{
 	font-size: 12px;

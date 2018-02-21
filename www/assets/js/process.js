@@ -17,16 +17,27 @@ jobs = {
 						company:{
 							logo:'rnr_logo.png',
 							name:'RNR Digital Consultancy',
-							address:'Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan'
+							address:'Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan'
 						},
 						job:{
 							title:'Front-End Developer',
 							date:'January 31, 2018',
 							requirements:`
 										<ul>
-											<li>Skills of a Front-End Developer.</li>
-											<li>Skills of a Front-End Developer.</li>
-											<li>Skills of a Front-End Developer.</li>
+											<li>1. Skills of a Front-End Developer.</li>
+											<li>2. Skills of a Front-End Developer.</li>
+											<li>3. Skills of a Front-End Developer.</li>
+											<li>4. Skills of a Front-End Developer.</li>
+											<li>5. Skills of a Front-End Developer.</li>
+											<li>6. Skills of a Front-End Developer.</li>
+											<li>7. Skills of a Front-End Developer.</li>
+											<li>8. Skills of a Front-End Developer.</li>
+											<li>9. Skills of a Front-End Developer.</li>
+											<li>10. Skills of a Front-End Developer.</li>
+											<li>11. Skills of a Front-End Developer.</li>
+											<li>12. Skills of a Front-End Developer.</li>
+											<li>13. Skills of a Front-End Developer.</li>
+											<li>14. Skills of a Front-End Developer.</li>
 										</ul>
 										`,
 							description:`<p>We are in need of Front-End Developers, who are passionate and highly motivated in making great ideas into reality.</p>`,

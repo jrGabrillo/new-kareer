@@ -211,6 +211,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 let ps = new PerfectScrollbar('.messages-content');
+                function();
             }
         }
     },
