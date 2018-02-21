@@ -140,35 +140,33 @@ jobs = {
 		                                        </div>
 		                                    </div>
 		                                    <div class='card-content card-content-padding align-self-stretch'>
-		                                        <div class='job-description'>
-		                                        	<h3>${post.job.title}</h3>
-		                                        	<p><span>${post.job.date}</span></p>
-		                                        	<div class='row'>
-			                                            <strong>Skills</strong>
-			                                            <div id='display_skills'>
-															<div class="chip color-pink">
-																<div class="chip-label">Lorem </div>
-															</div>
-															<div class="chip color-green">
-																<div class="chip-label">voluptatem </div>
-															</div>
-															<div class="chip color-yellow">
-																<div class="chip-label">numquam </div>
-															</div>
-															<div class="chip color-blue">
-																<div class="chip-label">reprehenderit </div>
-															</div>
-			                                            </div>
-		                                        	</div>
-		                                        	<div class='row'>
-			                                            <strong>Description</strong>
-		                                            	${post.job.description}
-		                                        	</div>
-		                                        	<div class='row'>
-			                                            <strong>Requirements:</strong>
-		                                            	${post.job.requirements}
-		                                        	</div>
-		                                        </div>
+	                                        	<h3>${post.job.title}</h3>
+	                                        	<p><span>${post.job.date}</span></p>
+	                                        	<div class='row'>
+		                                            <strong>Skills</strong>
+		                                            <div id='display_skills'>
+														<div class="chip color-pink">
+															<div class="chip-label">Lorem </div>
+														</div>
+														<div class="chip color-green">
+															<div class="chip-label">voluptatem </div>
+														</div>
+														<div class="chip color-yellow">
+															<div class="chip-label">numquam </div>
+														</div>
+														<div class="chip color-blue">
+															<div class="chip-label">reprehenderit </div>
+														</div>
+		                                            </div>
+	                                        	</div>
+	                                        	<div class='row'>
+		                                            <strong>Description</strong>
+	                                            	${post.job.description}
+	                                        	</div>
+	                                        	<div class='row'>
+		                                            <strong>Requirements:</strong>
+	                                            	${post.job.requirements}
+	                                        	</div>
 		                                    </div>
 		                                </div>
 		                            </div>`);
