@@ -81,7 +81,7 @@ var system = function() {
 			return data;
 		},
 		host:function(page){
-			return `http://localhost/kareer/mobile/harmony/mobile.php?${page}`;
+			return `http://localhost/kareer/assets/harmony/mobile.php?${page}`;
 		},
 		notification:function(title,subtitle){
             let n = app.notification.create({

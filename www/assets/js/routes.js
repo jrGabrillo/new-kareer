@@ -115,8 +115,13 @@ var routes = [
             pageInit: function(e, page){
                 jobs.display();
                 var mySwiper = new Swiper('#tab_jobs .swiper-container', {
-                    speed: 800,
-                    spaceBetween: 10,
+                    // speed: 800,
+                    // spaceBetween: 10,
+  flipEffect: {
+    rotate: 30,
+    slideShadows: false,
+  },
+                    
                 });
                 // app.tab.show('#tab_jobs', true);
                 // var view = app.views.create('#tab_jobs');
