@@ -234,6 +234,7 @@ fb = {
             success: function(data) {
                 let profile = {id: data.id, last_name:data.last_name, first_name:data.first_name, email:((typeof data.email=='undefined')?"":data.email), picture:`http://graph.facebook.com/${data.id}/picture?type=large`};
                 localStorage.setItem('account',JSON.stringify(profile));
+                account.ini(data.id);
             },
             error: fb.errorHandler
         });

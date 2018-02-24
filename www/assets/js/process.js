@@ -1,9 +1,26 @@
 account = {
-	ini:function(){
+	ini:function(data){
+		console.log(data);
+		let applicant = system.ajax(system.host('get-applicant'), data);
+		applicant.done(function(data){
+			applicant = JSON.parse(data);
+			console.log(applicant);
+			account.display(applicant);
+		});
 	},
-	social_signin:function(){
-	},
-	social_signup:function(){
+	display:function(applicant){
+		let picture = applicant[0][19];
+		$('#picture-holder').css('background','url('+picture+')');
+		$('#fullname').html(applicant[0][8]+" "+applicant[0][9]);
+		$('#about p').html(applicant[0][1]);
+
+		$('#fullname').val(applicant[0][8]+" "+applicant[0][9]);
+		$('#DateOfBirth').val(applicant[0][13]);
+		$('#address').val(applicant[0][13]);
+		$('#description').val(applicant[0][1]);
+
+		$('#email').val(applicant[0][2]);
+		$('#password').val(applicant[0][3]);			
 	}
 }
 
@@ -228,6 +245,7 @@ signin = {
                     data = JSON.parse(data);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
+                        account.ini(form[0].value);
                         view.router.navigate('/account/');                        
                     }
                     else{
@@ -327,6 +345,7 @@ auth = {
 	            profile = {id: profile.getId(), last_name:profile.getFamilyName(), first_name:profile.getGivenName(), email:profile.getEmail(), picture:profile.getImageUrl()};
 				localStorage.setItem('account',JSON.stringify(profile));
 				sessionStorage.setItem('googleAccessToken', googleUser.getAuthResponse().id_token);
+				account.ini(profile.id);
 				callback();
 			}, 
 			function(error){
