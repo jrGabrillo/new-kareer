@@ -34,16 +34,27 @@ jobs = {
 						company:{
 							logo:'rnr_logo.png',
 							name:'RNR Digital Consultancy',
-							address:'Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan'
+							address:'Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan'
 						},
 						job:{
 							title:'Front-End Developer',
 							date:'January 31, 2018',
 							requirements:`
 										<ul>
-											<li>Skills of a Front-End Developer.</li>
-											<li>Skills of a Front-End Developer.</li>
-											<li>Skills of a Front-End Developer.</li>
+											<li>1. Skills of a Front-End Developer.</li>
+											<li>2. Skills of a Front-End Developer.</li>
+											<li>3. Skills of a Front-End Developer.</li>
+											<li>4. Skills of a Front-End Developer.</li>
+											<li>5. Skills of a Front-End Developer.</li>
+											<li>6. Skills of a Front-End Developer.</li>
+											<li>7. Skills of a Front-End Developer.</li>
+											<li>8. Skills of a Front-End Developer.</li>
+											<li>9. Skills of a Front-End Developer.</li>
+											<li>10. Skills of a Front-End Developer.</li>
+											<li>11. Skills of a Front-End Developer.</li>
+											<li>12. Skills of a Front-End Developer.</li>
+											<li>13. Skills of a Front-End Developer.</li>
+											<li>14. Skills of a Front-End Developer.</li>
 										</ul>
 										`,
 							description:`<p>We are in need of Front-End Developers, who are passionate and highly motivated in making great ideas into reality.</p>`,
@@ -135,23 +146,23 @@ jobs = {
 		let display = "";
 		for(let post of this.get()){
 			$('#display_jobs').append(`<div class='swiper-slide'>
-		                                <div class='card job'>
-		                                    <div class='card-header align-items-flex-end'>
-		                                        <div class='company'>
-		                                            <div class='logo-holder'><div class='logo' style='background:url(assets/img/logo/${post.company.logo}) center/cover no-repeat;'></div></div>
-		                                            <div class='information'>
-		                                                <h3>${post.company.name}</h3>
-		                                                <div>${post.company.address}</div>
-		                                            </div>
-		                                        </div>
-		                                    </div>
-		                                    <div class='card-content card-content-padding align-self-stretch'>
-		                                        <div class='job-description'>
-		                                        	<h3>${post.job.title}</h3>
-		                                        	<p><span>${post.job.date}</span></p>
-		                                        	<div class='row'>
-			                                            <strong>Skills</strong>
-			                                            <div id='display_skills'>
+										<div class='card job'>
+											<div class='card-header align-items-flex-end'>
+												<div class='company'>
+													<div class='logo-holder'><div class='logo' style='background:url(assets/img/logo/${post.company.logo}) center/cover no-repeat;'></div></div>
+													<div class='information'>
+														<h3>${post.company.name}</h3>
+														<div>${post.company.address}</div>
+													</div>
+												</div>
+											</div>
+											<div class='card-content card-content-padding align-self-stretch'>
+												<div class='job-description'>
+													<h3>${post.job.title}</h3>
+													<p><span>${post.job.date}</span></p>
+													<div class='row'>
+														<strong>Skills</strong>
+														<div id='display_skills'>
 															<div class="chip color-pink">
 																<div class="chip-label">Lorem </div>
 															</div>
@@ -164,20 +175,19 @@ jobs = {
 															<div class="chip color-blue">
 																<div class="chip-label">reprehenderit </div>
 															</div>
-			                                            </div>
-		                                        	</div>
-		                                        	<div class='row'>
-			                                            <strong>Description</strong>
-		                                            	${post.job.description}
-		                                        	</div>
-		                                        	<div class='row'>
-			                                            <strong>Requirements:</strong>
-		                                            	${post.job.requirements}
-		                                        	</div>
-		                                        </div>
-		                                    </div>
-		                                </div>
-		                            </div>`);
+														</div>
+													</div>
+													<div class='row'>
+														<strong>Description</strong>
+														${post.job.description}
+													</div>
+												</div>
+											</div>
+				                            <div class="card-footer">
+												<button class="button col button-round">Read more</button>
+				                            </div>
+										</div>
+									</div>`);
 		}
 		this.scroll();
 	},
@@ -187,16 +197,16 @@ jobs = {
 			let scrolled = $(this).scrollTop();
 			direction = (scrolled>scroll)?'up':'down';
 			console.log(`${direction} ${scrolled}`);
-		   	if((direction == 'up') && (scrolled > 10)){
-		   		$(this).parent('.card').addClass('active');
-		   		$(this).scrollTop(110);
-		   		// $(this).parent('.job').find('.logo-holder').attr({'style':`transform:scale(${(1*0.6)}); top:-${(scrolled*0.6)}px; left:-${(scrolled*0.7)}px;`});
-		   	}
-		   	else if((direction == 'down') && (scrolled < 100)){
-		   		$(this).parent('.card').removeClass('active');
-		   		$(this).scrollTop(0);
-		   		// $(this).animate({scrollTop:0},200);
-		   	}
+			if((direction == 'up') && (scrolled > 10)){
+				$(this).parent('.card').addClass('active');
+				$(this).scrollTop(110);
+				// $(this).parent('.job').find('.logo-holder').attr({'style':`transform:scale(${(1*0.6)}); top:-${(scrolled*0.6)}px; left:-${(scrolled*0.7)}px;`});
+			}
+			else if((direction == 'down') && (scrolled < 100)){
+				$(this).parent('.card').removeClass('active');
+				$(this).scrollTop(0);
+				// $(this).animate({scrollTop:0},200);
+			}
 			scroll = scrolled;
 		});
 	}
@@ -210,26 +220,26 @@ search = {
 
 signin = {
 	form:function(){
-        let c = 0;
-        $(".item-input-password-preview").on('click',function(){
-            c++;
-            if((c%2)==0){
-                $(this).children('i').html('visibility_off');
-                $("#form_signin input[name='field_password']").attr({'type':'password'});
-            }
-            else{
-                $(this).children('i').html('visibility');
-                $("#form_signin input[name='field_password']").attr({'type':'text'});
-            }
-        });
+		let c = 0;
+		$(".item-input-password-preview").on('click',function(){
+			c++;
+			if((c%2)==0){
+				$(this).children('i').html('visibility_off');
+				$("#form_signin input[name='field_password']").attr({'type':'password'});
+			}
+			else{
+				$(this).children('i').html('visibility');
+				$("#form_signin input[name='field_password']").attr({'type':'text'});
+			}
+		});
 
 		$("#form_signin").validate({
-		    rules: {
-		        field_email: {required: true, maxlength: 50, email:true},
-		        field_password: {required: true, maxlength: 50},
-		    },
-		    errorElement : 'div',
-		    errorPlacement: function(error, element) {
+			rules: {
+				field_email: {required: true, maxlength: 50, email:true},
+				field_password: {required: true, maxlength: 50},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
 				var placement = $(element).data('error');
 				if(placement){
 					$(placement).append(error)
@@ -240,6 +250,7 @@ signin = {
 			},
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray();
+<<<<<<< HEAD
                 var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
                 data.done(function(data){
                     data = JSON.parse(data);
@@ -253,34 +264,48 @@ signin = {
                     }
                 });
 		    }
+=======
+				var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
+				data.done(function(data){
+					data = JSON.parse(data);
+					if(data[1] == 'applicant'){
+						system.notification("Kareer","Signed in.");
+						view.router.navigate('/account/');                        
+					}
+					else{
+						system.notification("Kareer","Sign in failed.");
+					}
+				});
+			}
+>>>>>>> c22dc5b308eeb026110b040569248302ac040162
 		});
 	}
 }
 
 signup = {
 	form:function(){
-        let c = 0;
-        $(".item-input-password-preview").on('click',function(){
-            c++;
-            if((c%2)==0){
-                $(this).children('i').html('visibility_off');
-                $("#display_form input[name='field_password']").attr({'type':'password'});
-            }
-            else{
-                $(this).children('i').html('visibility');
-                $("#display_form input[name='field_password']").attr({'type':'text'});
-            }
-        });
+		let c = 0;
+		$(".item-input-password-preview").on('click',function(){
+			c++;
+			if((c%2)==0){
+				$(this).children('i').html('visibility_off');
+				$("#display_form input[name='field_password']").attr({'type':'password'});
+			}
+			else{
+				$(this).children('i').html('visibility');
+				$("#display_form input[name='field_password']").attr({'type':'text'});
+			}
+		});
 
 		$("#form_signup").validate({
-		    rules: {
-		        field_firstname: {required: true, maxlength: 50},
-		        field_lastname: {required: true, maxlength: 50},
-		        field_email: {required: true, maxlength: 100, email:true, validateEmail:true},
-		        field_password: {required: true, maxlength: 50},
-		    },
-		    errorElement : 'div',
-		    errorPlacement: function(error, element) {
+			rules: {
+				field_firstname: {required: true, maxlength: 50},
+				field_lastname: {required: true, maxlength: 50},
+				field_email: {required: true, maxlength: 100, email:true, validateEmail:true},
+				field_password: {required: true, maxlength: 50},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
 				var placement = $(element).data('error');
 				if(placement){
 					$(placement).append(error)
@@ -292,36 +317,36 @@ signup = {
 			submitHandler: function (form) {
 				let _form = $(form).serializeArray();
 				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
-                let data = system.ajax(system.host('do-signUp'),form);
-                data.done(function(data){
-                    if(data == 1){
-                        system.notification("Kareer","Success. You are now officially registered.");
-                        view.router.navigate('/account/');                        
-                    }
-                    else if(data == 2){
-                        system.notification("Kareer","You are already signed in. Try signing in using your email.");
-                        view.router.navigate('/signin/');                        
-                    }
-                    else{
-                        system.notification("Kareer","Sign up failed.");
-                    }
-                });
-		    }
+				let data = system.ajax(system.host('do-signUp'),form);
+				data.done(function(data){
+					if(data == 1){
+						system.notification("Kareer","Success. You are now officially registered.");
+						view.router.navigate('/account/');                        
+					}
+					else if(data == 2){
+						system.notification("Kareer","You are already signed in. Try signing in using your email.");
+						view.router.navigate('/signin/');                        
+					}
+					else{
+						system.notification("Kareer","Sign up failed.");
+					}
+				});
+			}
 		}); 
 	},
 	auth:function(form){
-	    var data = system.ajax(system.host('do-logInAuth'),form);
-        data.done(function(data){
-        	console.log(data);
-            data = JSON.parse(data);
-            if(data[1] == 'applicant'){
-                system.notification("Kareer","Signed in.");
-                view.router.navigate('/account/');                        
-            }
-            else{
-                system.notification("Kareer","You are not yet registered");
-            }
-        });
+		var data = system.ajax(system.host('do-logInAuth'),form);
+		data.done(function(data){
+			console.log(data);
+			data = JSON.parse(data);
+			if(data[1] == 'applicant'){
+				system.notification("Kareer","Signed in.");
+				view.router.navigate('/account/');                        
+			}
+			else{
+				system.notification("Kareer","You are not yet registered");
+			}
+		});
 	}
 }
 
@@ -342,14 +367,14 @@ auth = {
 			function(googleUser){
 			localStorage.setItem('callback','google-auth');
 				let profile = googleUser.getBasicProfile();
-	            profile = {id: profile.getId(), last_name:profile.getFamilyName(), first_name:profile.getGivenName(), email:profile.getEmail(), picture:profile.getImageUrl()};
+				profile = {id: profile.getId(), last_name:profile.getFamilyName(), first_name:profile.getGivenName(), email:profile.getEmail(), picture:profile.getImageUrl()};
 				localStorage.setItem('account',JSON.stringify(profile));
 				sessionStorage.setItem('googleAccessToken', googleUser.getAuthResponse().id_token);
 				account.ini(profile.id);
 				callback();
 			}, 
 			function(error){
-	            system.notification('Google','Sign in canceled');
+				system.notification('Google','Sign in canceled');
 			}
 		);
 	},
@@ -357,6 +382,6 @@ auth = {
 		auth2.disconnect();
 	},
 	facebook:function(){
-        openFB.init({appId: '407673386340765'});
+		openFB.init({appId: '407673386340765'});
 	}
 }
