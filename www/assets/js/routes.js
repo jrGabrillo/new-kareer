@@ -2,6 +2,24 @@ var routes = [
     {
         path: '/home/',
         url: './pages/home.html',
+        on: {
+            pageInit: function(e,page){
+                console.log('ccc');
+                let callback = localStorage.getItem('callback');
+                if(callback == "fb-oauth"){
+                    fb.login(function(){
+                        system.notification('Facebook','You are now signed in');
+                        console.log('hello world');
+                            let profile = JSON.parse(localStorage.getItem('account'));
+                            let form = [profile.email,profile.id];
+                            signup.auth(form);
+                    });
+                }
+                else if(callback == "google-auth"){
+
+                }
+            }
+        }
     },
     {
         path: '/signin/',
@@ -115,13 +133,12 @@ var routes = [
             pageInit: function(e, page){
                 jobs.display();
                 var mySwiper = new Swiper('#tab_jobs .swiper-container', {
+                    flipEffect: {
+                        rotate: 30,
+                        slideShadows: false,
+                    },
                     // speed: 800,
-                    // spaceBetween: 10,
-  flipEffect: {
-    rotate: 30,
-    slideShadows: false,
-  },
-                    
+                    // spaceBetween: 10,                    
                 });
                 // app.tab.show('#tab_jobs', true);
                 // var view = app.views.create('#tab_jobs');
