@@ -1,7 +1,9 @@
 account = {
 	ini:function(){
 	},
-	social_login:function(){
+	social_signin:function(){
+	},
+	social_signup:function(){
 	}
 }
 
@@ -190,13 +192,23 @@ search = {
 }
 
 signin = {
-	ini:function(){
-        this.form();
-	},
 	form:function(){
+        let c = 0;
+        $(".item-input-password-preview").on('click',function(){
+            c++;
+            if((c%2)==0){
+                $(this).children('i').html('visibility_off');
+                $("#form_signin input[name='field_password']").attr({'type':'password'});
+            }
+            else{
+                $(this).children('i').html('visibility');
+                $("#form_signin input[name='field_password']").attr({'type':'text'});
+            }
+        });
+
 		$("#form_signin").validate({
 		    rules: {
-		        field_email: {required: true, maxlength: 50, email:true, validateEmail:true},
+		        field_email: {required: true, maxlength: 50, email:true},
 		        field_password: {required: true, maxlength: 50},
 		    },
 		    errorElement : 'div',
@@ -211,87 +223,116 @@ signin = {
 			},
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray();
-				form = [form[0].value,form[1].value];
-				console.log(form);
-                var data = system.ajax(system.host('do-logIn'),form);
+                var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
                 data.done(function(data){
-                    console.log(data);
-                    // if(data != 0){
-                    //     $$("input").val("");
-                    //     system.notification("Kareer","Success. Please wait.",false,2000,true,false,function(){
-                    //         app.closeModal('.popup-login', true);
-                    //         localStorage.setItem('applicant',data);
-                    //         content.ini();
-                    //     });
-                    // }
-                    // else{
-                    //     system.notification("Kareer","Failed.",false,3000,true,false,false);
-                    // }
+                    data = JSON.parse(data);
+                    if(data[1] == 'applicant'){
+                        system.notification("Kareer","Signed in.");
+                        view.router.navigate('/account/');                        
+                    }
+                    else{
+                        system.notification("Kareer","Sign in failed.");
+                    }
                 });
 		    }
-		}); 
+		});
 	}
 }
 
 signup = {
-	ini:function(){
+	form:function(){
+        let c = 0;
+        $(".item-input-password-preview").on('click',function(){
+            c++;
+            if((c%2)==0){
+                $(this).children('i').html('visibility_off');
+                $("#display_form input[name='field_password']").attr({'type':'password'});
+            }
+            else{
+                $(this).children('i').html('visibility');
+                $("#display_form input[name='field_password']").attr({'type':'text'});
+            }
+        });
 
+		$("#form_signup").validate({
+		    rules: {
+		        field_firstname: {required: true, maxlength: 50},
+		        field_lastname: {required: true, maxlength: 50},
+		        field_email: {required: true, maxlength: 100, email:true, validateEmail:true},
+		        field_password: {required: true, maxlength: 50},
+		    },
+		    errorElement : 'div',
+		    errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				let _form = $(form).serializeArray();
+				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
+                let data = system.ajax(system.host('do-signUp'),form);
+                data.done(function(data){
+                    if(data == 1){
+                        system.notification("Kareer","Success. You are now officially registered.");
+                        view.router.navigate('/account/');                        
+                    }
+                    else if(data == 2){
+                        system.notification("Kareer","You are already signed in. Try signing in using your email.");
+                        view.router.navigate('/signin/');                        
+                    }
+                    else{
+                        system.notification("Kareer","Sign up failed.");
+                    }
+                });
+		    }
+		}); 
+	},
+	auth:function(form){
+	    var data = system.ajax(system.host('do-logInAuth'),form);
+        data.done(function(data){
+        	console.log(data);
+            data = JSON.parse(data);
+            if(data[1] == 'applicant'){
+                system.notification("Kareer","Signed in.");
+                view.router.navigate('/account/');                        
+            }
+            else{
+                system.notification("Kareer","You are not yet registered");
+            }
+        });
 	}
 }
 
 auth = {
 	ini:function(){
 	},
-	google:function(){
-		console.log("hello world");
-
+	google:function(callback){
 		gapi.load('auth2', function() {
 			auth2 = gapi.auth2.init({
 				client_id: '960874719503-0dhf2g79fc8dqkoalm7r9apsujtlnblc.apps.googleusercontent.com',
 				cookiepolicy: 'single_host_origin',
 			});
-
-			auth.googleSignIn(document.getElementById('signin_gmail'));
+			callback();
 		});
 	},
-	googleSignIn:function(element){
-		localStorage.setItem('callback','google-auth');
+	googleSignIn:function(element, callback){
 		auth2.attachClickHandler(element,{},
-		function(googleUser){
-			let profile = googleUser.getBasicProfile();
-			sessionStorage.setItem('googleAccessToken', googleUser.getAuthResponse().id_token);
-
-			console.log(profile);
-			document.getElementById('name').innerText = "Signed in: " + profile.getName();
-			console.log(profile.getId());
-			// console.log('ID: ' + profile.getId());
-			// console.log('Name: ' + profile.getName());
-			// console.log('Image URL: ' + profile.getImageUrl());
-			// console.log('Email: ' + profile.getEmail());
-
-
-		}, 
-		function(error){
-			console.log('canceled by user');
-		});
-	},
-	googleGetAccount:function(token){
-		if (token !== null && typeof(token) !== 'undefined') {
-			var urlAPI = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + token;
-			var xmlreq = new XMLHttpRequest();
-			xmlreq.onreadystatechange = function() {
-				if (xmlreq.readyState == 4 && xmlreq.status == 200) {
-					var response = eval('(' + xmlreq.responseText + ')');
-
-					console.log(response);
-					if (response.name) {
-						document.getElementById("profile-name").innerHTML = response.name + '<br>Id: ' + response.id;
-					}
-				}
-			};
-			xmlreq.open("GET", urlAPI, true);
-			xmlreq.send();
-		}
+			function(googleUser){
+			localStorage.setItem('callback','google-auth');
+				let profile = googleUser.getBasicProfile();
+	            profile = {id: profile.getId(), last_name:profile.getFamilyName(), first_name:profile.getGivenName(), email:profile.getEmail(), picture:profile.getImageUrl()};
+				localStorage.setItem('account',JSON.stringify(profile));
+				sessionStorage.setItem('googleAccessToken', googleUser.getAuthResponse().id_token);
+				callback();
+			}, 
+			function(error){
+	            system.notification('Google','Sign in canceled');
+			}
+		);
 	},
 	googleSignOut:function(){
 		auth2.disconnect();

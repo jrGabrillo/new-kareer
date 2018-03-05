@@ -5,11 +5,9 @@
 
 	        if(get == "fb-oauth"){
 	            window.opener.openFB.oauthCallback(window.location.href);
-	            localStorage.removeItem('callback');
 	            window.close();
 	        }
 	        else{
-	        	localStorage.removeItem('callback');
 	            window.close();
 	        }
 		</script>

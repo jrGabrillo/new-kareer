@@ -110,7 +110,7 @@ var routes = [
                             data.done(function(data){
                                 if(data == 1){
                                     system.notification("Kareer","Success. You are now officially registered.");
-                                    view.router.navigate('/account/');                        
+                                    view.router.navigate('/signin/');                        
                                 }
                                 else if(data == 2){
                                     view.router.navigate('/signin/');                        

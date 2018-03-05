@@ -82,6 +82,14 @@ var system = function() {
 		},
 		host:function(page){
 			return `http://localhost/kareer/mobile/harmony/mobile.php?${page}`;
+		},
+		notification:function(title,subtitle){
+            let n = app.notification.create({
+                title: title,
+                subtitle: subtitle,
+                closeButton: true,
+                closeTimeout: 3000,
+            });n.open();
 		}
 	}
 }();

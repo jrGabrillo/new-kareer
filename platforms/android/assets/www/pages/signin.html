@@ -10,24 +10,25 @@
         <form action="#" method="POST" id='form_signin'>
             <div class="list">
                 <ul>
-                    <li class="item-content item-input">
+                    <li class="item-content item-input item-input-with-value">
                         <div class="item-inner">
                             <div class="item-title item-floating-label">Email</div>
                             <div class="item-input-wrap">
-                                <input type="text" name='field_email' data-error=".error_email">
-                                <span class="input-clear-button"></span>
+                                <input class="" type="text" name="field_email" data-error=".error_field_email">
+                                <div class="item-input-info error_field_email"></div>
                             </div>
-                            <div class="error_email"></div> 
                         </div>
                     </li>
                     <li class="item-content item-input">
                         <div class="item-inner">
                             <div class="item-title item-floating-label">Password</div>
                             <div class="item-input-wrap">
-                                <input type="password" name='field_password' data-error=".error_password">
-                                <span class="input-clear-button"></span>
+                                <input class="" type="password" name="field_password" data-error=".error_field_password">
+                                <div class="item-input-password-preview">
+                                    <i class='material-icons'>visibility_off</i>
+                                </div>
+                                <div class="item-input-info error_field_password"></div>
                             </div>
-                            <div class="error_password"></div> 
                         </div>
                     </li>
                 </ul>
