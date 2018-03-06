@@ -3,15 +3,15 @@ account = {
 		let data = JSON.parse(localStorage.getItem('account'));
 		console.log(data);
 
-                    // jobs.display();
-                    // var mySwiper = new Swiper('#tab_jobs .swiper-container', {
-                    //     flipEffect: {
-                    //         rotate: 30,
-                    //         slideShadows: false,
-                    //     },
-                    //     // speed: 800,
-                    //     // spaceBetween: 10,                    
-                    // });
+        jobs.display();
+        var mySwiper = new Swiper('#tab_jobs .swiper-container', {
+            flipEffect: {
+                rotate: 30,
+                slideShadows: false,
+            },
+            speed: 800,
+            spaceBetween: 10,                    
+        });
 
 		// let applicant = system.ajax(system.host('get-applicant'), data);
 		// applicant.done(function(data){
@@ -201,7 +201,7 @@ jobs = {
 										</div>
 									</div>`);
 		}
-		this.scroll();
+		// this.scroll();
 	},
 	scroll:function(){
 		let scroll = 0, direction = "";
