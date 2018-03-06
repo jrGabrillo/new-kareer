@@ -1,8 +1,8 @@
 account = {
 	ini:function(){
-		let data = JSON.parse(localStorage.getItem('account'));
-		console.log(data);
-
+		let data = this.get();
+		// console.log(data);
+		this.display(data);
         jobs.display();
         var mySwiper = new Swiper('#tab_jobs .swiper-container', {
             flipEffect: {
@@ -20,19 +20,26 @@ account = {
 		// 	account.display(applicant);
 		// });
 	},
-	display:function(applicant){
-		let picture = applicant[0][19];
-		$('#picture-holder').css('background','url('+picture+')');
-		$('#fullname').html(applicant[0][8]+" "+applicant[0][9]);
-		$('#about p').html(applicant[0][1]);
+	get:function(){
+		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
+        data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
+		return JSON.parse(data.responseText);
+	},
+	display:function(data){
+		data = data[0];
+		console.log(data);
+		let picture = data[19];
+		$('#picture-holder').css('background',`url(${picture})`);
+		$('#fullname').html(`${data[8]} ${data[9]}`);
+		$('#about p').html(data[1]);
 
-		$('#fullname').val(applicant[0][8]+" "+applicant[0][9]);
-		$('#DateOfBirth').val(applicant[0][13]);
-		$('#address').val(applicant[0][13]);
-		$('#description').val(applicant[0][1]);
+		// $('#fullname').val(data[8]+" "+data[9]);
+		// $('#DateOfBirth').val(data[13]);
+		// $('#address').val(data[13]);
+		// $('#description').val(data[1]);
 
-		$('#email').val(applicant[0][2]);
-		$('#password').val(applicant[0][3]);			
+		// $('#email').val(data[2]);
+		// $('#password').val(data[3]);
 	}
 }
 
