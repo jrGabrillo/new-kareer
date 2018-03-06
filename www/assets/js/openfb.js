@@ -206,7 +206,7 @@ var openFB = (function () {
 openFB.init({appId: '407673386340765'});
 fb = {
     login:function(callback){
-        localStorage.setItem('callback','fb-authxxx');
+        localStorage.setItem('callback','fb-auth');
         openFB.login(function(response){
             console.log(response);
             if(response.status == 'connected'){

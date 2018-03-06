@@ -7,10 +7,10 @@ var routes = [
                 let callback = localStorage.getItem('callback');
                 console.log(callback);
                 if(callback == "fb-auth"){
-                    fb.login(function(){
-                        system.notification('Facebook','You are now signed in');
-                        view.router.navigate('/account/');                        
-                    });
+                    system.notification('Facebook','You are now signed in');
+                    view.router.navigate('/account/');
+                    // fb.login(function(){
+                    // });
                 }
                 else if(callback == "google-auth"){
 
