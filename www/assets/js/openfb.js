@@ -206,9 +206,8 @@ var openFB = (function () {
 openFB.init({appId: '407673386340765'});
 fb = {
     login:function(callback){
-        localStorage.setItem('callback','fb-auth');
+        localStorage.setItem('callback','fb-oauth');
         openFB.login(function(response){
-            console.log(response);
             if(response.status == 'connected'){
                 fb.getProfile(response.authResponse.accessToken);
                 callback();
@@ -235,8 +234,7 @@ fb = {
             success: function(data) {
                 let profile = {id: data.id, last_name:data.last_name, first_name:data.first_name, email:((typeof data.email=='undefined')?"":data.email), picture:`http://graph.facebook.com/${data.id}/picture?type=large`};
                 localStorage.setItem('account',JSON.stringify(profile));
-                // view.router.navigate('/account/');
-                /* redirect to account page*/
+                view.router.navigate('/account/');                        
                 // account.ini(data.id);
             },
             error: fb.errorHandler
@@ -260,7 +258,6 @@ fb = {
             method: 'GET',
             path: '/me/permissions',
             success: function(result){
-                console.log(result.data);
                 system.notification('Facebook',result.data);
             },
             error: fb.errorHandler

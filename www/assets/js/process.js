@@ -1,11 +1,24 @@
 account = {
-	ini:function(data){
-		let applicant = system.ajax(system.host('get-applicant'), data);
-		applicant.done(function(data){
-			console.log(data);
-			// applicant = JSON.parse(data);
-			// account.display(applicant);
-		});
+	ini:function(){
+		let data = JSON.parse(localStorage.getItem('account'));
+		console.log(data);
+
+                    // jobs.display();
+                    // var mySwiper = new Swiper('#tab_jobs .swiper-container', {
+                    //     flipEffect: {
+                    //         rotate: 30,
+                    //         slideShadows: false,
+                    //     },
+                    //     // speed: 800,
+                    //     // spaceBetween: 10,                    
+                    // });
+
+		// let applicant = system.ajax(system.host('get-applicant'), data);
+		// applicant.done(function(data){
+		// 	applicant = JSON.parse(data);
+		// 	console.log(applicant);
+		// 	account.display(applicant);
+		// });
 	},
 	display:function(applicant){
 		let picture = applicant[0][19];
@@ -254,6 +267,7 @@ signin = {
                     data = JSON.parse(data);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
+                        account.ini(form[0].value);
                         view.router.navigate('/account/');                        
                     }
                     else{
@@ -302,13 +316,11 @@ signup = {
 				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
 				let data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
-					if(data == 1){
+					if(data != 0){
+						localStorage.setItem('callback','kareer-oauth');
+						localStorage.setItem('account',data);
 						system.notification("Kareer","Success. You are now officially registered.");
-						view.router.navigate('/account/');                        
-					}
-					else if(data == 2){
-						system.notification("Kareer","You are already signed up. Try signing in using your email and password.");
-						view.router.navigate('/signin/');                        
+						view.router.navigate('/account/');
 					}
 					else{
 						system.notification("Kareer","Sign up failed.");
@@ -335,6 +347,18 @@ signup = {
 auth = {
 	ini:function(){
 	},
+	auto:function(email, id, auth){
+        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
+        data.done(function(data){
+            data = JSON.parse(data);
+            if(data[1] == 'applicant'){
+                view.router.navigate('/account/');                        
+            }
+            else{
+                system.notification("Kareer","Sign in failed.");
+            }
+        });
+	},
 	google:function(callback){
 		gapi.load('auth2', function() {
 			auth2 = gapi.auth2.init({
@@ -347,11 +371,12 @@ auth = {
 	googleSignIn:function(element, callback){
 		auth2.attachClickHandler(element,{},
 			function(googleUser){
-			localStorage.setItem('callback','google-auth');
+			localStorage.setItem('callback','google-oauth');
 				let profile = googleUser.getBasicProfile();
 				profile = {id: profile.getId(), last_name:profile.getFamilyName(), first_name:profile.getGivenName(), email:profile.getEmail(), picture:profile.getImageUrl()};
 				localStorage.setItem('account',JSON.stringify(profile));
 				sessionStorage.setItem('googleAccessToken', googleUser.getAuthResponse().id_token);
+				view.router.navigate('/account/');
 				callback();
 			}, 
 			function(error){
