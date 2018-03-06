@@ -153,32 +153,35 @@ body {
 	color: #0b0b0b!important;
 }
 
-#picture-holder{
-	background:url('../img/icons/no-photo.png') center/cover no-repeat;
+#profile img{
+	/* background:url('../img/icons/no-photo.png') center/cover no-repeat; */
 	width: 100px;
 	height: 100px;
-	margin: 10px auto;
-	border: 1px solid #ccc;
+	margin: auto;
+	/* border: 1px solid #ccc; */
 	border-radius: 50%;
-	background-size: contain !important;
+	/* background-size: contain !important; */
 }
-#name-holder{
+#profile{
 	text-align:center;
 	width:  100%;
 }
-#name-holder h3{
+#profile h3.fullname{
 	font-weight: bold;
 	font-size: 18px;
-	margin-bottom: 0px;
+	margin-bottom: 20px;
+	color: #fff;
+	border: none;
+	width: 100%;
 }
-#name-holder p{
+#profile p{
 	font-weight: 100;
 	margin: 0;
 	color: #c0c0c0;
 }
 
 #tab_account .card-content{
-	padding: 20px 0px 10px 0px;
+	/* padding: 20px 0px 10px 0px; */
 	/* height: 300px; */
 	background: #fbfbfb;
 	background: -webkit-linear-gradient(to top, #fbfbfb, #fbfbfb);
@@ -187,15 +190,16 @@ body {
 #tab_account .card-header{
 	display: block;
 	padding: 20px 0px 0px 0px;
+	border: none;
 }
 #tab_account .card-header:after{
 	/* background-color: #ffffff !important; */
 	/* border-bottom-left-radius: 100%; */
 	/* border-bottom-right-radius: 100%; */
-	/* height: 60px; */
+	height: 0px;
 	/* position: absolute; */
 	/* bottom: -20px; */
-	/* border-bottom: 10px solid #eee; */
+	/* border-bottom: dashed 0px; */
 }
 
 #tab_account #menu{
@@ -239,10 +243,11 @@ body {
 	margin: 5px 5px;
 }
 
+
 #tab_account, #tab_jobs, .tabbar, #tab_search, .account-subpage, .popup{
-	background: #28888c !important;
-	background: -webkit-linear-gradient(to top, #28888c, #6abc9c) !important;
-	background: linear-gradient(to top, #28888c, #6abc9c) !important;
+	background: #69bb9b !important;
+	background: -webkit-linear-gradient(to top, #69bb9b, #6abc9c) !important;
+	background: linear-gradient(to top, #69bb9b, #6abc9c) !important;
 	overflow:  hidden;
 	height:  100%;
 }
@@ -628,4 +633,13 @@ button:disabled{
     opacity: .55!important;
     pointer-events: none!important;
 	/*background: #ccc !important;*/
+}
+
+#menu_account{
+	border-top: solid 1px #e0e0e0;
+}
+
+#profile .other-info{
+	padding: 0px 24px 24px 24px;
+	text-align:  left;
 }

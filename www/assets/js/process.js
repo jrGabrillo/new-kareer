@@ -1,9 +1,11 @@
+let server = "http://localhost/kareer";
 account = {
 	ini:function(){
 		let data = this.get();
 		// console.log(data);
 		this.display(data);
         jobs.display();
+
         var mySwiper = new Swiper('#tab_jobs .swiper-container', {
             flipEffect: {
                 rotate: 30,
@@ -12,6 +14,14 @@ account = {
             speed: 800,
             spaceBetween: 10,                    
         });
+
+		$('.hide-toolbar-account-menu').on('click', function () {
+			app.toolbar.hide('#menu_account');
+		});
+
+		$('.show-toolbar-account-menu').on('click', function () {
+			app.toolbar.show('#menu_account');
+		});
 
 		// let applicant = system.ajax(system.host('get-applicant'), data);
 		// applicant.done(function(data){
@@ -28,10 +38,10 @@ account = {
 	display:function(data){
 		data = data[0];
 		console.log(data);
-		let picture = data[19];
-		$('#picture-holder').css('background',`url(${picture})`);
-		$('#fullname').html(`${data[8]} ${data[9]}`);
-		$('#about p').html(data[1]);
+		let picture = data[18];
+		$('#profile img').attr({'src':`${picture}`});
+		$('#profile h3.fullname').html(`${data[8]} ${data[9]}`);
+		$('#profile p.about').html(data[1]);
 
 		// $('#fullname').val(data[8]+" "+data[9]);
 		// $('#DateOfBirth').val(data[13]);

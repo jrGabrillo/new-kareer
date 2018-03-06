@@ -123,9 +123,8 @@ var routes = [
             pageInit: function(e, page){
                 setTimeout(function(){
                     account.ini();
-                })
-                // app.tab.show('#tab_jobs', true);
-                // var view = app.views.create('#tab_jobs');
+                    let ps = new PerfectScrollbar('#tab_account');                    
+                });
             }
         }
     },
