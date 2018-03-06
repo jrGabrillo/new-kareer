@@ -4,15 +4,12 @@ var routes = [
         url: './pages/home.html',
         on: {
             pageInit: function(e,page){
-                console.log('ccc');
                 let callback = localStorage.getItem('callback');
-                if(callback == "fb-oauth"){
+                console.log(callback);
+                if(callback == "fb-auth"){
                     fb.login(function(){
                         system.notification('Facebook','You are now signed in');
-                        console.log('hello world');
-                            let profile = JSON.parse(localStorage.getItem('account'));
-                            let form = [profile.email,profile.id];
-                            signup.auth(form);
+                        view.router.navigate('/account/');                        
                     });
                 }
                 else if(callback == "google-auth"){
@@ -35,15 +32,13 @@ var routes = [
                             let profile = JSON.parse(localStorage.getItem('account'));
                             let form = [profile.email,profile.id];
                             signup.auth(form);
-                    });
+                        }
+                    );
                 });
                 $("#signin_facebook").on('click', function() {
                     fb.login(function(){
                         system.notification('Facebook','You are now signed in');
-                        console.log('hello world');
-                            let profile = JSON.parse(localStorage.getItem('account'));
-                            let form = [profile.email,profile.id];
-                            signup.auth(form);
+                        view.router.navigate('/account/');                        
                     });
                 });
             }
@@ -90,20 +85,15 @@ var routes = [
                             $("#form_signupAuth img#display_logo").attr({'src':'assets/img/icons/google.png'});
                         else
                             $("#form_signupAuth img#display_logo").attr({'src':'assets/img/icons/facebook.png'});
-
                         $("#form_signupAuth img#display_picture").attr({'src':profile.picture});
-
                         $("#form_signupAuth input[name='field_firstname']").val(profile.first_name);
                         $("#form_signupAuth input[name='field_lastname']").val(profile.last_name);
                         $("#form_signupAuth input[name='field_firstname']").parents('.item-content').addClass('item-input-focused');
-
                         if(profile.email != ""){
                             $("#form_signupAuth input[name='field_email']").val(profile.email);
                             $("#form_signupAuth input[name='field_email']").parents('.item-content').addClass('item-input-focused');
                         }
-
                         $("#form_signupAuth form").attr({style:'display:block;'});
-
                         setTimeout(function(){
                             form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
                             let data = system.ajax(system.host('do-signUp'),form);

@@ -1,11 +1,10 @@
 account = {
 	ini:function(data){
-		console.log(data);
 		let applicant = system.ajax(system.host('get-applicant'), data);
 		applicant.done(function(data){
-			applicant = JSON.parse(data);
-			console.log(applicant);
-			account.display(applicant);
+			console.log(data);
+			// applicant = JSON.parse(data);
+			// account.display(applicant);
 		});
 	},
 	display:function(applicant){
@@ -250,13 +249,11 @@ signin = {
 			},
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray();
-<<<<<<< HEAD
                 var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
                 data.done(function(data){
                     data = JSON.parse(data);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
-                        account.ini(form[0].value);
                         view.router.navigate('/account/');                        
                     }
                     else{
@@ -264,20 +261,6 @@ signin = {
                     }
                 });
 		    }
-=======
-				var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
-				data.done(function(data){
-					data = JSON.parse(data);
-					if(data[1] == 'applicant'){
-						system.notification("Kareer","Signed in.");
-						view.router.navigate('/account/');                        
-					}
-					else{
-						system.notification("Kareer","Sign in failed.");
-					}
-				});
-			}
->>>>>>> c22dc5b308eeb026110b040569248302ac040162
 		});
 	}
 }
@@ -324,7 +307,7 @@ signup = {
 						view.router.navigate('/account/');                        
 					}
 					else if(data == 2){
-						system.notification("Kareer","You are already signed in. Try signing in using your email.");
+						system.notification("Kareer","You are already signed up. Try signing in using your email and password.");
 						view.router.navigate('/signin/');                        
 					}
 					else{
@@ -337,7 +320,6 @@ signup = {
 	auth:function(form){
 		var data = system.ajax(system.host('do-logInAuth'),form);
 		data.done(function(data){
-			console.log(data);
 			data = JSON.parse(data);
 			if(data[1] == 'applicant'){
 				system.notification("Kareer","Signed in.");
@@ -370,7 +352,6 @@ auth = {
 				profile = {id: profile.getId(), last_name:profile.getFamilyName(), first_name:profile.getGivenName(), email:profile.getEmail(), picture:profile.getImageUrl()};
 				localStorage.setItem('account',JSON.stringify(profile));
 				sessionStorage.setItem('googleAccessToken', googleUser.getAuthResponse().id_token);
-				account.ini(profile.id);
 				callback();
 			}, 
 			function(error){
