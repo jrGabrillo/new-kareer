@@ -2,7 +2,6 @@ let server = "http://localhost/kareer";
 account = {
 	ini:function(){
 		let data = this.get();
-		// console.log(data);
 		this.display(data);
         jobs.display();
 
@@ -26,14 +25,16 @@ account = {
         let ps = new PerfectScrollbar('#tab_account .other-info'), scroll = 0;                    
 		$('#tab_account .other-info').on('ps-scroll-up', function(){
 			scroll = $(this).scrollTop();
-			if(scroll <= 10)
+			if(scroll <= 10){
 				$('#profile').removeClass('active');
-
+				$('#profile img').removeClass('rotate');
+			}
 		}).on('ps-scroll-down', function(){
 			scroll = $(this).scrollTop();
-			if(scroll >= 10)
+			if(scroll >= 10){
 				$('#profile').addClass('active');
-
+				$('#profile img').addClass('rotate');
+			}
 		});        
 	},
 	get:function(){
@@ -41,10 +42,35 @@ account = {
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
 		return JSON.parse(data.responseText);
 	},
+	getSkills:function(id){
+		var ajax = system.ajax(system.host('get-skills'),id);
+		return ajax.responseText;
+	},
+	settingsDisplay:function(){
+		let data = this.get()[0], skills = this.getSkills(data[0]);
+        let ps = new PerfectScrollbar('#display_info .content');
+
+        $("#field_fname").val(data[8]);
+        $("#field_mname").val(data[10]);
+        $("#field_lname").val(data[9]);
+        $("#field_dob").val(data[12]);
+        $("#field_address").html(data[13]);
+        $("#field_number").val(data[15]);
+        $("#field_bio").html(data[1]);
+
+        $("#field_email").val(data[2]);
+        $("#field_password").val('78367836');
+
+        console.log(skills);
+        if(skills.length>0){
+        	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");
+        }
+        else{
+
+        }	
+	},
 	display:function(data){
 		data = data[0];
-		console.log(data);
-
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|google','i')).test(data[18]))? data[18] : ((typeof data[18] == 'object') || (data[18] == ""))? tempPicture : `${server}/assets/images/logo/${data[18]}`;
 
 		$('#profile img').attr({'src':`${picture}`});
@@ -54,13 +80,6 @@ account = {
 		$(`#profile img`).on('error',function(){
 			$(this).attr({'src':tempPicture});
 		});
-		// $('#fullname').val(data[8]+" "+data[9]);
-		// $('#DateOfBirth').val(data[13]);
-		// $('#address').val(data[13]);
-		// $('#description').val(data[1]);
-
-		// $('#email').val(data[2]);
-		// $('#password').val(data[3]);
 	}
 }
 
@@ -254,7 +273,6 @@ jobs = {
 
 search = {
 	ini:function(){
-		
 	}
 }
 

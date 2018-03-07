@@ -132,7 +132,7 @@ var routes = [
         url: './pages/account-info.html',
         on: {
             pageInit: function(e, page){
-                console.log('info');
+                account.settingsDisplay();
             }
         }
     },

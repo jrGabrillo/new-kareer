@@ -10,7 +10,9 @@
     <div class="page-content list" id="display_info">
 	    <div class="content accordion-list bg-color-white">
 	        <div class='accordion-item'>
-	            <div class='align-items-flex-end accordion-item-toggle'><p class="item-inner">Personal Information</p></div>
+	            <div class='align-items-flex-end accordion-item-toggle'>
+	            	<p class="item-inner">Personal Information</p>
+	            </div>
 	            <div class='align-self-stretch accordion-item-content'>
 	                <div class="row">
 				        <form>
@@ -18,9 +20,25 @@
 				                <ul>
 				                    <li class="item-content item-input">
 				                        <div class="item-inner">
-				                            <div class="item-title item-label">Name</div>
+				                            <div class="item-title item-label">First Name</div>
 				                            <div class="item-input-wrap">
-				                                <input type="text" id ='fullname'>
+				                                <input type="text" id='field_fname' name='field_fname'>
+				                            </div>
+				                        </div>
+				                    </li>
+				                    <li class="item-content item-input">
+				                        <div class="item-inner">
+				                            <div class="item-title item-label">Middle Name</div>
+				                            <div class="item-input-wrap">
+				                                <input type="text" id='field_mname' name='field_mname'>
+				                            </div>
+				                        </div>
+				                    </li>
+				                    <li class="item-content item-input">
+				                        <div class="item-inner">
+				                            <div class="item-title item-label">Last Name</div>
+				                            <div class="item-input-wrap">
+				                                <input type="text" id='field_lname' name='field_lname'>
 				                            </div>
 				                        </div>
 				                    </li>
@@ -28,7 +46,7 @@
 				                        <div class="item-inner">
 				                            <div class="item-title item-label">Date of Birth</div>
 				                            <div class="item-input-wrap">
-				                                <input type="text" id='DateOfBirth'>
+				                                <input type="text" id='field_dob' name='field_dob'>
 				                            </div>
 				                        </div>
 				                    </li>
@@ -36,7 +54,7 @@
 				                        <div class="item-inner">
 				                            <div class="item-title item-label">Address</div>
 				                            <div class="item-input-wrap">
-	                                            <textarea class="resizable" id='address'></textarea>
+	                                            <textarea class="resizable" id='field_address' name='field_address'></textarea>
 				                            </div>
 				                        </div>
 				                    </li>
@@ -44,7 +62,7 @@
 				                        <div class="item-inner">
 				                            <div class="item-title item-label">Phone Number</div>
 				                            <div class="item-input-wrap">
-				                                <input type="text" value="0948 499 3958">
+				                                <input type="text" id='field_number' name='field_number'>
 				                            </div>
 				                        </div>
 				                    </li>
@@ -52,7 +70,7 @@
 				                        <div class="item-inner">
 				                            <div class="item-title item-label">Bio</div>
 				                            <div class="item-input-wrap">
-	                                            <textarea class="resizable" id='descriptio'></textarea>
+	                                            <textarea class="resizable" id='field_bio' name='field_bio'></textarea>
 				                            </div>
 				                        </div>
 				                    </li>
@@ -62,9 +80,10 @@
 	                </div>
 	            </div>
 	        </div>
-
 	        <div class='accordion-item'>
-	            <div class='align-items-flex-end accordion-item-toggle'><p class="item-inner">Account Information</p></div>
+	            <div class='align-items-flex-end accordion-item-toggle'>
+	            	<p class="item-inner">Account Information</p>
+	            </div>
 	            <div class='align-self-stretch accordion-item-content'>
 	                <div class="row">
 				        <form>
@@ -74,7 +93,7 @@
 				                        <div class="item-inner">
 				                            <div class="item-title item-label">Email</div>
 				                            <div class="item-input-wrap">
-				                                <input type="text" id='email'>
+				                                <input type="text" id='field_email' name='field_email'>
 				                            </div>
 				                        </div>
 				                    </li>
@@ -82,7 +101,11 @@
 				                        <div class="item-inner">
 				                            <div class="item-title item-label">Password</div>
 				                            <div class="item-input-wrap">
-				                                <input type="password" id='password'>
+				                                <input type="password" id='field_password' name='field_password' data-error=".error_field_email">
+			                                    <div class="item-input-password-preview">
+			                                        <i class='material-icons'>visibility_off</i>
+			                                    </div>
+			                                    <div class="item-input-info error_field_password"></div>
 				                            </div>
 				                        </div>
 				                    </li>
@@ -91,47 +114,58 @@
 				        </form>
 	                </div>
 	            </div>
-	        </div>
-
+	        </div>	        
 	        <div class='accordion-item'>
-	            <div class='align-items-flex-end accordion-item-toggle'><a href="/academic-info/" class="item-link">Academic Information</a></div>
-	        </div>
-
-	        <div class='accordion-item'>
-	            <div class='align-items-flex-end accordion-item-toggle'><a href="/career-info/" class="item-link">Career Information</a></div>
-	        </div>
-	        
-	        <div class='accordion-item'>
-	            <div class='align-items-flex-end accordion-item-toggle'><p class="item-inner">Skills</p></div>
-	            <div class='align-self-stretch accordion-item-content'>
-	                <div class="row">
-	                	<div class="block" id='display_skills'>
-
-	                		<div class="chip">
-								<div class="chip-label">Web Development</div>
-								<a href="#" class="chip-delete"></a>
-							</div>
-	                		<div class="chip">
-								<div class="chip-label">Server Management</div>
-								<a href="#" class="chip-delete"></a>
-							</div>
-				        </div>
-	                </div>
-	                <div class='holder_action'>
-	                	<div class="block">
-	                		<div class="item-input-wrap">
-                                <textarea class="resizable" placeholder="Add new skill"></textarea>
-                            </div>
-                            <p class="row">
-								<button class="button button-raised button-round">Save</button>                            
-                            </p>
-	                	</div>
-	                </div>
+	            <div class='align-items-flex-end accordion-item-toggle'>
+	            	<p class="item-inner">Skills</p>
+	            </div>
+	            <div class='align-self-stretch accordion-item-content' id='display_skills'>
+	            	<form>
+		                <div class="row">
+				            <div class="list">
+				                <ul>
+				                	<li>
+					                	<div class="block">
+					                		<div class="chip">
+												<div class="chip-label">Web Development</div>
+												<a href="#" class="chip-delete"></a>
+											</div>
+					                		<div class="chip">
+												<div class="chip-label">Server Management</div>
+												<a href="#" class="chip-delete"></a>
+											</div>
+								        </div>
+				                	</li>
+				                    <li class="item-content item-input">
+				                        <div class="item-inner">
+				                            <div class="item-title item-label">Add new skills</div>
+				                            <div class="item-input-wrap">
+				                                <textarea class="resizable" placeholder="Add new skill"></textarea>
+			                                    <div class="in-field-btn">
+			                                        <i class='material-icons'>add_circle</i>
+			                                    </div>
+			                                    <div class="item-input-info error_field_password"></div>
+				                            </div>
+				                        </div>
+				                    </li>
+				                </ul>
+				            </div>
+		                </div>
+	            	</form>
 	            </div>
 	        </div>
-	        
+	        <div class='accordion-item'>
+	            <div class='align-items-flex-end accordion-item-toggle'>
+	            	<a href="/academic-info/" class="item-link"><p class="item-inner">Academic Information</p></a>
+	            </div>
+	        </div>
+	        <div class='accordion-item'>
+	            <div class='align-items-flex-end accordion-item-toggle'>
+	            	<a href="/career-info/" class="item-link"><p class="item-inner">Career Information</p></a>
+	            </div>
+	        </div>
 	        <div class='card no-bg'>
-	            <a class="col no-bg button button-fill button-round text-color-white popup-open" href="#" data-popup=".popup-newAcad">Sign Out</a>
+	            <a class="col no-bg button button-fill button-round text-color-black popup-open" href="#" data-popup=".popup-newAcad">Sign Out</a>
 	        </div>
 	    </div>
     </div>

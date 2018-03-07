@@ -27,6 +27,27 @@
     font-style: normal;
 }
 
+@-webkit-keyframes rotate{       
+	0% {
+		transform: rotate(1deg);
+		-o-transform: rotate(1deg);
+		-moz-transform: rotate(1deg);
+		-webkit-transform: rotate(1deg);
+	}
+	50% {
+		transform: rotate(180deg);
+		-o-transform: rotate(180deg);
+		-moz-transform: rotate(180deg);
+		-webkit-transform: rotate(180deg);
+	}
+	100% {
+		transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+	}
+}
+
 body {
   font-family: kareer !important;
 }
@@ -231,6 +252,13 @@ body {
 }
 /**/
 
+.rotate{
+	animation: rotate 0.5s ease-in-out reverse;
+	-webkit-animation: rotate 0.5s ease-in-out reverse;
+	-moz-animation: rotate 0.5s ease-in-out reverse;
+	-o-animation: rotate 0.5s ease-in-out reverse;
+}
+
 #tab_account .card-content{
 	/* padding: 20px 0px 10px 0px; */
 	/* height: 300px; */
@@ -428,22 +456,23 @@ body {
 .account-subpage .page-content .content{
 	height:100%;
 	position: relative;
-	/* background: #fff; */
+	/* padding: 0px 24px; */
 }
 .account-subpage .page-content .list{
 	margin:0px;
+	width: 100%;
 }
 .account-subpage .card-content, .md .card-content-padding{
 	/* padding: 0px; */
 }
-.account-subpage .page-content form, .account-subpage .card-content form, #display_skills{
+.account-subpage .page-content form, .account-subpage .card-content form, #display_skills .block{
 	width:100%;
 	margin-bottom: 16px;
 }
 /*.account-subpage .page-content .list .item-input-wrap{*/
 .list .item-input-wrap{
 	background: #f1f1f163;
-	border: 1px solid #f0f0f0;
+	/* border: 1px solid #f0f0f0; */
 	border-radius: 2px;
 	padding: 2px 2px 2px 5px;
 }
@@ -579,8 +608,9 @@ body {
 	margin-left: 0;
 }
 
-#display_info .item-inner{
-	margin: 0px !important;
+#display_info p.item-inner{
+	padding: 0px 0px 0px 10px !important;
+	margin: 0px;
 }
 #display_info .item-link{
 	margin: 10px 0 !important;
@@ -590,7 +620,8 @@ body {
 }
 
 #display_info{
-	padding: 20px 0px;
+	padding: 0px 0px;
+	margin: 50px 0px;
 }
 
 #display_skills{
@@ -658,7 +689,7 @@ body {
     height: 30%;
 }
 
-.item-input-password-preview{
+.item-input-password-preview, .in-field-btn{
 	width: 40px;
 	height: 40px;
 	position:  absolute;
@@ -668,7 +699,8 @@ body {
 	opacity:  1;
 	transform: translate(-40px);
 }
-.item-input-password-preview i{
+.item-input-password-preview i,
+ .in-field-btn i{
 	top: 20%;
 	left: 50%;
 	position:  relative;
@@ -697,4 +729,8 @@ button:disabled{
 	/* width: 100%; */
 	overflow: hidden!important;
 	position: absolute;
+}
+
+#display_skills ul li:nth-child(1){
+	padding: 10px 0px;
 }
