@@ -153,18 +153,27 @@ body {
 	color: #0b0b0b!important;
 }
 
-#profile img{
-	/* background:url('../img/icons/no-photo.png') center/cover no-repeat; */
-	width: 100px;
-	height: 100px;
-	margin: auto;
-	/* border: 1px solid #ccc; */
-	border-radius: 50%;
-	/* background-size: contain !important; */
-}
 #profile{
 	text-align:center;
 	width:  100%;
+}
+#profile .personal-info{
+	height: 150px;
+	background: transparent;
+	transition: 0.5s;
+	padding: 20px;
+}
+#profile img{
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: #fff;
+	border: 1px solid #fff;
+	transition: 0.5s;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50px);
+	margin:  0px;
 }
 #profile h3.fullname{
 	font-weight: bold;
@@ -173,12 +182,54 @@ body {
 	color: #fff;
 	border: none;
 	width: 100%;
+	transition: 0.5s;
+	position: absolute;
+	top: 70%;
+	left: 50%;
+	margin: unset;
+	transform: translateX(-50%);
 }
-#profile p{
-	font-weight: 100;
+#profile p.about{
+	font-weight: normal;
 	margin: 0;
 	color: #c0c0c0;
+	min-height: 500px;
 }
+#profile h4{
+	font-weight: bold;
+	margin-bottom: 0;
+	/* color: #c0c0c0; */
+}
+
+/**/
+#profile.active .personal-info{
+	height: 70px;
+	background: #94ceb8;
+	transition: 0.5s;
+	padding: 0px;
+}
+#profile.active img{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin: 10px;
+	transition: 0.5s;
+	position:  absolute;
+	left: 0%;
+	transform: translate(0px);
+	background:  #fff;
+}
+#profile.active h3.fullname{
+	margin:0px;
+	width:150px;
+	left: 60px;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-10px);
+	transition: 0.5s;
+	color: #fff;
+}
+/**/
 
 #tab_account .card-content{
 	/* padding: 20px 0px 10px 0px; */
@@ -642,4 +693,8 @@ button:disabled{
 #profile .other-info{
 	padding: 0px 24px 24px 24px;
 	text-align:  left;
+	height: 500px;
+	/* width: 100%; */
+	overflow: hidden!important;
+	position: absolute;
 }

@@ -23,12 +23,18 @@ account = {
 			app.toolbar.show('#menu_account');
 		});
 
-		// let applicant = system.ajax(system.host('get-applicant'), data);
-		// applicant.done(function(data){
-		// 	applicant = JSON.parse(data);
-		// 	console.log(applicant);
-		// 	account.display(applicant);
-		// });
+        let ps = new PerfectScrollbar('#tab_account .other-info'), scroll = 0;                    
+		$('#tab_account .other-info').on('ps-scroll-up', function(){
+			scroll = $(this).scrollTop();
+			if(scroll <= 10)
+				$('#profile').removeClass('active');
+
+		}).on('ps-scroll-down', function(){
+			scroll = $(this).scrollTop();
+			if(scroll >= 10)
+				$('#profile').addClass('active');
+
+		});        
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
@@ -38,11 +44,16 @@ account = {
 	display:function(data){
 		data = data[0];
 		console.log(data);
-		let picture = data[18];
+
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|google','i')).test(data[18]))? data[18] : ((typeof data[18] == 'object') || (data[18] == ""))? tempPicture : `${server}/assets/images/logo/${data[18]}`;
+
 		$('#profile img').attr({'src':`${picture}`});
 		$('#profile h3.fullname').html(`${data[8]} ${data[9]}`);
 		$('#profile p.about').html(data[1]);
 
+		$(`#profile img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
 		// $('#fullname').val(data[8]+" "+data[9]);
 		// $('#DateOfBirth').val(data[13]);
 		// $('#address').val(data[13]);

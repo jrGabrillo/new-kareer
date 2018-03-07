@@ -123,7 +123,6 @@ var routes = [
             pageInit: function(e, page){
                 setTimeout(function(){
                     account.ini();
-                    let ps = new PerfectScrollbar('#tab_account');                    
                 });
             }
         }
