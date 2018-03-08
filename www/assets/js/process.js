@@ -5,15 +5,6 @@ account = {
 		this.display(data);
         jobs.display();
 
-        var mySwiper = new Swiper('#tab_jobs .swiper-container', {
-            flipEffect: {
-                rotate: 30,
-                slideShadows: false,
-            },
-            speed: 800,
-            spaceBetween: 10,                    
-        });
-
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
 		});
@@ -35,7 +26,7 @@ account = {
 				$('#profile').addClass('active');
 				$('#profile img').addClass('rotate');
 			}
-		});        
+		});
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
@@ -49,7 +40,7 @@ account = {
 	settingsDisplay:function(){
 		let data = this.get()[0], skills = this.getSkills(data[0]);
         let ps = new PerfectScrollbar('#display_info .content');
-
+        localStorage.setItem('account_id',data[0]);
         $("#field_fname").val(data[8]);
         $("#field_mname").val(data[10]);
         $("#field_lname").val(data[9]);
@@ -61,31 +52,90 @@ account = {
         $("#field_email").val(data[2]);
         $("#field_password").val('78367836');
 
-        console.log(skills);
+		var from = new Date((new Date()).getFullYear()-18, 1, 1);
+		var calendarModal = app.calendar.create({
+			inputEl: '#field_dob',
+			openIn: 'customModal',
+			footer: true,
+			firstDay:0,
+			value:[data[12]],
+		    disabled: {from: from}
+		});
+
         if(skills.length>0){
         	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");
         }
         else{
 
-        }	
+        }
+
+        this.update();
 	},
 	display:function(data){
 		data = data[0];
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|google','i')).test(data[18]))? data[18] : ((typeof data[18] == 'object') || (data[18] == ""))? tempPicture : `${server}/assets/images/logo/${data[18]}`;
 
 		$('#profile img').attr({'src':`${picture}`});
-		$('#profile h3.fullname').html(`${data[8]} ${data[9]}`);
+		$('#profile h3.fullname').html(`${data[8]} ${data[10]} ${data[9]}`);
 		$('#profile p.about').html(data[1]);
 
 		$(`#profile img`).on('error',function(){
 			$(this).attr({'src':tempPicture});
 		});
+	},
+	update:function(){
+		$("*[ data-cmd='field']").on('change',function(){
+			let data = $(this).data(), val = $(this).val(), id = localStorage.getItem('account_id');			
+			let status = 0;
+
+			console.log(data.prop);
+			if((data.prop == 'field_fname') && (val.length >= 1) && (val.length <= 100)){
+				status = 1;
+			}
+			else if((data.prop == 'field_mname') && (val.length >= 1) && (val.length <= 100)){
+				status = 1;
+			}
+			else if((data.prop == 'field_lname') && (val.length >= 1) && (val.length <= 100)){
+				status = 1;
+			}
+			else if((data.prop == 'field_dob') && (val.length >= 1) && (val.length <= 20)){
+				status = 1;
+			}
+			else if((data.prop == 'field_address') && (val.length >= 1) && (val.length <= 300)){
+				status = 1;
+			}
+			else if((data.prop == 'field_number') && (val.length >= 1) && (val.length <= 100)){
+				status = 1;
+			}
+			else if((data.prop == 'field_bio') && (val.length >= 1) && (val.length <= 1000)){
+				status = 1;
+			}
+			else if((data.prop == 'field_email') && (val.length >= 1) && (val.length <= 100) && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val))){
+				status = 1;
+			}
+
+			console.log(status);
+			if(status){
+				let ajax = system.ajax(system.host('do-updateInfo'),['applicant',data.prop,id,val]);
+				ajax.done(function(data){
+					console.log(data);
+				});
+			}
+		})
 	}
 }
 
 jobs = {
 	ini:function(){
-		console.log('jobs initialized')
+		console.log('jobs initialized');
+        var mySwiper = new Swiper('#tab_jobs .swiper-container', {
+            flipEffect: {
+                rotate: 30,
+                slideShadows: false,
+            },
+            speed: 800,
+            spaceBetween: 10,                    
+        });		
 	},
 	get:function(){
 		let data = [

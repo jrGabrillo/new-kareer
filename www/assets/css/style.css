@@ -116,7 +116,6 @@ body {
 }
 
 .welcome-screen-content{
-	/* background: url('../img/bg/shakehand.png') center/cover no-repeat !important; */
 	text-align: center;
 }
 .welcome-screen-content .page-content{
@@ -140,7 +139,6 @@ body {
 }
 
 .login-screen-content{
-	/* background: url('../img/bg/kareer_bg1.png') center/cover no-repeat  !important; */
 	overflow:  hidden;
 }
 .login-screen-title{
@@ -209,6 +207,7 @@ body {
 	left: 50%;
 	margin: unset;
 	transform: translateX(-50%);
+	text-align:  center;
 }
 #profile p.about{
 	font-weight: normal;
@@ -219,7 +218,6 @@ body {
 #profile h4{
 	font-weight: bold;
 	margin-bottom: 0;
-	/* color: #c0c0c0; */
 }
 
 /**/
@@ -242,21 +240,22 @@ body {
 }
 #profile.active h3.fullname{
 	margin:0px;
-	width:150px;
-	left: 60px;
+	width: 250px;
+	left: 65px;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-10px);
 	transition: 0.5s;
 	color: #fff;
+	/* text-align: left; */
 }
 /**/
 
 .rotate{
-	animation: rotate 0.5s ease-in-out reverse;
-	-webkit-animation: rotate 0.5s ease-in-out reverse;
-	-moz-animation: rotate 0.5s ease-in-out reverse;
-	-o-animation: rotate 0.5s ease-in-out reverse;
+	animation: rotate 0.3s linear reverse;
+	-webkit-animation: rotate 0.3s linear reverse;
+	-moz-animation: rotate 0.3s linear reverse;
+	-o-animation: rotate 0.3s linear reverse;
 }
 
 #tab_account .card-content{
@@ -272,13 +271,7 @@ body {
 	border: none;
 }
 #tab_account .card-header:after{
-	/* background-color: #ffffff !important; */
-	/* border-bottom-left-radius: 100%; */
-	/* border-bottom-right-radius: 100%; */
 	height: 0px;
-	/* position: absolute; */
-	/* bottom: -20px; */
-	/* border-bottom: dashed 0px; */
 }
 
 #tab_account #menu{
@@ -295,12 +288,9 @@ body {
 }
 #tab_account #menu a i{
 	font-size: 20px;
-	/* background-color: #f5f7fa; */
 	border-radius: 50%;
 	padding:15px;
 	color:#c0c0c0;
-	/* -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24); */
-	/* box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24); */
 }
 #tab_account #menu p{
 	margin:0;
@@ -358,7 +348,6 @@ body {
 	transition: 0.1s ease-out;
 }
 #tab_jobs .card .company{
-	/* top: 20px; */
 	margin: 0 auto;
 }
 #tab_jobs .logo-holder{
@@ -405,8 +394,6 @@ body {
 	 max-height: calc(100% - 230px);
 }
 #tab_jobs .card .card-footer{
-	 /* border-radius: 20px 20px 20px 20px; */
-	 /* max-height: 250px; */
 	 background: #fff;
 }
 #tab_jobs .job-description p, #tab_jobs .job-description ul, #tab_jobs .job-description li{
@@ -414,9 +401,6 @@ body {
 	margin-top:0px;
 }
 #tab_jobs .job-description{
-	/* font-size: 20px; */
-	/* display: inline; */
-	/* margin: 30px 0px 0px 0px; */
 	height: 300px;
 	overflow:  hidden;
 }
@@ -609,7 +593,7 @@ body {
 }
 
 #display_info p.item-inner{
-	padding: 0px 0px 0px 10px !important;
+	padding: 0px 0px 0px 15px !important;
 	margin: 0px;
 }
 #display_info .item-link{
