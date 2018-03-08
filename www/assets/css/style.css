@@ -241,7 +241,7 @@ body {
 #profile.active h3.fullname{
 	margin:0px;
 	width: 250px;
-	left: 65px;
+	left: 30px;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-10px);
@@ -676,10 +676,10 @@ body {
 .item-input-password-preview, .in-field-btn{
 	width: 40px;
 	height: 40px;
-	position:  absolute;
+	position: relative;
 	left: 100%;
 	top: 0px;
-	background: #fafafa;
+	background: #fafafacc;
 	opacity:  1;
 	transform: translate(-40px);
 }
@@ -717,4 +717,12 @@ button:disabled{
 
 #display_skills ul li:nth-child(1){
 	padding: 10px 0px;
+}
+
+.hidden{
+	display: none;
+}
+
+#display_accountLogin div.list ul li:nth-child(2){
+	padding-bottom: 20px;
 }

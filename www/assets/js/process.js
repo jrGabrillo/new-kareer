@@ -4,7 +4,6 @@ account = {
 		let data = this.get();
 		this.display(data);
         jobs.display();
-
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
 		});
@@ -34,13 +33,14 @@ account = {
 		return JSON.parse(data.responseText);
 	},
 	getSkills:function(id){
-		var ajax = system.ajax(system.host('get-skills'),id);
-		return ajax.responseText;
 	},
 	settingsDisplay:function(){
-		let data = this.get()[0], skills = this.getSkills(data[0]);
+		let data = this.get()[0];
         let ps = new PerfectScrollbar('#display_info .content');
+		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
         localStorage.setItem('account_id',data[0]);
+        $("#display_accountLogin").addClass(auth);
+
         $("#field_fname").val(data[8]);
         $("#field_mname").val(data[10]);
         $("#field_lname").val(data[9]);
@@ -50,7 +50,6 @@ account = {
         $("#field_bio").html(data[1]);
 
         $("#field_email").val(data[2]);
-        $("#field_password").val('78367836');
 
 		var from = new Date((new Date()).getFullYear()-18, 1, 1);
 		var calendarModal = app.calendar.create({
@@ -62,13 +61,7 @@ account = {
 		    disabled: {from: from}
 		});
 
-        if(skills.length>0){
-        	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");
-        }
-        else{
-
-        }
-
+		skills.display();
         this.update();
 	},
 	display:function(data){
@@ -84,6 +77,19 @@ account = {
 		});
 	},
 	update:function(){
+		let c = 0;
+		$(".item-input-password-preview").on('click',function(){
+			c++;
+			if((c%2)==0){
+				$(this).children('i').html('visibility_off');
+				$("input[name='field_password']").attr({'type':'password'});
+			}
+			else{
+				$(this).children('i').html('visibility');
+				$("input[name='field_password']").attr({'type':'text'});
+			}
+		});
+
 		$("*[ data-cmd='field']").on('change',function(){
 			let data = $(this).data(), val = $(this).val(), id = localStorage.getItem('account_id');			
 			let status = 0;
@@ -113,6 +119,15 @@ account = {
 			else if((data.prop == 'field_email') && (val.length >= 1) && (val.length <= 100) && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val))){
 				status = 1;
 			}
+			else if((data.prop == 'field_password') && (val.length >= 1) && (val.length <= 100)){
+				if((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,50}/.test(val))){
+					status = 1;
+					$(".error_field_password").html('');
+				}
+				else{
+					$(".error_field_password").html('Password is weak');				
+				}
+			}
 
 			console.log(status);
 			if(status){
@@ -122,6 +137,30 @@ account = {
 				});
 			}
 		})
+	}
+}
+
+skills = {
+	get:function(id){
+		var ajax = system.ajax(system.host('get-skills'),id);
+		return ajax.responseText;
+	},
+	display:function(){
+		let data = account.get()[0], _skills = this.get();
+
+		console.log(_skills);
+        if(_skills.length>0){
+        	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");
+        }
+        else{
+        	
+        }
+	},
+	add:function(){
+		
+	},
+	remove:function(){
+
 	}
 }
 
@@ -360,10 +399,10 @@ signin = {
 				var _form = $(form).serializeArray();
                 var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
                 data.done(function(data){
+                	console.log(data);
                     data = JSON.parse(data);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
-                        account.ini(form[0].value);
                         view.router.navigate('/account/');                        
                     }
                     else{
@@ -444,16 +483,18 @@ auth = {
 	ini:function(){
 	},
 	auto:function(email, id, auth){
-        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
-        data.done(function(data){
-            data = JSON.parse(data);
-            if(data[1] == 'applicant'){
-                view.router.navigate('/account/');                        
-            }
-            else{
-                system.notification("Kareer","Sign in failed.");
-            }
-        });
+		setTimeout(function(){
+	        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
+	        data.done(function(data){
+	            data = JSON.parse(data);
+	            if(data[1] == 'applicant'){
+	                view.router.navigate('/account/');                        
+	            }
+	            else{
+	                system.notification("Kareer","Sign in failed.");
+	            }
+	        });
+		},1000);
 	},
 	google:function(callback){
 		gapi.load('auth2', function() {
