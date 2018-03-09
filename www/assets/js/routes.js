@@ -150,7 +150,8 @@ var routes = [
         url: './pages/academic-info.html',
         on: {
             pageInit: function(e, page){
-                console.log('academic');
+                let ps = new PerfectScrollbar('#list_schools .content');
+                academic.ini();
             }
         }
     },

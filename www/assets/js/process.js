@@ -12,7 +12,7 @@ account = {
 			app.toolbar.show('#menu_account');
 		});
 
-        let ps = new PerfectScrollbar('#tab_account .other-info'), scroll = 0;                    
+        new PerfectScrollbar('#tab_account .other-info'), scroll = 0;                    
 		$('#tab_account .other-info').on('ps-scroll-up', function(){
 			scroll = $(this).scrollTop();
 			if(scroll <= 10){
@@ -26,6 +26,8 @@ account = {
 				$('#profile img').addClass('rotate');
 			}
 		});
+
+		skills.frontdisplay();
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
@@ -129,7 +131,6 @@ account = {
 				}
 			}
 
-			console.log(status);
 			if(status){
 				let ajax = system.ajax(system.host('do-updateInfo'),['applicant',data.prop,id,val]);
 				ajax.done(function(data){
@@ -146,20 +147,135 @@ skills = {
 		return ajax.responseText;
 	},
 	display:function(){
-		let data = account.get()[0], _skills = this.get();
+		let data = account.get()[0], id = localStorage.getItem('account_id'), _skills = JSON.parse(this.get(id));
 
-		console.log(_skills);
         if(_skills.length>0){
-        	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");
+        	$.each(_skills,function(i,v){
+        		$("#display_skills .block").append(`
+					<div class="chip" id='${v[0]}'>
+						<div class="chip-label">${v[1]}</div>
+						<a data-node='${v[0]}' data-cmd='deleteSkill' class="chip-delete"></a>
+					</div>
+        		`);
+        	})
         }
         else{
-        	
+        	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");        	
         }
+
+        this.add();
+        this.remove();
+	},
+	frontdisplay:function(){
+		let data = account.get()[0], id = localStorage.getItem('account_id'), _skills = JSON.parse(this.get(id));
+
+		$(".skills.block").html("");
+        if(_skills.length>0){
+        	$.each(_skills,function(i,v){
+        		$(".skills.block").append(`
+					<div class="chip" id='${v[0]}'>
+						<div class="chip-label">${v[1]}</div>
+					</div>
+        		`);
+        	})
+        }
+        else{
+        	$(".skills.block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");        	
+        }
+
+        this.add();
+        this.remove();
 	},
 	add:function(){
-		
+		$("a#btn_addSkill").on('click',function(){
+			let val = $('#field_skill').val(), id = localStorage.getItem('account_id');
+
+			let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val]);
+			ajax.done(function(data){
+				console.log(data);
+				if(data != 0){
+					$('#field_skill').val("");
+	        		$("#display_skills .block").append(`
+						<div class="chip" id='${data}'>
+							<div class="chip-label">${val}</div>
+							<a data-node='${data}' data-cmd='deleteSkill' class="chip-delete"></a>
+						</div>
+	        		`);
+	        		$(".skills.block").append(`
+						<div class="chip">
+							<div class="chip-label">${val}</div>
+						</div>
+	        		`);
+
+                    system.notification("Kareer",`Success. ${val} skill has been added.`);
+				}
+				else{
+                    system.notification("Kareer","Failed. Try again later.");
+				}
+			});
+		});
 	},
 	remove:function(){
+		let id = localStorage.getItem('account_id');
+		$("a[data-cmd='deleteSkill']").on('click',function(){
+			let data = $(this).data();
+			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',data.node]);
+			ajax.done(function(_data){
+				if(_data == 1){
+					$(`#${data.node}`).remove();
+                    system.notification("Kareer",`Skill has been removed.`);
+				}
+				else{
+                    system.notification("Kareer","Failed. Try again later.");
+				}
+			});
+		});
+	}
+
+}
+
+academic = {
+	ini:function(){
+		let id =  localStorage.getItem('account_id')
+		let data = JSON.parse(this.get(id));
+
+		this.display(data);
+		this.add(id);
+		this.update(id);
+		this.delete(id);
+	},
+	get:function(id){
+		var ajax = system.ajax(system.host('get-academic'),id);
+		return ajax.responseText;
+	},
+	display:function(data){
+		$.each(data,function(i,v){
+			$("#list_schools .list ul").append(`
+				<li>
+					<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
+						<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
+						<div class="item-inner">
+							<div class="item-title-row">
+								<div class="item-title">
+									${v[3]} <small>${v[4]}</small>
+								</div>
+							</div>
+							<div class="item-subtitle">
+								${v[7]}
+							</div>
+						</div>
+					</a>
+				</li>
+			`);
+		})
+	},
+	add:function(id){
+
+	},
+	update:function(id){
+
+	},
+	delete:function(id){
 
 	}
 }
