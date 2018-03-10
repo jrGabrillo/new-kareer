@@ -249,7 +249,6 @@ academic = {
 		return ajax.responseText;
 	},
 	display:function(data){
-		console.log(data);
 		let degree = "";
 
 		if(data.length>0){
@@ -357,7 +356,6 @@ career = {
 		return ajax.responseText;
 	},
 	display:function(data){
-		console.log(data);
 		let degree = "";
 
 		if(data.length>0){
@@ -366,14 +364,16 @@ career = {
 				$("#list_jobs .list ul").append(`
 					<li>
 						<a class="item-link item-content" href="#">
-							<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
+							<div class="item-media"><img src="http://www.rnrdigitalconsultancy.com/assets/images/rnrdigitalconsultancy.png" width="44"/></div>
 							<div class="item-inner">
 								<div class="item-title-row">
 									<div class="item-title">
-										${v[3]} <small>${degree}</small>
+										${v[2]}
 									</div>
 								</div>
-								<div class="item-subtitle">${v[6]} - ${v[7]}</div>
+								<div class="item-subtitle">
+									${v[3]} | ${v[6]} - ${v[7]}
+								</div>
 							</div>
 						</a>
 					</li>
@@ -385,38 +385,31 @@ career = {
 		else{
         	$("#list_jobs a.btn-nav").addClass('hidden');        	
 		}
-
-		/*
-
-					<li>
-						<a class="item-link item-content popup-open" href="#" data-popup=".popup-career">
-							<div class="item-media"><img src="http://www.rnrdigitalconsultancy.com/assets/images/rnrdigitalconsultancy.png" width="44"/></div>
-							<div class="item-inner">
-								<div class="item-title-row">
-									<div class="item-title">
-										RNR Digital Consultancy
-									</div>
-								</div>
-								<div class="item-subtitle">
-									Tech Lead | Dcember 2017 - Present
-								</div>
-							</div>
-						</a>
-					</li>
-
-
-		*/
 	},
 	add:function(id){
 		console.log('xxx');
+		let calendarFromModal = app.calendar.create({
+			inputEl: '#field_career_yearfrom',
+			openIn: 'customModal',
+			footer: true,
+			firstDay:0,
+		});
+
+		let calendarToModal = app.calendar.create({
+			inputEl: '#field_career_yearto',
+			openIn: 'customModal',
+			footer: true,
+			firstDay:0,
+		});
+
 		$("#form_newCareer").validate({
 			rules: {
-				field_agency: {required: true, maxlength: 300},
-				field_position: {required: true, maxlength: 300},
-				field_salary: {required: true, maxlength: 50, currency: true},
-				field_appointment: {required: true, maxlength: 300},
-				field_yearfrom: {required: true, maxlength: 50, year: true},
-				field_yearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
+				field_career_agency: {required: true, maxlength: 300},
+				field_career_position: {required: true, maxlength: 300},
+				field_career_salary: {required: true, maxlength: 50, currency: true},
+				field_career_appointment: {required: true, maxlength: 300},
+				field_career_yearfrom: {required: true, maxlength: 50, year: true},
+				field_career_yearto: {required: true, maxlength: 50, year: true, yearTo: 'field_career_yearfrom'},
 			},
 			errorElement : 'div',
 			errorPlacement: function(error, element) {
@@ -431,13 +424,13 @@ career = {
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray(),data = 0;
 				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
-                var data = system.ajax(system.host('do-addAcademic'),_form);
+                var data = system.ajax(system.host('do-addCareer'),_form);
                 data.done(function(data){
                 	_form[0] = data;
                     if(data != 0){
-                        system.notification("Kareer","New Academic information has been added.");
-						app.popup.close('.popup-newAcad',true);
-						academic.display([_form]);
+                        system.notification("Kareer","New career information has been added.");
+						app.popup.close('.popup-newCareer',true);
+						career.display([_form]);
                     }
                     else{
                         system.notification("Kareer","Failed to add.");
