@@ -141,7 +141,10 @@ var routes = [
         url: './pages/career-info.html',
         on: {
             pageInit: function(e, page){
-                console.log('career');
+                let ps_list_schools = new PerfectScrollbar('#list_jobs .content');
+                let ps_newAcad = new PerfectScrollbar('.popup-newCareer');
+                let ps_acad = new PerfectScrollbar('.popup-career');
+                career.ini();
             }
         }
     },
@@ -150,9 +153,9 @@ var routes = [
         url: './pages/academic-info.html',
         on: {
             pageInit: function(e, page){
-                let ps_list_schools = new PerfectScrollbar('#list_schools .content');
-                let ps_newAcad = new PerfectScrollbar('.popup-newAcad');
-                let ps_acad = new PerfectScrollbar('.popup-acad');
+                let ps_list_career = new PerfectScrollbar('#list_schools .content');
+                let ps_newCareer = new PerfectScrollbar('.popup-newAcad');
+                let ps_career = new PerfectScrollbar('.popup-acad');
                 academic.ini();
             }
         }

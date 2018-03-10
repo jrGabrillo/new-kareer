@@ -257,7 +257,7 @@ academic = {
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_schools .list ul").append(`
 					<li>
-						<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
+						<a class="item-link item-content" href="#">
 							<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
 							<div class="item-inner">
 								<div class="item-title-row">
@@ -271,17 +271,12 @@ academic = {
 					</li>
 				`);
 			});			
+        	$("#list_schools .list ul li:nth-child(1)").remove();        	
+        	$("#list_schools a.btn-nav").removeClass('hidden');        	
 		}
 		else{
-        	$("#list_schools .list ul").html(`
-        		<li>
-	        		<a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" data-popup=".popup-newAcad">
-		            	<i class='material-icons'>add_circle_outline</i>
-		           	</a>
-        		</li>
-        		`);        	
+        	$("#list_schools a.btn-nav").addClass('hidden');        	
 		}
-
 	},
 	add:function(id){
 		$("#display_fielddegree").attr({"style":"display:none;"});
@@ -310,6 +305,118 @@ academic = {
 				field_units: {required: true, maxlength: 50},
 				field_newyearfrom: {required: true, maxlength: 50, year: true},
 				field_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray(),data = 0;
+				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
+                var data = system.ajax(system.host('do-addAcademic'),_form);
+                data.done(function(data){
+                	_form[0] = data;
+                    if(data != 0){
+                        system.notification("Kareer","New Academic information has been added.");
+						app.popup.close('.popup-newAcad',true);
+						academic.display([_form]);
+                    }
+                    else{
+                        system.notification("Kareer","Failed to add.");
+                    }
+                });
+		    }
+		});
+	},
+	update:function(id){
+
+	},
+	delete:function(id){
+
+	}
+}
+
+career = {
+	ini:function(){
+		let id =  localStorage.getItem('account_id');
+		let data = JSON.parse(this.get(id));
+
+		this.display(data);
+		this.add(id);
+		this.update(id);
+		this.delete(id);
+	},
+	get:function(id){
+		var ajax = system.ajax(system.host('get-career'),id);
+		return ajax.responseText;
+	},
+	display:function(data){
+		console.log(data);
+		let degree = "";
+
+		if(data.length>0){
+			$.each(data,function(i,v){
+				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
+				$("#list_jobs .list ul").append(`
+					<li>
+						<a class="item-link item-content" href="#">
+							<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">
+										${v[3]} <small>${degree}</small>
+									</div>
+								</div>
+								<div class="item-subtitle">${v[6]} - ${v[7]}</div>
+							</div>
+						</a>
+					</li>
+				`);
+			});			
+        	$("#list_jobs .list ul li:nth-child(1)").remove();        	
+        	$("#list_jobs a.btn-nav").removeClass('hidden');        	
+		}
+		else{
+        	$("#list_jobs a.btn-nav").addClass('hidden');        	
+		}
+
+		/*
+
+					<li>
+						<a class="item-link item-content popup-open" href="#" data-popup=".popup-career">
+							<div class="item-media"><img src="http://www.rnrdigitalconsultancy.com/assets/images/rnrdigitalconsultancy.png" width="44"/></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">
+										RNR Digital Consultancy
+									</div>
+								</div>
+								<div class="item-subtitle">
+									Tech Lead | Dcember 2017 - Present
+								</div>
+							</div>
+						</a>
+					</li>
+
+
+		*/
+	},
+	add:function(id){
+		console.log('xxx');
+		$("#form_newCareer").validate({
+			rules: {
+				field_agency: {required: true, maxlength: 300},
+				field_position: {required: true, maxlength: 300},
+				field_salary: {required: true, maxlength: 50, currency: true},
+				field_appointment: {required: true, maxlength: 300},
+				field_yearfrom: {required: true, maxlength: 50, year: true},
+				field_yearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
 			},
 			errorElement : 'div',
 			errorPlacement: function(error, element) {

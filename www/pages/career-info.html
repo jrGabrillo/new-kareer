@@ -8,73 +8,18 @@
 	</div>	
     <div class="page-content list" id="list_jobs">
 		<div class="title">Career Information
-            <a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" id='btn_addSkill' data-popup=".popup-newAcad">
-            	<i class='material-icons'>add</i>
+            <a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" data-popup=".popup-newCareer">
+            	<i class='material-icons'>add_circle_outline</i>
            	</a>
 		</div>
         <div class="content accordion-list bg-color-white">
 			<div class="list media-list">
 				<ul>
-					<li>
-						<a class="item-link item-content popup-open" href="#" data-popup=".popup-career">
-							<div class="item-media"><img src="http://www.es-assisting.com/wp-content/uploads/2018/01/ESA-New-Logo_small.jpg" width="44"/></div>
-							<div class="item-inner">
-								<div class="item-title-row">
-									<div class="item-title">
-										ES Assisting Ltd. 
-									</div>
-								</div>
-								<div class="item-subtitle">
-									Web Developer | July 2015 - December 2015
-								</div>
-							</div>
-						</a>
-					</li>
-					<li>
-						<a class="item-link item-content popup-open" href="#" data-popup=".popup-career">
-							<div class="item-media"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp9gOTrszmuf03ZMWst-JZZ9IW-wAfREjk0bNuxsMe-W0-BBuO" width="44"/></div>
-							<div class="item-inner">
-								<div class="item-title-row">
-									<div class="item-title">
-										Oceanbound Llc
-									</div>
-								</div>
-								<div class="item-subtitle">
-									Fullstack Developer | December 2015 - August 2016
-								</div>
-							</div>
-						</a>
-					</li>
-					<li>
-						<a class="item-link item-content popup-open" href="#" data-popup=".popup-career">
-							<div class="item-media"><img src="http://www.psu.edu.ph/wp-content/uploads/2016/08/cropped-psu-fav-192x192.png" width="44"/></div>
-							<div class="item-inner">
-								<div class="item-title-row">
-									<div class="item-title">
-										Pangasinan State University
-									</div>
-								</div>
-								<div class="item-subtitle">
-									Instructor | August 2016 - December 2017
-								</div>
-							</div>
-						</a>
-					</li>
-					<li>
-						<a class="item-link item-content popup-open" href="#" data-popup=".popup-career">
-							<div class="item-media"><img src="http://www.rnrdigitalconsultancy.com/assets/images/rnrdigitalconsultancy.png" width="44"/></div>
-							<div class="item-inner">
-								<div class="item-title-row">
-									<div class="item-title">
-										RNR Digital Consultancy
-									</div>
-								</div>
-								<div class="item-subtitle">
-									Tech Lead | Dcember 2017 - Present
-								</div>
-							</div>
-						</a>
-					</li>
+	        		<li>
+		        		<a class="col button button-small button-fill button-round in-field-btn popup-open" data-popup=".popup-newCareer">
+			            	<i class='material-icons'>add_circle_outline</i>
+			           	</a>
+	        		</li>					
 				</ul>
 			</div>
         </div>
@@ -139,31 +84,46 @@
         </div>
 	</div>
 	<div class="popup popup-newCareer">
-		<div class="navbar no-shadow">
-			<div class="navbar-inner sliding">
-				<div class="left">
-					<a class="link popup-close" href="#"><i class='material-icons'>close</i></a>
-				</div>
-			</div>
-		</div>
         <div class='card'>
+        	<div class="card-header">
+        		Adding Career Information
+				<div class="right">
+					<a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+				</div>
+        	</div>
             <div class='card-content card-content-padding align-self-stretch'>
-		        <form>
+		        <form id='form_newCareer'>
 		            <div class="list">
 		                <ul>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                            <div class="item-title item-label">Company</div>
+		                            <div class="item-title item-label">Agency / Company</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="">
+		                                <input type="text" id='field_agency' name='field_agency' data-cmd='field' data-prop='field_agency'>
 		                            </div>
 		                        </div>
 		                    </li>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                            <div class="item-title item-label">Work Position</div>
+		                            <div class="item-title item-label">Position</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="">
+		                                <input type="text" id='field_position' name='field_position' data-cmd='field' data-prop='field_position'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Monthly Salary</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_salary' name='field_salary' data-cmd='field' data-prop='field_salary'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Appointment Status <small>(Permanent, Contractual, Part-time, etc.)</small></div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_appointment' name='field_appointment' data-cmd='field' data-prop='field_appointment'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -171,7 +131,7 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Year Started</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="">
+		                                <input type="text" id='field_yearfrom' name='field_yearfrom' data-cmd='field' data-prop='field_yearfrom'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -179,16 +139,13 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Year Ended</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="">
+		                                <input type="text" id='field_yearto' name='field_yearto' data-cmd='field' data-prop='field_yearto'>
 		                            </div>
 		                        </div>
 		                    </li>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                            <div class="item-title item-label">Remarks</div>
-		                            <div class="item-input-wrap">
-                                        <textarea class="resizable"></textarea>
-		                            </div>
+					                <button class="col button button-round bg-color-white">Save</button>
 		                        </div>
 		                    </li>
 		                </ul>
