@@ -8,7 +8,7 @@
 	</div>	
     <div class="page-content list" id="list_schools">
 		<div class="title">Academic Information
-            <a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" id='btn_addSkill' data-popup=".popup-newAcad">
+            <a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" data-popup=".popup-newAcad">
             	<i class='material-icons'>add_circle_outline</i>
            	</a>
 		</div>
@@ -70,10 +70,6 @@
         </div>
 	</div>
 	<div class="popup popup-newAcad">
-		<div class="navbar no-shadow">
-			<div class="navbar-inner sliding">
-			</div>
-		</div>
         <div class='card'>
         	<div class="card-header">
         		Adding Academic Information
@@ -87,9 +83,40 @@
 		                <ul>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
+		                            <div class="item-title item-label">Level</div>
+		                            <div class="item-input-wrap">
+		                            	<select id='field_level' name='field_level' data-cmd='field' data-prop='field_level'>
+		                            		<option>Elementary</option>
+		                            		<option>High School</option>
+		                            		<option>Vocational</option>
+		                            		<option>College</option>
+		                            		<option>Masters</option>
+		                            		<option>Doctorate</option>
+		                            	</select>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
 		                            <div class="item-title item-label">School</div>
 		                            <div class="item-input-wrap">
 		                                <input type="text" id='field_newschool' name='field_newschool' data-cmd='field' data-prop='field_newschool'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input" id='display_fielddegree'>
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Degree</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="null" id='field_degree' name='field_degree' data-cmd='field' data-prop='field_degree'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input" id='display_fieldunit'>
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Units</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="null" id='field_units' name='field_units' data-cmd='field' data-prop='field_units'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -106,14 +133,6 @@
 		                            <div class="item-title item-label">Year Ended</div>
 		                            <div class="item-input-wrap">
 		                                <input type="text" id='field_newyearto' name='field_newyearto' data-cmd='field' data-prop='field_newyearto'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Remarks</div>
-		                            <div class="item-input-wrap">
-                                        <textarea class="resizable" id='field_newremarks' name='field_newremarks' data-cmd='field' data-prop='field_newremarks'></textarea>
 		                            </div>
 		                        </div>
 		                    </li>

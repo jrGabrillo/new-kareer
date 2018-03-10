@@ -150,7 +150,9 @@ var routes = [
         url: './pages/academic-info.html',
         on: {
             pageInit: function(e, page){
-                let ps = new PerfectScrollbar('#list_schools .content');
+                let ps_list_schools = new PerfectScrollbar('#list_schools .content');
+                let ps_newAcad = new PerfectScrollbar('.popup-newAcad');
+                let ps_acad = new PerfectScrollbar('.popup-acad');
                 academic.ini();
             }
         }

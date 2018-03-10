@@ -68,7 +68,7 @@ account = {
 	},
 	display:function(data){
 		data = data[0];
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|google','i')).test(data[18]))? data[18] : ((typeof data[18] == 'object') || (data[18] == ""))? tempPicture : `${server}/assets/images/logo/${data[18]}`;
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
 
 		$('#profile img').attr({'src':`${picture}`});
 		$('#profile h3.fullname').html(`${data[8]} ${data[10]} ${data[9]}`);
@@ -160,7 +160,7 @@ skills = {
         	})
         }
         else{
-        	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");        	
+        	$("#display_skills .block").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
         }
 
         this.add();
@@ -236,7 +236,7 @@ skills = {
 
 academic = {
 	ini:function(){
-		let id =  localStorage.getItem('account_id')
+		let id =  localStorage.getItem('account_id');
 		let data = JSON.parse(this.get(id));
 
 		this.display(data);
@@ -249,27 +249,95 @@ academic = {
 		return ajax.responseText;
 	},
 	display:function(data){
-		$.each(data,function(i,v){
-			$("#list_schools .list ul").append(`
-				<li>
-					<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
-						<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
-						<div class="item-inner">
-							<div class="item-title-row">
-								<div class="item-title">
-									${v[3]} <small>${v[4]}</small>
+		console.log(data);
+		let degree = "";
+
+		if(data.length>0){
+			$.each(data,function(i,v){
+				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
+				$("#list_schools .list ul").append(`
+					<li>
+						<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
+							<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">
+										${v[3]} <small>${degree}</small>
+									</div>
 								</div>
+								<div class="item-subtitle">${v[6]} - ${v[7]}</div>
 							</div>
-							<div class="item-subtitle">
-								${v[7]}
-							</div>
-						</div>
-					</a>
-				</li>
-			`);
-		})
+						</a>
+					</li>
+				`);
+			});			
+		}
+		else{
+        	$("#list_schools .list ul").html(`
+        		<li>
+	        		<a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" data-popup=".popup-newAcad">
+		            	<i class='material-icons'>add_circle_outline</i>
+		           	</a>
+        		</li>
+        		`);        	
+		}
+
 	},
 	add:function(id){
+		$("#display_fielddegree").attr({"style":"display:none;"});
+		$("#display_fieldunit").attr({"style":"display:none;"});
+		$("#field_level").on('change',function(){
+			let val = $(this).val();
+			if((new RegExp('Elementary|High School','i')).test(val)){
+				$("#display_fielddegree").attr({"style":"display:none;"});
+				$("#display_fieldunit").attr({"style":"display:none;"});
+				$("#field_degree").val("null");
+				$("#field_units").val("null");
+			}
+			else{
+				$("#display_fielddegree").attr({"style":"display:block;"});
+				$("#display_fieldunit").attr({"style":"display:block;"});
+				$("#field_degree").val("");
+				$("#field_units").val("");
+			}
+		})
+
+		$("#form_newAcad").validate({
+			rules: {
+				field_level: {required: true, maxlength: 50},
+				field_newschool: {required: true, maxlength: 50},
+				field_degree: {required: true, maxlength: 50},
+				field_units: {required: true, maxlength: 50},
+				field_newyearfrom: {required: true, maxlength: 50, year: true},
+				field_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray(),data = 0;
+				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
+                var data = system.ajax(system.host('do-addAcademic'),_form);
+                data.done(function(data){
+                	_form[0] = data;
+                    if(data != 0){
+                        system.notification("Kareer","New Academic information has been added.");
+						app.popup.close('.popup-newAcad',true);
+						academic.display([_form]);
+                    }
+                    else{
+                        system.notification("Kareer","Failed to add.");
+                    }
+                });
+		    }
+		});
 
 	},
 	update:function(id){

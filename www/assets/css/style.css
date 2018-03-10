@@ -749,3 +749,12 @@ button:disabled{
 .link.popup-close.in-field-btn{
 	background: transparent !important;
 }
+
+#list_schools .media-list li a.popup-open i{
+	font-size: 50px;
+}
+#list_schools .media-list li a.popup-open{
+	background: transparent !important;
+	color:#000;
+	font-size: 50px;
+}
