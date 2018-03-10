@@ -362,8 +362,8 @@ career = {
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_jobs .list ul").append(`
-					<li>
-						<a class="item-link item-content" href="#">
+					<li class="swipeout">
+						<a class="item-link item-content swipeout-content" href="#">
 							<div class="item-media"><img src="http://www.rnrdigitalconsultancy.com/assets/images/rnrdigitalconsultancy.png" width="44"/></div>
 							<div class="item-inner">
 								<div class="item-title-row">
@@ -376,6 +376,9 @@ career = {
 								</div>
 							</div>
 						</a>
+					    <div class="swipeout-actions-right">
+					        <a href="#" data-confirm="Are you sure you want to delete this item?" class="swipeout-delete">Delete</a>
+					    </div>
 					</li>
 				`);
 			});			

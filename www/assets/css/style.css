@@ -196,7 +196,7 @@ body {
 }
 #profile h3.fullname{
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 25px;
 	margin-bottom: 20px;
 	color: #fff;
 	border: none;
@@ -242,13 +242,14 @@ body {
 #profile.active h3.fullname{
 	margin:0px;
 	width: 250px;
-	left: 30px;
+	left: 20px;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-10px);
 	transition: 0.5s;
 	color: #fff;
 	/* text-align: left; */
+	font-size: 15px;
 }
 /**/
 
@@ -447,7 +448,7 @@ body {
 .account-subpage .page-content .list{
 	margin:0px;
 	width: 100%;
-	padding-bottom: 100px;
+	/* padding-bottom: 100px; */
 }
 .account-subpage .card-content, .md .card-content-padding{
 	padding: 0px;
@@ -750,12 +751,12 @@ button:disabled{
 	background: transparent !important;
 }
 
-#list_schools .media-list li a.popup-open i, #list_jobs .media-list li a.popup-open i{
+#list_schools .media-list li a.popup-open.in-field-btn i, #list_jobs .media-list li a.popup-open.in-field-btn i{
 	font-size: 50px;
 	width: 100%;
 	height:  100%;
 }
-#list_schools .media-list li a.popup-open, #list_jobs .media-list li a.popup-open{
+#list_schools .media-list li a.popup-open.in-field-btn, #list_jobs .media-list li a.popup-open.in-field-btn{
 	background: transparent !important;
 	color: #0000004d;
 	height:  50px;
