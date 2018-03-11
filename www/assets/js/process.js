@@ -372,22 +372,23 @@ career = {
         	$("#list_jobs a.btn-nav").removeClass('hidden');        	
 
 			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
-				let _data = $(this).data(), careerData = [];
+				let _data = $(this).data(), career = [];
 				$.each(data,function(i,v){
-					if(v[0] == _data.node){ careerData = v; return false;}
+					if(v[0] == _data.node){ career = v; return false;}
 				})
 
-				$("#field_career_agency").val(careerData[2]);
-				$("#field_career_position").val(careerData[3]);
-				$("#field_career_salary").val(careerData[4]);
-				$("#field_career_appointment").val(careerData[5]);
-				$("#field_career_yearfrom").val(careerData[6]);
-				$("#field_career_yearto").val(careerData[7]);
+				$("#field_career_agency").val(career[2]);
+				$("#field_career_position").val(career[3]);
+				$("#field_career_salary").val(career[4]);
+				$("#field_career_appointment").val(career[5]);
+				$("#field_career_yearfrom").val(career[6]);
+				$("#field_career_yearto").val(career[7]);
 				app.popup.open('.popup-career');
 			});
 
 			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
-				console.log($(this).parent());
+				let __data = $(this).parent().find(`a[data-cmd='open-popupCareer']`);
+				console.log(__data);
 			});
 		}
 		else{
