@@ -13,28 +13,12 @@ account = {
 		});
 
         new PerfectScrollbar('#tab_account .other-info'), scroll = 0;                    
-		$('#tab_account .other-info').on('ps-scroll-up', function(){
-			scroll = $(this).scrollTop();
-			if(scroll <= 10){
-				$('#profile').removeClass('active');
-				$('#profile img').removeClass('rotate');
-			}
-		}).on('ps-scroll-down', function(){
-			scroll = $(this).scrollTop();
-			if(scroll >= 10){
-				$('#profile').addClass('active');
-				$('#profile img').addClass('rotate');
-			}
-		});
-
 		skills.frontdisplay();
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
 		return JSON.parse(data.responseText);
-	},
-	getSkills:function(id){
 	},
 	settingsDisplay:function(){
 		let data = this.get()[0];
@@ -255,8 +239,8 @@ academic = {
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_schools .list ul").append(`
-					<li>
-						<a class="item-link item-content" href="#">
+					<li class="swipeout">
+						<a class="item-link item-content swipeout-content popup-open" data-popup=".popup-acad">
 							<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
 							<div class="item-inner">
 								<div class="item-title-row">
@@ -267,6 +251,9 @@ academic = {
 								<div class="item-subtitle">${v[6]} - ${v[7]}</div>
 							</div>
 						</a>
+					    <div class="swipeout-actions-right">
+					        <a href="#" data-confirm="Are you sure you want to delete this item?" class="swipeout-delete">Delete</a>
+					    </div>
 					</li>
 				`);
 			});			
@@ -348,7 +335,7 @@ career = {
 
 		this.display(data);
 		this.add(id);
-		this.update(id);
+		this.update(data);
 		this.delete(id);
 	},
 	get:function(id){
@@ -357,13 +344,12 @@ career = {
 	},
 	display:function(data){
 		let degree = "";
-
 		if(data.length>0){
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_jobs .list ul").append(`
 					<li class="swipeout">
-						<a class="item-link item-content swipeout-content" href="#">
+						<a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupCareer'>
 							<div class="item-media"><img src="http://www.rnrdigitalconsultancy.com/assets/images/rnrdigitalconsultancy.png" width="44"/></div>
 							<div class="item-inner">
 								<div class="item-title-row">
@@ -377,20 +363,38 @@ career = {
 							</div>
 						</a>
 					    <div class="swipeout-actions-right">
-					        <a href="#" data-confirm="Are you sure you want to delete this item?" class="swipeout-delete">Delete</a>
+					        <a data-cmd='delete-career' class="swipeout-delete"><i class='material-icons'>close</i></a>
 					    </div>
 					</li>
 				`);
 			});			
         	$("#list_jobs .list ul li:nth-child(1)").remove();        	
         	$("#list_jobs a.btn-nav").removeClass('hidden');        	
+
+			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
+				let _data = $(this).data(), careerData = [];
+				$.each(data,function(i,v){
+					if(v[0] == _data.node){ careerData = v; return false;}
+				})
+
+				$("#field_career_agency").val(careerData[2]);
+				$("#field_career_position").val(careerData[3]);
+				$("#field_career_salary").val(careerData[4]);
+				$("#field_career_appointment").val(careerData[5]);
+				$("#field_career_yearfrom").val(careerData[6]);
+				$("#field_career_yearto").val(careerData[7]);
+				app.popup.open('.popup-career');
+			});
+
+			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
+				console.log($(this).parent());
+			});
 		}
 		else{
         	$("#list_jobs a.btn-nav").addClass('hidden');        	
 		}
 	},
 	add:function(id){
-		console.log('xxx');
 		let calendarFromModal = app.calendar.create({
 			inputEl: '#field_career_yearfrom',
 			openIn: 'customModal',
@@ -407,12 +411,12 @@ career = {
 
 		$("#form_newCareer").validate({
 			rules: {
-				field_career_agency: {required: true, maxlength: 300},
-				field_career_position: {required: true, maxlength: 300},
-				field_career_salary: {required: true, maxlength: 50, currency: true},
-				field_career_appointment: {required: true, maxlength: 300},
-				field_career_yearfrom: {required: true, maxlength: 50, year: true},
-				field_career_yearto: {required: true, maxlength: 50, year: true, yearTo: 'field_career_yearfrom'},
+				field_newcareer_agency: {required: true, maxlength: 300},
+				field_newcareer_position: {required: true, maxlength: 300},
+				field_newcareer_salary: {required: true, maxlength: 50, currency: true},
+				field_newcareer_appointment: {required: true, maxlength: 300},
+				field_newcareer_yearfrom: {required: true, maxlength: 50, year: true},
+				field_newcareer_yearto: {required: true, maxlength: 50, year: true, yearTo: 'field_career_yearfrom'},
 			},
 			errorElement : 'div',
 			errorPlacement: function(error, element) {
@@ -441,13 +445,23 @@ career = {
                 });
 		    }
 		});
-
 	},
-	update:function(id){
-
+	update:function(data){
+		console.log(data);
 	},
 	delete:function(id){
-
+    //     var data = system.ajax(system.host('do-addCareer'),_form);
+    //     data.done(function(data){
+    //     	_form[0] = data;
+    //         if(data != 0){
+    //             system.notification("Kareer","New career information has been added.");
+				// app.popup.close('.popup-newCareer',true);
+				// career.display([_form]);
+    //         }
+    //         else{
+    //             system.notification("Kareer","Failed to add.");
+    //         }
+    //     });
 	}
 }
 

@@ -25,74 +25,15 @@
         </div>
     </div>
 	<div class="popup popup-career">
-		<div class="navbar no-shadow">
-			<div class="navbar-inner sliding">
-				<div class="left">
-					<a class="link popup-close" href="#"><i class='material-icons'>close</i></a>
-				</div>
-			</div>
-		</div>
-        <div class='card'>
-            <div class='card-content card-content-padding align-self-stretch'>
-		        <form>
-		            <div class="list">
-		                <ul>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Company</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_school' name='field_school' data-cmd='field' data-prop='field_school'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Work Position</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" value="Web Developer">
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Year Started</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" value="January 01, 2018">
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Year Ended</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" value="January 01, 2018">
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Remarks</div>
-		                            <div class="item-input-wrap">
-                                        <textarea class="resizable">No remarks</textarea>
-		                            </div>
-		                        </div>
-		                    </li>
-		                </ul>
-		            </div>
-		        </form>
-            </div>
-        </div>
-	</div>
-	<div class="popup popup-newCareer">
         <div class='card'>
         	<div class="card-header">
-        		Adding Career Information
+        		Career Information
 				<div class="right">
 					<a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
 				</div>
         	</div>
             <div class='card-content card-content-padding align-self-stretch'>
-		        <form id='form_newCareer'>
+		        <form>
 		            <div class="list">
 		                <ul>
 		                    <li class="item-content item-input">
@@ -140,6 +81,72 @@
 		                            <div class="item-title item-label">Year Ended</div>
 		                            <div class="item-input-wrap">
 		                                <input type="text" id='field_career_yearto' name='field_career_yearto' data-cmd='field' data-prop='field_career_yearto'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                </ul>
+		            </div>
+		        </form>
+            </div>
+        </div>
+	</div>
+	<div class="popup popup-newCareer">
+        <div class='card'>
+        	<div class="card-header">
+        		Adding Career Information
+				<div class="right">
+					<a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+				</div>
+        	</div>
+            <div class='card-content card-content-padding align-self-stretch'>
+		        <form id='form_newCareer'>
+		            <div class="list">
+		                <ul>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Agency / Company</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_newcareer_agency' name='field_newcareer_agency' data-cmd='field' data-prop='field_newcareer_agency'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Position</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_newcareer_position' name='field_newcareer_position' data-cmd='field' data-prop='field_newcareer_position'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Monthly Salary</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_newcareer_salary' name='field_newcareer_salary' data-cmd='field' data-prop='field_newcareer_salary'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Appointment Status <small>(Permanent, Contractual, Part-time, etc.)</small></div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_newcareer_appointment' name='field_newcareer_appointment' data-cmd='field' data-prop='field_newcareer_appointment'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Year Started</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_newcareer_yearfrom' name='field_newcareer_yearfrom' data-cmd='field' data-prop='field_newcareer_yearfrom'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Year Ended</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_newcareer_yearto' name='field_newcareer_yearto' data-cmd='field' data-prop='field_newcareer_yearto'>
 		                            </div>
 		                        </div>
 		                    </li>
