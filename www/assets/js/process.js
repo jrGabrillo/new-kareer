@@ -225,8 +225,6 @@ academic = {
 
 		this.display(data);
 		this.add(id);
-		this.update(id);
-		this.delete(id);
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-academic'),id);
@@ -239,8 +237,8 @@ academic = {
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_schools .list ul").append(`
-					<li class="swipeout">
-						<a class="item-link item-content swipeout-content popup-open" data-popup=".popup-acad">
+					<li class="swipeout" data-node='${v[0]}'>
+						<a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupAcad'>
 							<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
 							<div class="item-inner">
 								<div class="item-title-row">
@@ -252,45 +250,88 @@ academic = {
 							</div>
 						</a>
 					    <div class="swipeout-actions-right">
-					        <a href="#" data-confirm="Are you sure you want to delete this item?" class="swipeout-delete">Delete</a>
+					        <a data-cmd='delete-acad'><i class='material-icons'>close</i></a>
 					    </div>
 					</li>
 				`);
 			});			
         	$("#list_schools .list ul li:nth-child(1)").remove();        	
-        	$("#list_schools a.btn-nav").removeClass('hidden');        	
-		}
+        	$("#list_schools a.btn-nav").removeClass('hidden');
+
+			$(`a[data-cmd='open-popupAcad']`).on('click', function(){
+				let _data = $(this).data(), acad = [];
+				$.each(data,function(i,v){
+					if(v[0] == _data.node){ acad = v; return false;}
+				})
+
+				console.log(acad);
+				$("#display_acad_fielddegree").attr({"style":"display:none;"});
+				$("#display_acad_fieldunit").attr({"style":"display:none;"});
+
+				if((new RegExp('Elementary|High School','i')).test(acad[2])){
+					$("#display_acad_fielddegree").attr({"style":"display:none;"});
+					$("#display_acad_fieldunit").attr({"style":"display:none;"});
+					$("#field_acad_degree").val("null");
+					$("#field_acad_units").val("null");
+				}
+				else{
+					$("#display_acad_fielddegree").attr({"style":"display:block;"});
+					$("#display_acad_fieldunit").attr({"style":"display:block;"});
+					$("#field_acad_degree").val("");
+					$("#field_acad_units").val("");
+				}
+
+
+
+
+				$("#field_acad_level").val(acad[2]);
+				$("#field_acad_school").html(acad[3]);
+				$("#field_acad_degree").val(acad[4]);
+				$("#field_acad_units").val(acad[5]);
+				$("#field_acad_yearfrom").val(acad[6]);
+				$("#field_acad_yearto").val(acad[7]);
+				app.popup.open('.popup-acad');
+
+				console.log([acad[0],acad[1]]);
+				academic.update([acad[0],acad[1]]);
+			});
+
+			$(`a[data-cmd='delete-acad']`).on('click', function(){
+				let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
+				academic.delete(__data);
+			});
+        }
 		else{
         	$("#list_schools a.btn-nav").addClass('hidden');        	
 		}
 	},
 	add:function(id){
-		$("#display_fielddegree").attr({"style":"display:none;"});
-		$("#display_fieldunit").attr({"style":"display:none;"});
-		$("#field_level").on('change',function(){
+		$("#display_newacad_fielddegree").attr({"style":"display:none;"});
+		$("#display_newacad_fieldunit").attr({"style":"display:none;"});
+		$("#field_newacad_level").on('change',function(){
 			let val = $(this).val();
 			if((new RegExp('Elementary|High School','i')).test(val)){
-				$("#display_fielddegree").attr({"style":"display:none;"});
-				$("#display_fieldunit").attr({"style":"display:none;"});
-				$("#field_degree").val("null");
-				$("#field_units").val("null");
+				$("#display_newacad_fielddegree").attr({"style":"display:none;"});
+				$("#display_newacad_fieldunit").attr({"style":"display:none;"});
+				$("#field_newacad_degree").val("null");
+				$("#field_newacad_units").val("null");
 			}
 			else{
-				$("#display_fielddegree").attr({"style":"display:block;"});
-				$("#display_fieldunit").attr({"style":"display:block;"});
-				$("#field_degree").val("");
-				$("#field_units").val("");
+				$("#display_newacad_fielddegree").attr({"style":"display:block;"});
+				$("#display_newacad_fieldunit").attr({"style":"display:block;"});
+				$("#field_newacad_degree").val("");
+				$("#field_newacad_units").val("");
 			}
 		})
 
 		$("#form_newAcad").validate({
 			rules: {
-				field_level: {required: true, maxlength: 50},
-				field_newschool: {required: true, maxlength: 50},
-				field_degree: {required: true, maxlength: 50},
-				field_units: {required: true, maxlength: 50},
-				field_newyearfrom: {required: true, maxlength: 50, year: true},
-				field_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
+				field_newacad_level: {required: true, maxlength: 50},
+				field_newacad_newschool: {required: true, maxlength: 50},
+				field_newacad_degree: {required: true, maxlength: 50},
+				field_newacad_units: {required: true, maxlength: 50},
+				field_newacad_newyearfrom: {required: true, maxlength: 50, year: true},
+				field_newacad_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
 			},
 			errorElement : 'div',
 			errorPlacement: function(error, element) {
@@ -321,10 +362,61 @@ academic = {
 		});
 	},
 	update:function(id){
+		console.log(id);
+		$("#form_updateAcad").validate({
+			rules: {
+				field_acad_level: {required: true, maxlength: 50},
+				field_acad_newschool: {required: true, maxlength: 50},
+				field_acad_degree: {required: true, maxlength: 50},
+				field_acad_units: {required: true, maxlength: 50},
+				field_acad_newyearfrom: {required: true, maxlength: 50, year: true},
+				field_acad_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				console.log(id);
+				var _form = $(form).serializeArray();
+				_form = [id[0],id[1],form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
+                var data = system.ajax(system.host('do-updateAcademic'),_form);
+                data.done(function(data){
+                    if(data != 0){
+                        system.notification("Kareer","Academic information has been updated.");
 
+						$("#field_acad_level").val(form[0].value);
+						$("#field_acad_school").html(form[1].value);
+						$("#field_acad_degree").val(form[2].value);
+						$("#field_acad_units").val(form[3].value);
+						$("#field_acad_yearfrom").val(form[4].value);
+						$("#field_acad_yearto").val(form[5].value);
+
+                    }
+                    else{
+                        system.notification("Kareer","Failed to add.");
+                    }
+                });
+		    }
+		});
 	},
 	delete:function(id){
-
+        var data = system.ajax(system.host('do-deleteAcademic'),id);
+        data.done(function(data){
+            if(data != 0){
+                system.notification("Kareer","Academic information has been deleted.");
+				app.swipeout.delete(`li[data-node='${id}']`);
+            }
+            else{
+                system.notification("Kareer","Failed to delete.tttt");
+            }
+        });
 	}
 }
 
@@ -336,7 +428,6 @@ career = {
 		this.display(data);
 		this.add(id);
 		this.update(data);
-		this.delete(id);
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-career'),id);
@@ -348,7 +439,7 @@ career = {
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_jobs .list ul").append(`
-					<li class="swipeout">
+					<li class="swipeout" data-node='${v[0]}'>
 						<a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupCareer'>
 							<div class="item-media"><img src="http://www.rnrdigitalconsultancy.com/assets/images/rnrdigitalconsultancy.png" width="44"/></div>
 							<div class="item-inner">
@@ -363,7 +454,7 @@ career = {
 							</div>
 						</a>
 					    <div class="swipeout-actions-right">
-					        <a data-cmd='delete-career' class="swipeout-delete"><i class='material-icons'>close</i></a>
+					        <a data-cmd='delete-career'><i class='material-icons'>close</i></a>
 					    </div>
 					</li>
 				`);
@@ -386,9 +477,9 @@ career = {
 				app.popup.open('.popup-career');
 			});
 
-			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
-				let __data = $(this).parent().find(`a[data-cmd='open-popupCareer']`);
-				console.log(__data);
+			$(`a[data-cmd='delete-career']`).on('click', function(){
+				let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
+				career.delete(__data);
 			});
 		}
 		else{
@@ -451,18 +542,16 @@ career = {
 		console.log(data);
 	},
 	delete:function(id){
-    //     var data = system.ajax(system.host('do-addCareer'),_form);
-    //     data.done(function(data){
-    //     	_form[0] = data;
-    //         if(data != 0){
-    //             system.notification("Kareer","New career information has been added.");
-				// app.popup.close('.popup-newCareer',true);
-				// career.display([_form]);
-    //         }
-    //         else{
-    //             system.notification("Kareer","Failed to add.");
-    //         }
-    //     });
+        var data = system.ajax(system.host('do-deleteCareer'),id);
+        data.done(function(data){
+            if(data != 0){
+                system.notification("Kareer","Career information has been deleted.");
+				app.swipeout.delete(`li[data-node='${id}']`);
+            }
+            else{
+                system.notification("Kareer","Failed to delete.");
+            }
+        });
 	}
 }
 
