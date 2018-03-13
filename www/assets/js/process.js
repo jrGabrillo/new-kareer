@@ -12,7 +12,19 @@ account = {
 			app.toolbar.show('#menu_account');
 		});
 
-        new PerfectScrollbar('#tab_account .other-info'), scroll = 0;                    
+        new PerfectScrollbar('#tab_account .other-info'), scroll = 0;   
+		$('#tab_account .other-info').on('ps-scroll-up', function(){
+			scroll = $(this).scrollTop();
+			if(scroll <= 10){
+				$('#profile').removeClass('active');
+			}
+		}).on('ps-scroll-down', function(){
+			scroll = $(this).scrollTop();
+			if(scroll >= 10){
+				$('#profile').addClass('active');
+			}
+		});
+
 		skills.frontdisplay();
 	},
 	get:function(){
@@ -215,7 +227,6 @@ skills = {
 			});
 		});
 	}
-
 }
 
 academic = {
@@ -281,9 +292,6 @@ academic = {
 					$("#field_acad_units").val("");
 				}
 
-
-
-
 				$("#field_acad_level").val(acad[2]);
 				$("#field_acad_school").html(acad[3]);
 				$("#field_acad_degree").val(acad[4]);
@@ -291,8 +299,6 @@ academic = {
 				$("#field_acad_yearfrom").val(acad[6]);
 				$("#field_acad_yearto").val(acad[7]);
 				app.popup.open('.popup-acad');
-
-				console.log([acad[0],acad[1]]);
 				academic.update([acad[0],acad[1]]);
 			});
 
@@ -362,7 +368,6 @@ academic = {
 		});
 	},
 	update:function(id){
-		console.log(id);
 		$("#form_updateAcad").validate({
 			rules: {
 				field_acad_level: {required: true, maxlength: 50},
@@ -370,7 +375,7 @@ academic = {
 				field_acad_degree: {required: true, maxlength: 50},
 				field_acad_units: {required: true, maxlength: 50},
 				field_acad_newyearfrom: {required: true, maxlength: 50, year: true},
-				field_acad_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
+				field_acad_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_acad_newyearfrom'},
 			},
 			errorElement : 'div',
 			errorPlacement: function(error, element) {
@@ -383,24 +388,19 @@ academic = {
 				}
 			},
 			submitHandler: function (form) {
-				console.log(id);
-				var _form = $(form).serializeArray();
+				var _form = $(form).serializeArray(), degree = "";
 				_form = [id[0],id[1],form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
                 var data = system.ajax(system.host('do-updateAcademic'),_form);
                 data.done(function(data){
                     if(data != 0){
-                        system.notification("Kareer","Academic information has been updated.");
-
-						$("#field_acad_level").val(form[0].value);
-						$("#field_acad_school").html(form[1].value);
-						$("#field_acad_degree").val(form[2].value);
-						$("#field_acad_units").val(form[3].value);
-						$("#field_acad_yearfrom").val(form[4].value);
-						$("#field_acad_yearto").val(form[5].value);
-
+		                system.notification("Kareer","Academic information has been updated.");
+						degree = ((form[2].value == "") || (form[2].value == "null"))?"":form[2].value;
+						$(`li[data-node='${id[0]}'] div.item-title`).html(`${form[1].value} <small>${degree}</small>`);
+						$(`li[data-node='${id[0]}'] div.item-subtitle`).html(`${form[4].value} - ${form[5].value}`);
+						app.popup.close('.popup-acad',true);
                     }
                     else{
-                        system.notification("Kareer","Failed to add.");
+                        system.notification("Kareer","Failed to updated.");
                     }
                 });
 		    }
@@ -427,7 +427,6 @@ career = {
 
 		this.display(data);
 		this.add(id);
-		this.update(data);
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-career'),id);
@@ -463,18 +462,19 @@ career = {
         	$("#list_jobs a.btn-nav").removeClass('hidden');        	
 
 			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
-				let _data = $(this).data(), career = [];
+				let _data = $(this).data(), _career = [];
 				$.each(data,function(i,v){
-					if(v[0] == _data.node){ career = v; return false;}
+					if(v[0] == _data.node){ _career = v; return false;}
 				})
 
-				$("#field_career_agency").val(career[2]);
-				$("#field_career_position").val(career[3]);
-				$("#field_career_salary").val(career[4]);
-				$("#field_career_appointment").val(career[5]);
-				$("#field_career_yearfrom").val(career[6]);
-				$("#field_career_yearto").val(career[7]);
+				$("#field_career_agency").val(_career[2]);
+				$("#field_career_position").val(_career[3]);
+				$("#field_career_salary").val(_career[4]);
+				$("#field_career_appointment").val(_career[5]);
+				$("#field_career_yearfrom").val(_career[6]);
+				$("#field_career_yearto").val(_career[7]);
 				app.popup.open('.popup-career');
+				career.update([_career[0],_career[1]]);
 			});
 
 			$(`a[data-cmd='delete-career']`).on('click', function(){
@@ -538,8 +538,43 @@ career = {
 		    }
 		});
 	},
-	update:function(data){
-		console.log(data);
+	update:function(id){
+		$("#form_updateCareer").validate({
+			rules: {
+				field_career_agency: {required: true, maxlength: 300},
+				field_career_position: {required: true, maxlength: 300},
+				field_career_salary: {required: true, maxlength: 50, currency: true},
+				field_career_appointment: {required: true, maxlength: 300},
+				field_career_yearfrom: {required: true, maxlength: 50, year: true},
+				field_career_yearto: {required: true, maxlength: 50, year: true, yearTo: 'field_career_yearfrom'},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray();
+				_form = [id[0],id[1],form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
+                var data = system.ajax(system.host('do-updateCareer'),_form);
+                data.done(function(data){
+                    if(data != 0){
+		                system.notification("Kareer","Career information has been updated.");
+						$(`li[data-node='${id[0]}'] div.item-title`).html(`${_form[2]}`);
+						$(`li[data-node='${id[0]}'] div.item-subtitle`).html(`${_form[3]} | ${_form[6]} - ${_form[7]}`);
+						app.popup.close('.popup-career',true);
+                    }
+                    else{
+                        system.notification("Kareer","Failed to update.");
+                    }
+                });
+		    }
+		});
 	},
 	delete:function(id){
         var data = system.ajax(system.host('do-deleteCareer'),id);

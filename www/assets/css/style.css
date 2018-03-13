@@ -224,7 +224,7 @@ body {
 /**/
 #profile.active .personal-info{
 	height: 70px;
-	background: #94ceb8;
+	background: #57a084;
 	transition: 0.5s;
 	padding: 0px;
 }
@@ -411,7 +411,7 @@ body {
 	height: calc(100% - 50px);
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
-	height: 98%;
+	height: 100;
 	box-shadow: none !important;
 }
 #tab_jobs h3{
@@ -451,7 +451,7 @@ body {
 	/* padding-bottom: 100px; */
 }
 .account-subpage .card-content, .md .card-content-padding{
-	padding: 0px;
+	padding: 0px 10px;
 }
 .account-subpage .page-content form, .account-subpage .card-content form, #display_skills .block{
 	width:100%;
