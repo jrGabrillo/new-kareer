@@ -593,195 +593,78 @@ career = {
 jobs = {
 	ini:function(){
 		console.log('jobs initialized');
-        var mySwiper = new Swiper('#tab_jobs .swiper-container', {
+	},
+	get:function(id,min,max){
+		min = ((typeof min == undefined) || (min == null))?0:min;
+		max = ((typeof max == undefined) || (max == null))?10:max;
+		var ajax = system.ajax(system.host('get-jobs'),[id,min,max]);
+		return ajax.responseText;
+	},
+	display:function(){
+		let id = localStorage.getItem('account_id');
+        let count = 3, min = 0, max = count, swipe = true, _data = [];	
+		let data = JSON.parse(jobs.get(id,min,count));
+        let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
             flipEffect: {
                 rotate: 30,
                 slideShadows: false,
             },
+            init: false,
+            preloadImages: true,
+            updateOnImagesReady:true,
             speed: 800,
             spaceBetween: 10,                    
-        });		
-	},
-	get:function(){
-		let data = [
-					{
-						company:{
-							logo:'rnr_logo.png',
-							name:'RNR Digital Consultancy',
-							address:'Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan Unit 8 Viliran Compound, P. Moran West, Lingayen, Pangasinan'
-						},
-						job:{
-							title:'Front-End Developer',
-							date:'January 31, 2018',
-							requirements:`
-										<ul>
-											<li>1. Skills of a Front-End Developer.</li>
-											<li>2. Skills of a Front-End Developer.</li>
-											<li>3. Skills of a Front-End Developer.</li>
-											<li>4. Skills of a Front-End Developer.</li>
-											<li>5. Skills of a Front-End Developer.</li>
-											<li>6. Skills of a Front-End Developer.</li>
-											<li>7. Skills of a Front-End Developer.</li>
-											<li>8. Skills of a Front-End Developer.</li>
-											<li>9. Skills of a Front-End Developer.</li>
-											<li>10. Skills of a Front-End Developer.</li>
-											<li>11. Skills of a Front-End Developer.</li>
-											<li>12. Skills of a Front-End Developer.</li>
-											<li>13. Skills of a Front-End Developer.</li>
-											<li>14. Skills of a Front-End Developer.</li>
-										</ul>
-										`,
-							description:`<p>We are in need of Front-End Developers, who are passionate and highly motivated in making great ideas into reality.</p>`,
-						}
-					},
-					{
-						company:{
-							logo:'apple.png',
-							name:'Apple Corp',
-							address:'Bgy. Bagumbayan, Libis, Quezon City, Metro Manila, Philippines'
-						},
-						job:{
-							title:'Operations Manager for Apple Farm',
-							date:'February 1, 2018',
-							requirements:`
-										<ul>
-											<li>Skills of an Operations Manager.</li>
-											<li>Skills of an Operations Manager.</li>
-											<li>Skills of an Operations Manager.</li>
-											<li>Skills of an Operations Manager.</li>
-											<li>Skills of an Operations Manager.</li>
-											<li>Skills of an Operations Manager.</li>
-										</ul>
-										`,
-							description:'<p>We are in need of Operations Managers, who are passionate and highly motivated in operating farm industry.</p><p>We are in need of Operations Managers, who are passionate and highly motivated in operating farm industry.</p>',
-						}
-					},
-					{
-						company:{
-							logo:'penshoppe.png',
-							name:'Penshoppe Inc.',
-							address:'519-520 Makiling St, Makati, Metro Manila, Philippines'
-						},
-						job:{
-							title:'Pen Maker',
-							date:'January 15, 2018',
-							requirements:`
-										<ul>
-											<li>Skills of a Pen Maker.</li>
-											<li>Skills of a Pen Maker.</li>
-											<li>Skills of a Pen Maker.</li>
-										</ul>
-										`,
-							description:'<p>We are in need of Pen Makers, who are passionate and highly motivated in making pen products.</p>',
-						}
-					},
-					{
-						company:{
-							logo:'bench.png',
-							name:'Bench Furnitures',
-							address:'Dona Irenia, Parañaque, Metro Manila, Philippines'
-						},
-						job:{
-							title:'Wood Carver',
-							date:'January 12, 2018',
-							requirements:`
-										<ul>
-											<li>Skills of a wood carver.</li>
-											<li>Skills of a wood carver.</li>
-											<li>Skills of a wood carver.</li>
-										</ul>
-										`,
-							description:'<p>We are in need of Wood Carvers, who are passionate and highly motivated in carving bench furnitures.</p>',
-						}
-					},
-					{
-						company:{
-							logo:'huawei.png',
-							name:'Huawei Inc.',
-							address:'Taft Ave. Malate Manila, Manila, Metro Manila, Philippines'
-						},
-						job:{
-							title:'Chief Technlogy Officer',
-							date:'January 1, 2018',
-							requirements:`
-										<ul>
-											<li>Skills of a Chief Technlogy Officer</li>
-											<li>Skills of a Chief Technlogy Officer</li>
-											<li>Skills of a Chief Technlogy Officer</li>
-										</ul>
-										`,
-							description:'<p>We are in need of a Chief Technlogy Officer, who are passionate and highly motivated in leading.</p>',
-						}
-					},
-					];
-		return data;
-	},
-	display:function(){
-		let display = "";
-		for(let post of this.get()){
-			$('#display_jobs').append(`<div class='swiper-slide'>
-										<div class='card job'>
-											<div class='card-header align-items-flex-end'>
-												<div class='company'>
-													<div class='logo-holder'><div class='logo' style='background:url(assets/img/logo/${post.company.logo}) center/cover no-repeat;'></div></div>
-													<div class='information'>
-														<h3>${post.company.name}</h3>
-														<div>${post.company.address}</div>
-													</div>
-												</div>
-											</div>
-											<div class='card-content card-content-padding align-self-stretch'>
-												<div class='job-description'>
-													<h3>${post.job.title}</h3>
-													<p><span>${post.job.date}</span></p>
-													<div class='row'>
-														<strong>Skills</strong>
-														<div id='display_skills'>
-															<div class="chip color-pink">
-																<div class="chip-label">Lorem </div>
-															</div>
-															<div class="chip color-green">
-																<div class="chip-label">voluptatem </div>
-															</div>
-															<div class="chip color-yellow">
-																<div class="chip-label">numquam </div>
-															</div>
-															<div class="chip color-blue">
-																<div class="chip-label">reprehenderit </div>
-															</div>
-														</div>
-													</div>
-													<div class='row'>
-														<strong>Description</strong>
-														${post.job.description}
-													</div>
-												</div>
-											</div>
-				                            <div class="card-footer">
-												<button class="button col button-round">Read more</button>
-				                            </div>
-										</div>
-									</div>`);
-		}
-		// this.scroll();
-	},
-	scroll:function(){
-		let scroll = 0, direction = "";
-		$("#display_jobs .card-content").on( 'scroll', function(){
-			let scrolled = $(this).scrollTop();
-			direction = (scrolled>scroll)?'up':'down';
-			console.log(`${direction} ${scrolled}`);
-			if((direction == 'up') && (scrolled > 10)){
-				$(this).parent('.card').addClass('active');
-				$(this).scrollTop(110);
-				// $(this).parent('.job').find('.logo-holder').attr({'style':`transform:scale(${(1*0.6)}); top:-${(scrolled*0.6)}px; left:-${(scrolled*0.7)}px;`});
+        });
+
+        jobs.put(data);
+		jobSwiper.init();
+		jobSwiper.on('reachEnd',function(){
+			if(swipe){
+	            min = max;
+	            max = max+count;
+				_data = JSON.parse(jobs.get(id,min,count));
+		        // jobs.put(_data);
+				// jobSwiper.update();
+				if(data.length<1){ swipe = false; }	
 			}
-			else if((direction == 'down') && (scrolled < 100)){
-				$(this).parent('.card').removeClass('active');
-				$(this).scrollTop(0);
-				// $(this).animate({scrollTop:0},200);
-			}
-			scroll = scrolled;
+		});
+	},
+	put:function(data){
+		let logo = "", skills = "";
+		$.each(data,function(i,v){
+			skills = "";
+			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2} </div></div> `;});
+			logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
+			$('#tab_jobs .swiper-container .swiper-wrapper').append(`<div class='swiper-slide'>
+				<div class='card job'>
+					<div class='card-header align-items-flex-end'>
+						<div class='company'>
+							<div class='logo-holder'><div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div></div>
+							<div class='information'>
+								<h3>${v[8]}</h3>
+								<div>${v[10]}</div>
+							</div>
+						</div>
+					</div>
+					<div class='card-content card-content-padding align-self-stretch'>
+						<div class='job-description'>
+							<h3>${v[5]}</h3>
+							<p><span>${v[4]}</span></p>
+							<div class='row'>
+								<strong>Skills</strong>
+								<div>${skills}</div>
+							</div>
+							<div class='row'>
+								<strong>Description</strong>
+								<p>${v[3]}</p>
+							</div>
+						</div>
+					</div>
+                    <div class="card-footer">
+						<button class="button col button-round">Read more</button>
+                    </div>
+				</div>
+			</div>`);
 		});
 	}
 }
