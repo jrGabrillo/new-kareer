@@ -337,7 +337,18 @@ body {
 	bottom: -20px;
 }
 #tab_jobs .card-header{
-	background: url('../img/bg/img-bg.jpg') center/cover no-repeat !important;
+	padding: 0px !important;
+	overflow: hidden;
+}
+#tab_jobs .card-header .job_banner{
+	background: url('../img/bg/img-bg.jpg');
+	background-size: 200%;
+	background-position: center;
+	background-repeat:  no-repeat;
+	-webkit-filter: blur(10px) saturate(10);
+	width:  100%;
+	height: 130px;
+	position:  absolute;
 }
 #tab_jobs .company{
 	position: relative;

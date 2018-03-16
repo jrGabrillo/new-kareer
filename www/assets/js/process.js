@@ -602,7 +602,7 @@ jobs = {
 	},
 	display:function(){
 		let id = localStorage.getItem('account_id');
-        let count = 3, min = 0, max = count, swipe = true, _data = [];	
+        let count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
 		let data = JSON.parse(jobs.get(id,min,count));
         let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
             flipEffect: {
@@ -616,56 +616,37 @@ jobs = {
             spaceBetween: 10,                    
         });
 
-        jobs.put(data);
+        slides = jobs.process(data);
+		jobSwiper.appendSlide(slides);
 		jobSwiper.init();
 		jobSwiper.on('reachEnd',function(){
 			if(swipe){
 	            min = max;
 	            max = max+count;
 				_data = JSON.parse(jobs.get(id,min,count));
-		        // jobs.put(_data);
-				// jobSwiper.update();
-				if(data.length<1){ swipe = false; }	
+		        slides = jobs.process(_data);
+				jobSwiper.appendSlide(slides);
+				swipe = (_data.length<1)?false:true;	
 			}
 		});
 	},
-	put:function(data){
-		let logo = "", skills = "";
-		$.each(data,function(i,v){
-			skills = "";
+	process:function(data){
+		let jobArr = [], logo = "", skills = "", v = "";
+		if(data.length>1){
+			$.each(data,function(i,v){
+				skills = "";
+				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2} </div></div> `;});
+				logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
+				jobArr.push(`<div class='swiper-slide'><div class='card job'><div class='card-header align-items-flex-end'><div class='job_banner' style='background:url(${logo});'></div><div class='company'><div class='logo-holder'><div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div></div>	<div class='information'><h3>${v[8]}</h3><div>${v[10]}</div></div></div></div><div class='card-content card-content-padding align-self-stretch'><div class='job-description'><h3>${v[5]}</h3><p><span>${v[4]}</span></p><div class='row'><strong>Skills</strong><div>${skills}</div></div><div class='row'><strong>Description</strong><p>${v[3]}</p></div></div></div><div class="card-footer"><button class="button col button-round">Read more</button></div><div></div>`);
+			});
+		}
+		else if(data.length==1){
+			skills = ""; v = data[0];
 			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2} </div></div> `;});
 			logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
-			$('#tab_jobs .swiper-container .swiper-wrapper').append(`<div class='swiper-slide'>
-				<div class='card job'>
-					<div class='card-header align-items-flex-end'>
-						<div class='company'>
-							<div class='logo-holder'><div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div></div>
-							<div class='information'>
-								<h3>${v[8]}</h3>
-								<div>${v[10]}</div>
-							</div>
-						</div>
-					</div>
-					<div class='card-content card-content-padding align-self-stretch'>
-						<div class='job-description'>
-							<h3>${v[5]}</h3>
-							<p><span>${v[4]}</span></p>
-							<div class='row'>
-								<strong>Skills</strong>
-								<div>${skills}</div>
-							</div>
-							<div class='row'>
-								<strong>Description</strong>
-								<p>${v[3]}</p>
-							</div>
-						</div>
-					</div>
-                    <div class="card-footer">
-						<button class="button col button-round">Read more</button>
-                    </div>
-				</div>
-			</div>`);
-		});
+			jobArr = `<div class='swiper-slide'><div class='card job'><div class='card-header align-items-flex-end'><div></div class='job_banner' style='background:url(${logo});'><div class='company'><div class='logo-holder'><div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div></div>	<div class='information'><h3>${v[8]}</h3><div>${v[10]}</div></div></div></div><div class='card-content card-content-padding align-self-stretch'><div class='job-description'><h3>${v[5]}</h3><p><span>${v[4]}</span></p><div class='row'><strong>Skills</strong><div>${skills}</div></div><div class='row'><strong>Description</strong><p>${v[3]}</p></div></div></div><div class="card-footer"><button class="button col button-round">Read more</button></div><div></div>`;
+		}
+		return jobArr;
 	}
 }
 
