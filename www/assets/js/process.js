@@ -4,12 +4,21 @@ account = {
 		let data = this.get();
 		this.display(data);
         jobs.display();
+		app.toolbar.hide('#menu_job');
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
 		});
 
 		$('.show-toolbar-account-menu').on('click', function () {
 			app.toolbar.show('#menu_account');
+		});
+
+		$('.hide-toolbar-search-menu').on('click', function () {
+			app.toolbar.hide('#menu_job');
+		});
+
+		$('.show-toolbar-search-menu').on('click', function () {
+			app.toolbar.show('#menu_job');
 		});
 
         new PerfectScrollbar('#tab_account .other-info'), scroll = 0;   
@@ -631,20 +640,91 @@ jobs = {
 		});
 	},
 	process:function(data){
-		let jobArr = [], logo = "", skills = "", v = "";
+		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>1){
 			$.each(data,function(i,v){
-				skills = "";
+				skills = ""; random = Math.floor(Math.random() * 100) + 1;
 				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2} </div></div> `;});
 				logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
-				jobArr.push(`<div class='swiper-slide'><div class='card job'><div class='card-header align-items-flex-end'><div class='job_banner' style='background:url(${logo});'></div><div class='company'><div class='logo-holder'><div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div></div>	<div class='information'><h3>${v[8]}</h3><div>${v[10]}</div></div></div></div><div class='card-content card-content-padding align-self-stretch'><div class='job-description'><h3>${v[5]}</h3><p><span>${v[4]}</span></p><div class='row'><strong>Skills</strong><div>${skills}</div></div><div class='row'><strong>Description</strong><p>${v[3]}</p></div></div></div><div class="card-footer"><button class="button col button-round">Read more</button></div><div></div>`);
+				jobArr.push(`<div class='swiper-slide'>
+								<div class='card job'>
+									<div class='card-header align-items-flex-end'>
+										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
+										<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}" style="top: 10%;">
+											<i class="material-icons text-color-black">more_vert</i>
+										</a>							
+										<div class='company'>
+											<div class='logo-holder'>
+												<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
+											</div>
+											<div class='information'>
+												<h3>${v[8]}<br/><small>${v[10]}</small></h3>
+											</div>
+										</div>
+									</div>
+									<div class='card-content card-content-padding align-self-stretch'>
+										<div class='job-description'>
+											<h3>${v[5]}</h3>
+											<p>${v[4]}</p>
+											<div class='row'>
+												<strong>Skills</strong><br/>
+												${skills}
+											</div>
+											<div class='row'>
+												<strong>Description</strong>
+												<p>${v[3]}</p>
+											</div>
+										</div>
+									</div>
+									<div class="card-footer">
+										<button class="button col button-round">Read more</button>
+									</div>
+								</div>
+							</div>`);
 			});
 		}
 		else if(data.length==1){
 			skills = ""; v = data[0];
 			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2} </div></div> `;});
 			logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
-			jobArr = `<div class='swiper-slide'><div class='card job'><div class='card-header align-items-flex-end'><div></div class='job_banner' style='background:url(${logo});'><div class='company'><div class='logo-holder'><div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div></div>	<div class='information'><h3>${v[8]}</h3><div>${v[10]}</div></div></div></div><div class='card-content card-content-padding align-self-stretch'><div class='job-description'><h3>${v[5]}</h3><p><span>${v[4]}</span></p><div class='row'><strong>Skills</strong><div>${skills}</div></div><div class='row'><strong>Description</strong><p>${v[3]}</p></div></div></div><div class="card-footer"><button class="button col button-round">Read more</button></div><div></div>`;
+			jobArr = `<div class='swiper-slide'>
+						<div class='card job'>
+							<div class='card-header align-items-flex-end'>
+								<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}" style="top: 10%;">
+									<i class="material-icons text-color-black">more_vert</i>
+								</a>							
+								<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
+								<div class='company'>
+									<div class='logo-holder'>
+										<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
+									</div>
+									<div class='information'>
+										<h3>${v[8]}<br/><small>${v[10]}</small></h3>
+									</div>
+								</div>
+							</div>
+							<div class='card-content card-content-padding align-self-stretch'>
+								<div class='job-description'>
+									<h3>${v[5]}</h3>
+									<p>${v[4]}</p>
+									<div class='row'>
+										<strong>Skills</strong><br/>
+										${skills}
+									</div>
+									<div class='row'>
+										<strong>Description</strong>
+										<p>${v[3]}</p>
+									</div>
+								</div>
+							</div>
+							<div class="card-footer">
+								<button class="button col button-round">Read more</button>
+							</div>
+						</div>
+					</div>`;
+		}
+		else{
+			jobArr = `<div class='swiper-slide end'><h1 class="text-align-center text-color-white">No more job fetched.</h1></div>`;
 		}
 		return jobArr;
 	}

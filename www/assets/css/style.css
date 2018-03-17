@@ -342,13 +342,15 @@ body {
 }
 #tab_jobs .card-header .job_banner{
 	background: url('../img/bg/img-bg.jpg');
-	background-size: 200%;
-	background-position: center;
-	background-repeat:  no-repeat;
-	-webkit-filter: blur(10px) saturate(10);
+	background-size: 200% !important;
+	background-position: 0%;
+	background-repeat: no-repeat;
+	-webkit-filter: blur(15px)  opacity(0.4) !important;
+	/* -webkit-filter: blur(10px) grayscale(0) hue-rotate(270deg) opacity(0.4) !important; */
 	width:  100%;
-	height: 130px;
+	height: 160px;
 	position:  absolute;
+	top: 0;
 }
 #tab_jobs .company{
 	position: relative;
@@ -361,17 +363,17 @@ body {
 	transition: 0.1s ease-out;
 }
 #tab_jobs .card .company{
-	margin: 0 auto;
+	margin: 10px auto;
 }
 #tab_jobs .logo-holder{
-	background: #fff;
+	/* background: #fff; */
 	width:100px;
 	height: 100px;
-	border: 1px solid rgba(0,0,0,0.2);
+	/* border: 1px solid rgba(0,0,0,0.2); */
 	margin:  auto;
 	overflow:  hidden;
-	border: 3px solid #fff;
-	box-shadow: none !important; 
+	/* border: 3px solid #fff; */
+	box-shadow: none !important;
 	position:  relative;
 }
 #tab_jobs .logo{
@@ -387,6 +389,7 @@ body {
 #tab_jobs .card .information{
 	width: 80%;
 	margin: 0 auto;
+	text-shadow: 0px 0px 20px #fff;
 }
 
 #tab_jobs .card .information div{
@@ -404,7 +407,12 @@ body {
 }
 #tab_jobs .card .card-content{
 	 border-radius: 20px 20px 20px 20px;
-	 max-height: calc(100% - 230px);
+	 max-height: calc(100% - 10px);
+	 margin: 10px auto;
+}
+#tab_jobs .swiper-slide.end h1{
+	margin: 50% 0px;
+	opacity:  0.6;
 }
 #tab_jobs .card .card-footer{
 	 background: #fff;
@@ -414,7 +422,7 @@ body {
 	margin-top:0px;
 }
 #tab_jobs .job-description{
-	height: 300px;
+	height: 280px;
 	overflow:  hidden;
 }
 
@@ -777,4 +785,29 @@ button:disabled{
 	left: 50% !important;
 	top: 20px;
 	transform: translate(-25px) !important;
+}
+
+#menu_job{
+	background: transparent !important;
+}
+#menu_job .toolbar-inner{
+	width: 250px;
+	left: 50%;
+	transform: translate(-125px);
+}
+#menu_job .toolbar-inner a{
+	min-width: 50px;
+}
+#menu_job .toolbar-inner a:nth-child(2){
+	margin: 0 20px;width: 50px !important;
+}
+#menu_job .toolbar-inner a i{
+	font-size:  30px;
+	text-align: -webkit-center;
+	vertical-align:  middle;
+/*	background: -webkit-linear-gradient(left,#ca004b 0%, #4408f7 100%);
+	background: linear-gradient(to right,#ca004b 0%, #4408f7 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+*/
 }
