@@ -811,3 +811,8 @@ button:disabled{
 	-webkit-text-fill-color: transparent;
 */
 }
+
+a[data-cmd="read_company"]{
+	top: 10%;
+	z-index: 1001;
+}

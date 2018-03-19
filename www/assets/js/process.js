@@ -638,6 +638,17 @@ jobs = {
 				swipe = (_data.length<1)?false:true;	
 			}
 		});
+
+		jobSwiper.on('click',function(){
+			let node = $(jobSwiper.clickedSlide).find('a').data('node');
+			console.log(node);
+		});
+
+		jobSwiper.on('slideChange, transitionEnd', function () {
+			if(jobSwiper.activeIndex == 15){
+				jobSwiper.removeSlide([0,1,2,3,4]);
+			}
+		});
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
@@ -650,9 +661,9 @@ jobs = {
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
-										<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}" style="top: 10%;">
+										<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}">
 											<i class="material-icons text-color-black">more_vert</i>
-										</a>							
+										</a>
 										<div class='company'>
 											<div class='logo-holder'>
 												<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
@@ -690,10 +701,10 @@ jobs = {
 			jobArr = `<div class='swiper-slide'>
 						<div class='card job'>
 							<div class='card-header align-items-flex-end'>
-								<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}" style="top: 10%;">
+								<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
+								<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}">
 									<i class="material-icons text-color-black">more_vert</i>
 								</a>							
-								<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
 								<div class='company'>
 									<div class='logo-holder'>
 										<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
@@ -727,6 +738,12 @@ jobs = {
 			jobArr = `<div class='swiper-slide end'><h1 class="text-align-center text-color-white">No more job fetched.</h1></div>`;
 		}
 		return jobArr;
+	},
+	view:function(){
+
+	},
+	viewCompany:function(){
+
 	}
 }
 
