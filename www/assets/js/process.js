@@ -634,9 +634,6 @@ jobs = {
 				jobSwiper.appendSlide(slides);
 				swipe = (_data.length<1)?false:true;	
 			}
-			else{
-				// 
-			}
 		});
 		jobSwiper.on('slideChange, transitionEnd', function(){
 			if((jobSwiper.slides).length == (jobSwiper.activeIndex + 1))
