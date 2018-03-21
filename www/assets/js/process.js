@@ -601,7 +601,6 @@ career = {
 
 jobs = {
 	ini:function(){
-		console.log('jobs initialized');
 	},
 	get:function(id,min,max){
 		min = ((typeof min == undefined) || (min == null))?0:min;
@@ -651,24 +650,29 @@ jobs = {
 				},1000);
 			}
 		});
-
 		jobSwiper.on('click',function(e){
 			if(e.target.localName == 'a'){
 				let link = e.target.dataset;
-				console.log(link);
 				if(link.cmd == 'read_company'){
 					localStorage.setItem('business',link.node);
 					view.router.navigate('/business/');
 				}
-				else if(link.cmd == 'read_job'){
-					localStorage.setItem('slide',link.node);
-					// view.router.navigate('/business/');
-				}
-				console.log(link.node);
-				// console.log($(jobSwiper.clickedSlide).find(`a[data-cmd="read_job"]`));
 			}
 		});
 		$("#menu_job .job_next").on('click',function(){
+			jobSwiper.slideNext();
+		});
+		$("#menu_job .job_info").on('click',function(){
+			let id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			localStorage.setItem('job',id);
+			view.router.navigate('/job/');
+		});
+		$("#menu_job .job_bookmark").on('click',function(){
+			let id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			jobSwiper.slideNext();
+		});
+		$("#menu_job .job_apply").on('click',function(){
+			let id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
 			jobSwiper.slideNext();
 		});
 	},
@@ -679,7 +683,7 @@ jobs = {
 				skills = ""; random = Math.floor(Math.random() * 100) + 1;
 				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 				logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
-				jobArr.push(`<div class='swiper-slide'>
+				jobArr.push(`<div class='swiper-slide' data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
@@ -715,7 +719,7 @@ jobs = {
 			skills = ""; v = data[0];
 			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 			logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
-			jobArr = `<div class='swiper-slide'>
+			jobArr = `<div class='swiper-slide' data-node='${v[0]}'>
 						<div class='card job'>
 							<div class='card-header align-items-flex-end'>
 								<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
@@ -752,8 +756,51 @@ jobs = {
 		return jobArr;
 	},
 	view:function(data){
+		console.log(data);
 	},
 	viewCompany:function(){
+	}
+}
+
+job = {
+	ini:function(){
+		let id = localStorage.getItem('job');
+		let data = JSON.parse(this.get(id));
+		this.display(data[0]);
+	},
+	get:function(id){
+		var ajax = system.ajax(system.host('get-jobById'),id);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let skills = "", logo = "";
+		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
+		logo  = ((typeof data[8] == 'object') || (data[8] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[8]}`;
+
+		$("#display_job").html(`
+            <div class="row job-title">
+                <h3>${data[0]} <small class="text-color-gray">${data[1]}</small></h3>
+            </div>
+            <div class="row job-skills">
+                <h4>Skills</h4>
+                <div class="content">${skills}</div>
+            </div>
+            <div class="row job-salary">
+                <h4>Salary Range</h4>
+                <div class="content">${data[3]}</div>
+            </div>
+            <div class="row job-description">
+                <div class="content">${data[4]}</div>
+            </div>
+            <div class="row business-info">
+                <h6>About the company: <br/></h6>
+                <img src="${logo}" width='100%'>
+                <div class="company">
+                    <h3 class="name">${data[6]}</h3>
+                    <h6 class="address">${data[7]}</h6>
+                </div>
+            </div>
+		`);
 	}
 }
 
