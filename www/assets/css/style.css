@@ -830,7 +830,7 @@ a[data-cmd="read_company"]{
 	list-style: unset !important;
 }
 #display_business, #display_job{
-	padding: 10px 10px 200px 10px;
+	padding: 10px 10px 300px 10px;
 }
 #display_business .business-info img, #display_job .business-info img{
 	width: 80px;		
@@ -872,6 +872,7 @@ a[data-cmd="read_company"]{
 	background: #9c27b01f;
 	padding: 10px;
 	border-radius: 5px;
+	margin: 0px 0px 100px 0px;
 }
 
 .text-gradient{
