@@ -85,6 +85,8 @@ body {
 	position: absolute;
 	right: 0;
 	bottom: 0;
+	font-size: 15px;
+	background: #f00;
 }
 
 .ellipsis:after {
@@ -391,7 +393,14 @@ body {
 	margin: 0 auto;
 	text-shadow: 0px 0px 20px #fff;
 }
-
+#tab_jobs .swiper-slide{
+	
+height: 100%;
+}
+#tab_jobs .swiper-slide.end h1{
+	margin: 50% 0px;
+	opacity:  0.6;
+}
 #tab_jobs .card .information div{
 	overflow:  hidden;
 	text-overflow:  ellipsis;
@@ -407,12 +416,8 @@ body {
 }
 #tab_jobs .card .card-content{
 	 border-radius: 20px 20px 20px 20px;
-	 max-height: calc(100% - 10px);
+	 /* max-height: calc(100% - 0px); */
 	 margin: 10px auto;
-}
-#tab_jobs .swiper-slide.end h1{
-	margin: 50% 0px;
-	opacity:  0.6;
 }
 #tab_jobs .card .card-footer{
 	 background: #fff;
@@ -420,17 +425,27 @@ body {
 #tab_jobs .job-description p, #tab_jobs .job-description ul, #tab_jobs .job-description li{
 	font-size: 12px;
 	margin-top:0px;
+	text-align: left;
 }
 #tab_jobs .job-description{
-	height: 280px;
+	height: 320px;
 	overflow:  hidden;
+}
+#tab_jobs .job-description .ellipsis{
+	display: block;
+	display: -webkit-box;
+	-webkit-line-clamp: 14;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #tab_jobs .block{
-	height: calc(100% - 50px);
+	height: 100%;
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
 	box-shadow: none !important;
+	height: calc(100% - 8px);
 }
 #tab_jobs h3{
 	width:100%;
@@ -797,9 +812,10 @@ button:disabled{
 #menu_job .toolbar-inner a{
 	min-width: 50px;
 }
-#menu_job .toolbar-inner a:nth-child(2){
-	margin: 0 20px;width: 50px !important;
-}
+/*#menu_job .toolbar-inner a:nth-child(2){
+	margin: 0 20px;
+	width: 50px !important;
+}*/
 #menu_job .toolbar-inner a i{
 	font-size: 20px;
 	text-align: -webkit-center;

@@ -635,23 +635,42 @@ jobs = {
 				jobSwiper.appendSlide(slides);
 				swipe = (_data.length<1)?false:true;	
 			}
+			else{
+				// 
+			}
 		});
+		jobSwiper.on('slideChange, transitionEnd', function(){
+			if((jobSwiper.slides).length == (jobSwiper.activeIndex + 1))
+				app.toolbar.hide('#menu_job');
+			else
+				app.toolbar.show('#menu_job');
+
+			if(jobSwiper.activeIndex >= 15){
+				setTimeout(function(){
+					jobSwiper.removeSlide([0,1,2,3,4]);
+				},1000);
+			}
+		});
+
 		jobSwiper.on('click',function(e){
-			let link = $(jobSwiper.clickedSlide).find(`a`).data();
 			if(e.target.localName == 'a'){
+				let link = e.target.dataset;
+				console.log(link);
 				if(link.cmd == 'read_company'){
 					localStorage.setItem('business',link.node);
 					view.router.navigate('/business/');
 				}
+				else if(link.cmd == 'read_job'){
+					localStorage.setItem('slide',link.node);
+					// view.router.navigate('/business/');
+				}
+				console.log(link.node);
+				// console.log($(jobSwiper.clickedSlide).find(`a[data-cmd="read_job"]`));
 			}
 		});
-		jobSwiper.on('slideChange, transitionEnd', function () {
-			if(jobSwiper.activeIndex == 15){
-				jobSwiper.removeSlide([0,1,2,3,4]);
-			}
+		$("#menu_job .job_next").on('click',function(){
+			jobSwiper.slideNext();
 		});
-
-		
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
@@ -684,12 +703,9 @@ jobs = {
 											</div>
 											<div class='row'>
 												<strong>Description</strong>
-												<p>${v[3]}</p>
+												<p class='ellipsis'>${v[3]}</p>
 											</div>
 										</div>
-									</div>
-									<div class="card-footer">
-										<button class="button col button-round">Read more</button>
 									</div>
 								</div>
 							</div>`);
@@ -723,12 +739,9 @@ jobs = {
 									</div>
 									<div class='row'>
 										<strong>Description</strong>
-										<p>${v[3]}</p>
+										<p class='ellipsis'>${v[3]}</p>
 									</div>
 								</div>
-							</div>
-							<div class="card-footer">
-								<button class="button col button-round">Read more</button>
 							</div>
 						</div>
 					</div>`;
@@ -738,7 +751,7 @@ jobs = {
 		}
 		return jobArr;
 	},
-	view:function(){
+	view:function(data){
 	},
 	viewCompany:function(){
 	}
