@@ -671,11 +671,19 @@ jobs = {
 			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
 			job.bookmark([job_id,account_id]);
 			jobSwiper.slideNext();
+			setTimeout(function(){
+				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
+				console.log('xxx');				
+			},1000);
 		});
 		$("#menu_job .job_apply").on('click',function(){
 			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
 			job.apply([job_id,account_id]);
 			jobSwiper.slideNext();
+			setTimeout(function(){
+				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
+				console.log('xxx');				
+			},1000);
 		});
 	},
 	process:function(data){
@@ -765,17 +773,37 @@ job = {
 		let data = JSON.parse(this.get(id));
 		this.display(data[0]);
 	},
-	get:function(id){
-		var ajax = system.ajax(system.host('get-jobById'),id);
+	get:function(data){
+		var ajax = system.ajax(system.host('get-jobById'),data);
 		return ajax.responseText;
 	},
-	bookmark:function(id){
-		var ajax = system.ajax(system.host('do-jobApply'),id);
-		return ajax.responseText;
+	bookmark:function(data){
+        var data = system.ajax(system.host('do-jobBookmark'),data);
+        data.done(function(data){
+            if(data == 1){
+                system.notification("Kareer","Done.");
+            }
+            else if(data == 2){
+                system.notification("Kareer","Done.");
+            }
+            else{
+                system.notification("Kareer","Failed to apply.");
+            }
+        });
 	},
-	apply:function(id){
-		var ajax = system.ajax(system.host('do-jobBookmark'),id);
-		return ajax.responseText;
+	apply:function(data){
+        var data = system.ajax(system.host('do-jobApply'),data);
+        data.done(function(data){
+            if(data == 1){
+                system.notification("Kareer","Application sent.");
+            }
+            else if(data == 2){
+                system.notification("Kareer","Already sent application to this job.");
+            }
+            else{
+                system.notification("Kareer","Failed to apply.");
+            }
+        });
 	},
 	display:function(data){
 		let skills = "", logo = "";
