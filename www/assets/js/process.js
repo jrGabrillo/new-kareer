@@ -663,16 +663,18 @@ jobs = {
 			jobSwiper.slideNext();
 		});
 		$("#menu_job .job_info").on('click',function(){
-			let id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
-			localStorage.setItem('job',id);
+			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			localStorage.setItem('job',job_id);
 			view.router.navigate('/job/');
 		});
 		$("#menu_job .job_bookmark").on('click',function(){
-			let id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
+			job.bookmark([job_id,account_id]);
 			jobSwiper.slideNext();
 		});
 		$("#menu_job .job_apply").on('click',function(){
-			let id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
+			job.apply([job_id,account_id]);
 			jobSwiper.slideNext();
 		});
 	},
@@ -755,11 +757,6 @@ jobs = {
 		}
 		return jobArr;
 	},
-	view:function(data){
-		console.log(data);
-	},
-	viewCompany:function(){
-	}
 }
 
 job = {
@@ -770,6 +767,14 @@ job = {
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-jobById'),id);
+		return ajax.responseText;
+	},
+	bookmark:function(id){
+		var ajax = system.ajax(system.host('do-jobApply'),id);
+		return ajax.responseText;
+	},
+	apply:function(id){
+		var ajax = system.ajax(system.host('do-jobBookmark'),id);
 		return ajax.responseText;
 	},
 	display:function(data){
