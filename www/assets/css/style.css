@@ -430,7 +430,6 @@ body {
 	height: calc(100% - 50px);
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
-	height: 100;
 	box-shadow: none !important;
 }
 #tab_jobs h3{
@@ -802,7 +801,7 @@ button:disabled{
 	margin: 0 20px;width: 50px !important;
 }
 #menu_job .toolbar-inner a i{
-	font-size:  30px;
+	font-size: 20px;
 	text-align: -webkit-center;
 	vertical-align:  middle;
 }
@@ -840,4 +839,12 @@ a[data-cmd="read_company"]{
 	margin: 1px;
 	overflow:  hidden;
 }
-#display_business .business-info, #display_business  .company-managers, #display_business  .company-description{margin-bottom: 20px;}
+#display_business .business-info, #display_business  .company-managers, #display_business  .company-description{
+	margin-bottom: 20px;
+}
+
+.text-gradient{
+	background: -webkit-linear-gradient(#6abc9c, #5b947e);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

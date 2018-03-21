@@ -650,6 +650,8 @@ jobs = {
 				jobSwiper.removeSlide([0,1,2,3,4]);
 			}
 		});
+
+		
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
@@ -749,7 +751,6 @@ search = {
 
 business = {
 	ini:function(){
-		console.log('business');
 		let id = localStorage.getItem('business');
 		let business_data = JSON.parse(this.get(id))[0], managers_data = JSON.parse(this.getManagers(id));
 		this.display([business_data, managers_data]);
@@ -763,12 +764,13 @@ business = {
 		return ajax.responseText;
 	},
 	display:function(data){
-		let	picture = "", logo  = ((typeof data[0][1] == 'object') || (data[0][1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[0][1]}`;
+		let	picture = "", tempPicture = `${server}/assets/images/logo/icon.png`, logo  = ((typeof data[0][1] == 'object') || (data[0][1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[0][1]}`;
+
 		$("#display_business .business-info img").attr({'src':logo});
 		$("#display_business .business-info .company .name").html(data[0][0]);
-		$("#display_business .business-info .company .address").html(data[0][2]);
-		$("#display_business .business-info .company .email").html(data[0][3]);
-		$("#display_business .business-info .company .phone").html(data[0][4]);
+		$("#display_business .business-info .company .address").html(`<strong>Address:</strong> ${data[0][2]}`);
+		$("#display_business .business-info .company .email").html(`<strong>Email:</strong> ${data[0][3]}`);
+		$("#display_business .business-info .company .phone").html(`<strong>Phone:</strong> ${data[0][4]}`);
 		$("#display_business .company-description .content").html(data[0][5]);
 
 		let manager_title = (data[1]>1)?'Managers':'Manager';
@@ -776,10 +778,11 @@ business = {
 		$.each(data[1],function(i,v){
 			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
 			$("#display_business .company-managers ul").append(`<li><img src="${picture}" width="100%"></li>`);
-			console.log(picture);
 		});
 
-		console.log(data);
+		$(`#display_business .company-managers ul li img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
 	}
 }
 
