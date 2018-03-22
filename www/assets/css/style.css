@@ -750,7 +750,7 @@ button:disabled{
 	padding: 0px 10px 10px 10px;
 	text-align:  left;
 	height: 500px;
-	/* width: 100%; */
+	width: 100%;
 	overflow: hidden!important;
 	position: absolute;
 }
@@ -839,7 +839,7 @@ a[data-cmd="read_company"]{
 #display_business .business-info .company, #display_job .business-info .company{
 	width: 70%;
 }
-#display_business h3, #display_business h4, #display_business h6, #display_job h3, #display_job h4, #display_job h6{
+#display_business h2, #display_business h3, #display_business h4, #display_business h6, #display_job h2, #display_job h3, #display_job h4, #display_job h6{
 	margin: 0px;
 	width:  100%;
 }

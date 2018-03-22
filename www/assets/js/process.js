@@ -74,7 +74,6 @@ account = {
 	display:function(data){
 		data = data[0];
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
-
 		$('#profile img').attr({'src':`${picture}`});
 		$('#profile h3.fullname').html(`${data[8]} ${data[10]} ${data[9]}`);
 		$('#profile p.about').html(data[1]);
@@ -224,7 +223,7 @@ skills = {
 		let id = localStorage.getItem('account_id');
 		$("a[data-cmd='deleteSkill']").on('click',function(){
 			let data = $(this).data();
-			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',data.node]);
+			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',id, data.node]);
 			ajax.done(function(_data){
 				if(_data == 1){
 					$(`#${data.node}`).remove();
@@ -966,11 +965,12 @@ signup = {
 				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
 				let data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
+					console.log(data);
 					if(data != 0){
 						localStorage.setItem('callback','kareer-oauth');
 						localStorage.setItem('account',data);
 						system.notification("Kareer","Success. You are now officially registered.");
-						view.router.navigate('/account/');
+						view.router.navigate('/signin/');
 					}
 					else{
 						system.notification("Kareer","Sign up failed.");
