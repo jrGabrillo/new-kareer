@@ -809,14 +809,14 @@ button:disabled{
 	left: 50%;
 	transform: translate(-125px);
 }
-#menu_job .toolbar-inner a{
+#menu_job .toolbar-inner a, #display_job .job-title a{
 	min-width: 0px;
+	display: inline-block;
 }
-/*#menu_job .toolbar-inner a:nth-child(2){
-	margin: 0 20px;
-	width: 50px !important;
-}*/
-#menu_job .toolbar-inner a i{
+#display_job .job-actions{
+	width: 100px;
+}
+#menu_job .toolbar-inner a i, #display_job .job-title a i{
 	font-size: 20px;
 	text-align: -webkit-center;
 	vertical-align:  middle;

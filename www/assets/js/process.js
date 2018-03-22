@@ -809,7 +809,11 @@ job = {
 
 		$("#display_job").html(`
             <div class="row job-title">
-                <h3>${data[0]} <small class="text-color-gray">${data[1]}</small></h3>
+                <h1>${data[0]} <small class="text-color-gray">${data[1]}</small></h1>
+                <div class="job-actions">
+	                <a class="button button-large button-fill button-round bg-color-gray job_bookmark"><i class='material-icons text-color-white'>bookmark</i></a>  
+		            <a class="button button-large button-fill button-round bg-color-green job_apply"><i class='material-icons text-color-white'>done</i></a> 
+                </div>
             </div>
             <div class="row job-skills">
                 <h4>Skills</h4>
