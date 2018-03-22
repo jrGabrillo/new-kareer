@@ -600,7 +600,6 @@ career = {
 
 jobs = {
 	ini:function(){
-		console.log('jobs initialized');
 	},
 	get:function(id,min,max){
 		min = ((typeof min == undefined) || (min == null))?0:min;
@@ -609,8 +608,7 @@ jobs = {
 		return ajax.responseText;
 	},
 	display:function(){
-		let id = localStorage.getItem('account_id');
-        let count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
+		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
 		let data = JSON.parse(jobs.get(id,min,count));
         let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
             flipEffect: {
@@ -623,7 +621,6 @@ jobs = {
             speed: 800,
             spaceBetween: 10,                    
         });
-
         slides = jobs.process(data);
 		jobSwiper.appendSlide(slides);
 		jobSwiper.init();
@@ -637,21 +634,66 @@ jobs = {
 				swipe = (_data.length<1)?false:true;	
 			}
 		});
+		jobSwiper.on('slideChange, transitionEnd', function(){
+			if((jobSwiper.slides).length == (jobSwiper.activeIndex + 1))
+				app.toolbar.hide('#menu_job');
+			else
+				app.toolbar.show('#menu_job');
+
+			if(jobSwiper.activeIndex >= 15){
+				setTimeout(function(){
+					jobSwiper.removeSlide([0,1,2,3,4]);
+				},1000);
+			}
+		});
+		jobSwiper.on('click',function(e){
+			if(e.target.localName == 'a'){
+				let link = e.target.dataset;
+				if(link.cmd == 'read_company'){
+					localStorage.setItem('business',link.node);
+					view.router.navigate('/business/');
+				}
+			}
+		});
+		$("#menu_job .job_next").on('click',function(){
+			jobSwiper.slideNext();
+		});
+		$("#menu_job .job_info").on('click',function(){
+			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			localStorage.setItem('job',job_id);
+			view.router.navigate('/job/');
+		});
+		$("#menu_job .job_bookmark").on('click',function(){
+			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
+			job.bookmark([job_id,account_id]);
+			jobSwiper.slideNext();
+			setTimeout(function(){
+				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
+				console.log('xxx');				
+			},1000);
+		});
+		$("#menu_job .job_apply").on('click',function(){
+			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
+			job.apply([job_id,account_id]);
+			jobSwiper.slideNext();
+			setTimeout(function(){
+				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
+				console.log('xxx');				
+			},1000);
+		});
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>1){
 			$.each(data,function(i,v){
 				skills = ""; random = Math.floor(Math.random() * 100) + 1;
-				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2} </div></div> `;});
+				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 				logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
-				jobArr.push(`<div class='swiper-slide'>
+				jobArr.push(`<div class='swiper-slide' data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
-										<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}" style="top: 10%;">
-											<i class="material-icons text-color-black">more_vert</i>
-										</a>							
+										<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[2]}">more_vert</a>
 										<div class='company'>
 											<div class='logo-holder'>
 												<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
@@ -671,12 +713,9 @@ jobs = {
 											</div>
 											<div class='row'>
 												<strong>Description</strong>
-												<p>${v[3]}</p>
+												<p class='ellipsis'>${v[3]}</p>
 											</div>
 										</div>
-									</div>
-									<div class="card-footer">
-										<button class="button col button-round">Read more</button>
 									</div>
 								</div>
 							</div>`);
@@ -684,15 +723,13 @@ jobs = {
 		}
 		else if(data.length==1){
 			skills = ""; v = data[0];
-			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2} </div></div> `;});
+			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 			logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
-			jobArr = `<div class='swiper-slide'>
+			jobArr = `<div class='swiper-slide' data-node='${v[0]}'>
 						<div class='card job'>
 							<div class='card-header align-items-flex-end'>
-								<a class="col button button-small button-fill button-round in-field-btn" data-cmd="read_company" data-node="${v[0]}" style="top: 10%;">
-									<i class="material-icons text-color-black">more_vert</i>
-								</a>							
 								<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
+								<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[0]}">more_vert</a>
 								<div class='company'>
 									<div class='logo-holder'>
 										<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
@@ -712,12 +749,9 @@ jobs = {
 									</div>
 									<div class='row'>
 										<strong>Description</strong>
-										<p>${v[3]}</p>
+										<p class='ellipsis'>${v[3]}</p>
 									</div>
 								</div>
-							</div>
-							<div class="card-footer">
-								<button class="button col button-round">Read more</button>
 							</div>
 						</div>
 					</div>`;
@@ -726,11 +760,118 @@ jobs = {
 			jobArr = `<div class='swiper-slide end'><h1 class="text-align-center text-color-white">No more job fetched.</h1></div>`;
 		}
 		return jobArr;
+	},
+}
+
+job = {
+	ini:function(){
+		let id = localStorage.getItem('job');
+		let data = JSON.parse(this.get(id));
+		this.display(data[0]);
+	},
+	get:function(data){
+		var ajax = system.ajax(system.host('get-jobById'),data);
+		return ajax.responseText;
+	},
+	bookmark:function(data){
+        var data = system.ajax(system.host('do-jobBookmark'),data);
+        data.done(function(data){
+            if(data == 1){
+                system.notification("Kareer","Done.");
+            }
+            else if(data == 2){
+                system.notification("Kareer","Done.");
+            }
+            else{
+                system.notification("Kareer","Failed to apply.");
+            }
+        });
+	},
+	apply:function(data){
+        var data = system.ajax(system.host('do-jobApply'),data);
+        data.done(function(data){
+            if(data == 1){
+                system.notification("Kareer","Application sent.");
+            }
+            else if(data == 2){
+                system.notification("Kareer","Already sent application to this job.");
+            }
+            else{
+                system.notification("Kareer","Failed to apply.");
+            }
+        });
+	},
+	display:function(data){
+		let skills = "", logo = "";
+		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
+		logo  = ((typeof data[8] == 'object') || (data[8] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[8]}`;
+
+		$("#display_job").html(`
+            <div class="row job-title">
+                <h3>${data[0]} <small class="text-color-gray">${data[1]}</small></h3>
+            </div>
+            <div class="row job-skills">
+                <h4>Skills</h4>
+                <div class="content">${skills}</div>
+            </div>
+            <div class="row job-salary">
+                <h4>Salary Range</h4>
+                <div class="content">${data[3]}</div>
+            </div>
+            <div class="row job-description">
+                <div class="content">${data[4]}</div>
+            </div>
+            <div class="row business-info">
+                <h6>About the company: <br/></h6>
+                <img src="${logo}" width='100%'>
+                <div class="company">
+                    <h3 class="name">${data[6]}</h3>
+                    <h6 class="address">${data[7]}</h6>
+                </div>
+            </div>
+		`);
 	}
 }
 
 search = {
 	ini:function(){
+	}
+}
+
+business = {
+	ini:function(){
+		let id = localStorage.getItem('business');
+		let business_data = JSON.parse(this.get(id))[0], managers_data = JSON.parse(this.getManagers(id));
+		this.display([business_data, managers_data]);
+	},
+	get:function(id){
+		var ajax = system.ajax(system.host('get-business'),id);
+		return ajax.responseText;
+	},
+	getManagers:function(id){
+		var ajax = system.ajax(system.host('get-businessManagers'),id);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let	picture = "", tempPicture = `${server}/assets/images/logo/icon.png`, logo  = ((typeof data[0][1] == 'object') || (data[0][1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[0][1]}`;
+
+		$("#display_business .business-info img").attr({'src':logo});
+		$("#display_business .business-info .company .name").html(data[0][0]);
+		$("#display_business .business-info .company .address").html(`<strong>Address:</strong> ${data[0][2]}`);
+		$("#display_business .business-info .company .email").html(`<strong>Email:</strong> ${data[0][3]}`);
+		$("#display_business .business-info .company .phone").html(`<strong>Phone:</strong> ${data[0][4]}`);
+		$("#display_business .company-description .content").html(data[0][5]);
+
+		let manager_title = (data[1]>1)?'Managers':'Manager';
+		$("#display_business .company-managers h4").html(manager_title);
+		$.each(data[1],function(i,v){
+			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
+			$("#display_business .company-managers ul").append(`<li><img src="${picture}" width="100%"></li>`);
+		});
+
+		$(`#display_business .company-managers ul li img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
 	}
 }
 

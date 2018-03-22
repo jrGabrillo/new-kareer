@@ -85,6 +85,8 @@ body {
 	position: absolute;
 	right: 0;
 	bottom: 0;
+	font-size: 15px;
+	background: #f00;
 }
 
 .ellipsis:after {
@@ -391,7 +393,14 @@ body {
 	margin: 0 auto;
 	text-shadow: 0px 0px 20px #fff;
 }
-
+#tab_jobs .swiper-slide{
+	
+height: 100%;
+}
+#tab_jobs .swiper-slide.end h1{
+	margin: 50% 0px;
+	opacity:  0.6;
+}
 #tab_jobs .card .information div{
 	overflow:  hidden;
 	text-overflow:  ellipsis;
@@ -407,12 +416,8 @@ body {
 }
 #tab_jobs .card .card-content{
 	 border-radius: 20px 20px 20px 20px;
-	 max-height: calc(100% - 10px);
+	 /* max-height: calc(100% - 0px); */
 	 margin: 10px auto;
-}
-#tab_jobs .swiper-slide.end h1{
-	margin: 50% 0px;
-	opacity:  0.6;
 }
 #tab_jobs .card .card-footer{
 	 background: #fff;
@@ -420,18 +425,27 @@ body {
 #tab_jobs .job-description p, #tab_jobs .job-description ul, #tab_jobs .job-description li{
 	font-size: 12px;
 	margin-top:0px;
+	text-align: left;
 }
 #tab_jobs .job-description{
-	height: 280px;
+	height: 320px;
 	overflow:  hidden;
+}
+#tab_jobs .job-description .ellipsis{
+	display: block;
+	display: -webkit-box;
+	-webkit-line-clamp: 14;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #tab_jobs .block{
-	height: calc(100% - 50px);
+	height: 100%;
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
-	height: 100;
 	box-shadow: none !important;
+	height: calc(100% - 8px);
 }
 #tab_jobs h3{
 	width:100%;
@@ -716,7 +730,7 @@ body {
 	/* position:  relative; */
 	/* transform: translate(-10px); */
 	/* opacity: 0.5; */
-	/* color: #000; */
+	color: #000;
 }
 .item-input-info{
 	width:100%;
@@ -733,10 +747,10 @@ button:disabled{
 }
 
 #profile .other-info{
-	padding: 0px 24px 24px 24px;
+	padding: 0px 10px 10px 10px;
 	text-align:  left;
 	height: 500px;
-	/* width: 100%; */
+	width: 100%;
 	overflow: hidden!important;
 	position: absolute;
 }
@@ -796,18 +810,73 @@ button:disabled{
 	transform: translate(-125px);
 }
 #menu_job .toolbar-inner a{
-	min-width: 50px;
+	min-width: 0px;
 }
-#menu_job .toolbar-inner a:nth-child(2){
-	margin: 0 20px;width: 50px !important;
-}
+/*#menu_job .toolbar-inner a:nth-child(2){
+	margin: 0 20px;
+	width: 50px !important;
+}*/
 #menu_job .toolbar-inner a i{
-	font-size:  30px;
+	font-size: 20px;
 	text-align: -webkit-center;
 	vertical-align:  middle;
-/*	background: -webkit-linear-gradient(left,#ca004b 0%, #4408f7 100%);
-	background: linear-gradient(to right,#ca004b 0%, #4408f7 100%);
+}
+a[data-cmd="read_company"]{
+	top: 10%;
+	z-index: 1001;
+}
+
+#display_job .job-description .content ul{
+	list-style: unset !important;
+}
+#display_business, #display_job{
+	padding: 10px 10px 300px 10px;
+}
+#display_business .business-info img, #display_job .business-info img{
+	width: 80px;		
+	height: 80px;
+}
+#display_business .business-info .company, #display_job .business-info .company{
+	width: 70%;
+}
+#display_business h2, #display_business h3, #display_business h4, #display_business h6, #display_job h2, #display_job h3, #display_job h4, #display_job h6{
+	margin: 0px;
+	width:  100%;
+}
+#display_business .company-description, #display_job .job-description, #display_job .company-description{
+	padding: 0px 0px 50px 0px;
+}
+#display_job .job-description, #display_job .job-skills, #display_job .job-salary, #display_job .job-title, #display_job .business-info{
+	padding: 0px 0px 20px 0px;
+}
+#display_job small{
+	display: block;
+	font-size: 10px;
+}
+#display_business ul:before, #display_business ul:after{
+	display: none;
+}
+#display_business ul li{
+	width:  50px;
+	height:  50px;
+	background:  #ccc;
+	border-radius:  50%;
+	float:  left;
+	margin: 1px;
+	overflow:  hidden;
+}
+#display_business .business-info, #display_business  .company-managers, #display_business  .company-description, #display_job .business-info, #display_job  .company-managers, #display_job  .company-description{
+	margin-bottom: 20px;
+}
+#display_job .business-info{
+	background: #9c27b01f;
+	padding: 10px;
+	border-radius: 5px;
+	margin: 0px 0px 100px 0px;
+}
+
+.text-gradient{
+	background: -webkit-linear-gradient(#6abc9c, #5b947e);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
-*/
 }

@@ -224,6 +224,26 @@ var routes = [
         }
     },
     {
+        path: '/business/',
+        url: './pages/business.html',
+        on: {
+            pageInit: function(e, page){
+                business.ini();
+                let ps_business = new PerfectScrollbar('#display_business');
+            }
+        }
+    },
+    {
+        path: '/job/',
+        url: './pages/job.html',
+        on: {
+            pageInit: function(e, page){
+                job.ini();
+                let ps_business = new PerfectScrollbar('#display_job');
+            }
+        }
+    },
+    {
         path: '(.*)',
         url: './pages/404.html',
     },

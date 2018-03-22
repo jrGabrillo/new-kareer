@@ -1,127 +1,30 @@
-<div class='page'>
-    <div class='toolbar tabbar '>
-        <div class='toolbar-inner'>
-            <a class='tab-link tab-link-active show-toolbar-account-menu hide-toolbar-search-menu' href='#tab_account'><i class='material-icons'>account_circle</i></a> 
-            <a class='tab-link hide-toolbar-account-menu show-toolbar-search-menu' href='#tab_jobs'><i class='material-icons'>business_center</i></a>
-            <a class='tab-link hide-toolbar-account-menu hide-toolbar-search-menu' href='#tab_search'><i class='material-icons'>search</i></a>
+<div class="page no-swipeback account-subpage" id='acad-info'>
+    <div class="navbar no-shadow">
+        <div class="navbar-inner sliding">
+            <div class="left">
+                <a class="link back"><i class='material-icons'>chevron_left</i></a>
+            </div>
         </div>
-    </div>
-    <div class="toolbar toolbar-bottom-md no-shadow bg-color-white" id='menu_account'>
-        <div class="toolbar-inner">
-            <a class="link" href='/account-info/'><i class='material-icons text-color-gray'>person</i></a> 
-            <a class="link" href='/messages/'><i class='material-icons text-color-gray'>mail</i></a> 
-            <a class="link" href='/bookmarks/'><i class='material-icons text-color-gray'>bookmark</i></a>  
-            <a class="link" href='/notifications/'><i class='material-icons text-color-gray'>notifications</i></a>  
-            <a class="link" href='/resume/'><i class='material-icons text-color-gray'>insert_drive_file</i></a>
-        </div>
-    </div>
-    <div class="toolbar toolbar-bottom-md no-shadow" id='menu_job'>
-        <div class="toolbar-inner">
-            <a class="col button button-large button-fill button-round bg-color-white"><i class='material-icons text-color-gray'>close</i></a> 
-            <a class="col button button-large button-fill button-round bg-color-white"><i class='material-icons text-color-gray'>bookmark</i></a>  
-            <a class="col button button-large button-fill button-round bg-color-white"><i class='material-icons text-color-gray'>work</i></a> 
-        </div>
-    </div>
-    <div class='tabs-animated-wrap'>
-        <div class='tabs'>
-            <div class='page-content tab tab-active' id='tab_account'>
-                <div class='block'>
-                    <div class='row'>
-                        <div id='profile' class="">
-                            <div class="row personal-info">
-                                <img src="" width='100%'>
-                                <h3 class='fullname'></h3>
-                            </div>
-                            <div class='bg-color-white align-self-stretch other-info'>
-                                <div class="row">
-                                    <h4>Skills</h4>
-                                    <div class="row"><div class="skills block"></div></div>
-                                </div>
-                                <div class="row">
-                                    <h4>About me</h4>
-                                    <p class="about"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    </div>  
+    <div class="page-content">
+        <div class="title">Business Information</div>
+        <div class="content bg-color-white" id='display_business'>
+            <div class="row business-info">
+                <img src="" width='100%'>
+                <div class="company">
+                    <h3 class="name"></h3>
+                    <h6 class="email"></h6>
+                    <h6 class="phone"></h6>
+                    <h6 class="address"></h6>
                 </div>
             </div>
-            <div class='page-content tab' id='tab_jobs'>
-                <div class='block'>
-                    <div class='swiper-container' data-slides-per-view="1" data-space-between="10">
-                        <div class='swiper-wrapper'></div>
-                    </div>
-                </div>
+            <div class="row company-managers">
+                <h4>Managers</h4>
+                <ul></ul>
             </div>
-            <div class='page-content tab' id='tab_search'>
-                <div class='block'>
-                    <div class='card'>
-                        <div class='card-header align-items-flex-end'>Skills</div>
-                        <div class='card-content card-content-padding align-self-stretch'>
-                            <div class="row">
-                                <form>
-                                    <div class="list">
-                                        <ul>
-                                            <li class="item-content item-input">
-                                                <div class="item-inner">
-                                                    <div class="item-input-wrap">
-                                                        <textarea class="resizable"></textarea>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class='block'>
-                    <div class='card'>
-                        <div class='card-header align-items-flex-end'>Location</div>
-                        <div class='card-content card-content-padding align-self-stretch'>
-                            <div class="row">
-                                <form>
-                                    <div class="list">
-                                        <ul>
-                                            <li class="item-content item-input">
-                                                <div class="item-inner">
-                                                    <div class="item-input-wrap">
-                                                        <textarea class="resizable"></textarea>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class='block'>
-                    <div class='card'>
-                        <div class='card-header align-items-flex-end'>Salary</div>
-                        <div class='card-content card-content-padding align-self-stretch'>
-                            <div class="row">
-                                <form>
-                                    <div class="list">
-                                        <ul>
-                                            <li class="item-content item-input">
-                                                <div class="item-inner">
-                                                    <div class="item-input-wrap" style="background: #fff;">
-                                                        <div class="range-slider range-slider-init" data-label="true">
-                                                            <input type="range" value="50" min="0" max="100" step="1">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="row company-description">
+                <h4>About the company</h4>
+                <div class="content"></div>
             </div>
         </div>
     </div>

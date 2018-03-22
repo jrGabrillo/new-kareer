@@ -7,9 +7,9 @@ var app = new Framework7({
 });
 var view = app.views.create('.view-main');
 
+// view.router.navigate('/job/'); 
 // view.router.navigate('/account/');
 view.router.navigate('/home/');
-// view.router.navigate('/account/');
 // setTimeout(function () {
 //   app.preloader.hide();
 // }, 3000);
