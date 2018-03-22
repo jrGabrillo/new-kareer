@@ -834,6 +834,15 @@ job = {
                 </div>
             </div>
 		`);
+
+		$("#display_job .job_bookmark").on('click',function(){
+			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			job.bookmark([job_id,account_id]);
+		});
+		$("#display_job .job_apply").on('click',function(){
+			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			job.apply([job_id,account_id]);
+		});
 	}
 }
 
