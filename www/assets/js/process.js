@@ -40,6 +40,7 @@ account = {
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
+
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
@@ -962,10 +963,10 @@ signin = {
 				var _form = $(form).serializeArray();
                 var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
                 data.done(function(data){
-                	console.log(data);
                     data = JSON.parse(data);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
+						localStorage.setItem('account',JSON.stringify(data[2]));
                         view.router.navigate('/account/');                        
                     }
                     else{
