@@ -165,6 +165,8 @@ var routes = [
         url: './pages/bookmarks.html',
         on: {
             pageInit: function(e, page){
+                bookmark.ini();
+                let ps = new PerfectScrollbar('#list_bookmarks');
                 console.log('bookmark');
             }
         }

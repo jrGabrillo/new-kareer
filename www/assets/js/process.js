@@ -808,11 +808,7 @@ job = {
 
 		$("#display_job").html(`
             <div class="row job-title">
-                <h1>${data[0]} <small class="text-color-gray">${data[1]}</small></h1>
-                <div class="job-actions">
-	                <a class="button button-large button-fill button-round bg-color-gray job_bookmark"><i class='material-icons text-color-white'>bookmark</i></a>  
-		            <a class="button button-large button-fill button-round bg-color-green job_apply"><i class='material-icons text-color-white'>done</i></a> 
-                </div>
+                <h3>${data[0]} <small class="text-color-gray">${data[1]}</small></h3>
             </div>
             <div class="row job-skills">
                 <h4>Skills</h4>
@@ -834,18 +830,48 @@ job = {
                 </div>
             </div>
 		`);
-
-		$("#display_job .job_bookmark").on('click',function(){
-			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
-			job.bookmark([job_id,account_id]);
-		});
-		$("#display_job .job_apply").on('click',function(){
-			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
-			job.apply([job_id,account_id]);
-		});
 	}
 }
+/*othan */
+bookmark ={
+	ini:function(){
+		let id =  localStorage.getItem('account_id');
+		let data = JSON.parse(this.get(id));
+		this.display(data);
+	},
+	get:function(data){
+		var ajax = system.ajax(system.host('get-bookmarks'),data);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let	picture = "", id="";
+		$.each(data,function(i,v){
+			console.log(v);
+			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
+			$('#list_bookmarks ul li').append(`
+				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
+					<div class="item-media"><img src="${picture}" width="44"/></div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title">
+								${v[1]}
+							</div>
+						</div>
+						<div class="item-subtitle">
+							${v[3]} | <small>1 day ago</small>
+						</div>
+					</div>
+				</a>`);
 
+		})			
+			$(`a[data-cmd='job-info']`).on('click',function(){
+				id = $(this).data('node');
+				localStorage.setItem('job',id);
+				view.router.navigate('/job/');
+			});
+	}
+}
+/**/
 search = {
 	ini:function(){
 	}
@@ -974,7 +1000,6 @@ signup = {
 				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
 				let data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
-					console.log(data);
 					if(data != 0){
 						localStorage.setItem('callback','kareer-oauth');
 						localStorage.setItem('account',data);
