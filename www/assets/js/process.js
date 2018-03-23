@@ -1,7 +1,8 @@
 let server = "http://localhost/kareer";
 account = {
 	ini:function(){
-		let data = this.get();
+		let data = this.get()[0];
+        localStorage.setItem('account_id',data[0]);
 		this.display(data);
         jobs.display();
 		app.toolbar.hide('#menu_job');
@@ -45,7 +46,6 @@ account = {
 		let data = this.get()[0];
         let ps = new PerfectScrollbar('#display_info .content');
 		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-        localStorage.setItem('account_id',data[0]);
         $("#display_accountLogin").addClass(auth);
 
         $("#field_fname").val(data[8]);
@@ -72,7 +72,6 @@ account = {
         this.update();
 	},
 	display:function(data){
-		data = data[0];
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
 		$('#profile img').attr({'src':`${picture}`});
 		$('#profile h3.fullname').html(`${data[8]} ${data[10]} ${data[9]}`);
@@ -148,6 +147,7 @@ account = {
 skills = {
 	get:function(id){
 		var ajax = system.ajax(system.host('get-skills'),id);
+		console.log()
 		return ajax.responseText;
 	},
 	display:function(){
@@ -622,6 +622,7 @@ jobs = {
             spaceBetween: 10,                    
         });
         slides = jobs.process(data);
+
 		jobSwiper.appendSlide(slides);
 		jobSwiper.init();
 		jobSwiper.on('reachEnd',function(){

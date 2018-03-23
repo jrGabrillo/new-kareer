@@ -750,9 +750,10 @@ button:disabled{
 	padding: 0px 10px 10px 10px;
 	text-align:  left;
 	height: 500px;
-	/* width: 100%; */
+	width: 100%;
 	overflow: hidden!important;
 	position: absolute;
+	box-sizing: border-box;
 }
 
 #display_skills ul li:nth-child(1){
