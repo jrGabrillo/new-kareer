@@ -3,7 +3,7 @@
 		<script>
 	        let get = localStorage.getItem('callback');
 
-	        if(get == "fb-oauth"){
+	        if(get == "fb-auth"){
 	            window.opener.openFB.oauthCallback(window.location.href);
 	            window.close();
 	        }

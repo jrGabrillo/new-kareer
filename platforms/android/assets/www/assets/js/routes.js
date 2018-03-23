@@ -2,6 +2,19 @@ var routes = [
     {
         path: '/home/',
         url: './pages/home.html',
+        on: {
+            pageInit: function(e,page){
+                setTimeout(function(){
+                    let callback = localStorage.getItem('callback'), account = localStorage.getItem('account');
+                    if(account == null)
+                        view.router.navigate('/signin/');  
+                    else
+                        account = JSON.parse(account);
+
+                    auth.auto(account['email'],account['id'],callback);
+                },1000);
+            }
+        }
     },
     {
         path: '/signin/',
@@ -14,18 +27,14 @@ var routes = [
                         document.getElementById('signin_gmail'),
                         function(){
                             system.notification('Google','You are now signed in');
-                            let profile = JSON.parse(localStorage.getItem('account'));
-                            let form = [profile.email,profile.id];
-                            signup.auth(form);
-                    });
+                            view.router.navigate('/account/');     
+                        }
+                    );
                 });
                 $("#signin_facebook").on('click', function() {
                     fb.login(function(){
                         system.notification('Facebook','You are now signed in');
-                        console.log('hello world');
-                            let profile = JSON.parse(localStorage.getItem('account'));
-                            let form = [profile.email,profile.id];
-                            signup.auth(form);
+                        view.router.navigate('/account/');     
                     });
                 });
             }
@@ -43,7 +52,8 @@ var routes = [
                         function(){
                             system.notification('Google','You are now signed in');
                             view.router.navigate('/signup-auth/');
-                    });
+                        }
+                    );
                 });
                 $("#signin_facebook").on('click', function() {
                     fb.login(function(){
@@ -68,13 +78,12 @@ var routes = [
                 else{
                     setTimeout(function(){
                         let profile = JSON.parse(localStorage.getItem('account')),auth = localStorage.getItem('callback');
-                        if(auth == 'google-auth')
+                        if(auth == 'google-oauth')
                             $("#form_signupAuth img#display_logo").attr({'src':'assets/img/icons/google.png'});
                         else
                             $("#form_signupAuth img#display_logo").attr({'src':'assets/img/icons/facebook.png'});
 
                         $("#form_signupAuth img#display_picture").attr({'src':profile.picture});
-
                         $("#form_signupAuth input[name='field_firstname']").val(profile.first_name);
                         $("#form_signupAuth input[name='field_lastname']").val(profile.last_name);
                         $("#form_signupAuth input[name='field_firstname']").parents('.item-content').addClass('item-input-focused');
@@ -85,14 +94,13 @@ var routes = [
                         }
 
                         $("#form_signupAuth form").attr({style:'display:block;'});
-
                         setTimeout(function(){
                             form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
                             let data = system.ajax(system.host('do-signUp'),form);
                             data.done(function(data){
                                 if(data == 1){
                                     system.notification("Kareer","Success. You are now officially registered.");
-                                    view.router.navigate('/account/');                        
+                                    view.router.navigate('/signin/');                        
                                 }
                                 else if(data == 2){
                                     view.router.navigate('/signin/');                        
@@ -113,20 +121,9 @@ var routes = [
         url: './pages/account.html',
         on: {
             pageInit: function(e, page){
-                // account.ini();
-                jobs.display();
-                var mySwiper = new Swiper('#tab_jobs .swiper-container', {
-                    speed: 800,
-                    spaceBetween: 10,
-                });
-                let ps = new PerfectScrollbar("#about p");
-                $('#display_jobs .card-content')
-                    .each(function() {
-                        ps = new PerfectScrollbar(this);
-                    })
-                app.tab.show('#tab_jobs', true);
-                // var view = app.views.create('#tab_jobs');
-                // view.router.navigate('/signup/');
+                setTimeout(function(){
+                    account.ini();
+                },1000);
             }
         }
     },
@@ -135,7 +132,7 @@ var routes = [
         url: './pages/account-info.html',
         on: {
             pageInit: function(e, page){
-                console.log('info');
+                account.settingsDisplay();
             }
         }
     },
@@ -144,7 +141,10 @@ var routes = [
         url: './pages/career-info.html',
         on: {
             pageInit: function(e, page){
-                console.log('career');
+                let ps_list_schools = new PerfectScrollbar('#list_jobs .content');
+                let ps_newAcad = new PerfectScrollbar('.popup-newCareer');
+                let ps_acad = new PerfectScrollbar('.popup-career');
+                career.ini();
             }
         }
     },
@@ -153,7 +153,10 @@ var routes = [
         url: './pages/academic-info.html',
         on: {
             pageInit: function(e, page){
-                console.log('academic');
+                let ps_list_career = new PerfectScrollbar('#list_schools .content');
+                let ps_newCareer = new PerfectScrollbar('.popup-newAcad');
+                let ps_career = new PerfectScrollbar('.popup-acad');
+                academic.ini();
             }
         }
     },
@@ -162,6 +165,8 @@ var routes = [
         url: './pages/bookmarks.html',
         on: {
             pageInit: function(e, page){
+                bookmark.ini();
+                let ps = new PerfectScrollbar('#list_bookmarks');
                 console.log('bookmark');
             }
         }
@@ -217,6 +222,26 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 let ps = new PerfectScrollbar('.messages-content');
+            }
+        }
+    },
+    {
+        path: '/business/',
+        url: './pages/business.html',
+        on: {
+            pageInit: function(e, page){
+                business.ini();
+                let ps_business = new PerfectScrollbar('#display_business');
+            }
+        }
+    },
+    {
+        path: '/job/',
+        url: './pages/job.html',
+        on: {
+            pageInit: function(e, page){
+                job.ini();
+                let ps_business = new PerfectScrollbar('#display_job');
             }
         }
     },
