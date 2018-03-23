@@ -123,7 +123,7 @@ var routes = [
             pageInit: function(e, page){
                 setTimeout(function(){
                     account.ini();
-                });
+                },1000);
             }
         }
     },
