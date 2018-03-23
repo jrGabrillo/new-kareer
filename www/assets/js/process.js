@@ -809,7 +809,11 @@ job = {
 
 		$("#display_job").html(`
             <div class="row job-title">
-                <h3>${data[0]} <small class="text-color-gray">${data[1]}</small></h3>
+                <h1>${data[0]} <small class="text-color-gray">${data[1]}</small></h1>
+                <div class="job-actions">
+	                <a class="button button-large button-fill button-round bg-color-gray job_bookmark"><i class='material-icons text-color-white'>bookmark</i></a>  
+		            <a class="button button-large button-fill button-round bg-color-green job_apply"><i class='material-icons text-color-white'>done</i></a> 
+                </div>
             </div>
             <div class="row job-skills">
                 <h4>Skills</h4>
@@ -831,6 +835,15 @@ job = {
                 </div>
             </div>
 		`);
+
+		$("#display_job .job_bookmark").on('click',function(){
+			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			job.bookmark([job_id,account_id]);
+		});
+		$("#display_job .job_apply").on('click',function(){
+			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			job.apply([job_id,account_id]);
+		});
 	}
 }
 /*othan */
