@@ -830,7 +830,7 @@ job = {
                 <div class="content">${data[3]} - ${data[4]}</div>
             </div>
             <div class="row job-description">
-                <div class="content">${data[5]}</div>
+                <div class="content ">${data[5]}</div>
             </div>
             <div class="row business-info">
                 <h6>About the company: <br/></h6>
