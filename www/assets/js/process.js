@@ -40,7 +40,6 @@ account = {
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
-
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
@@ -686,7 +685,6 @@ jobs = {
 		});
 	},
 	process:function(data){
-		console.log(data);
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>1){
 			$.each(data,function(i,v){
