@@ -609,6 +609,7 @@ jobs = {
 		return ajax.responseText;
 	},
 	display:function(){
+
 		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
 		let data = JSON.parse(jobs.get(id,min,count));
         let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
@@ -685,6 +686,7 @@ jobs = {
 		});
 	},
 	process:function(data){
+		console.log(data);
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>1){
 			$.each(data,function(i,v){
@@ -769,7 +771,7 @@ job = {
 	ini:function(){
 		let id = localStorage.getItem('job');
 		let data = JSON.parse(this.get(id));
-		console.log(data[0]);
+		console.log(this.get(id));
 		this.display(data[0]);
 	},
 	get:function(data){
@@ -805,6 +807,7 @@ job = {
         });
 	},
 	display:function(data){
+		console.log(data);
 		let skills = "", logo = "";
 		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
 		logo  = ((typeof data[8] == 'object') || (data[8] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[8]}`;
