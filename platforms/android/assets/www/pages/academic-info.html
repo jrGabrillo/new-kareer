@@ -1,95 +1,77 @@
-<div class="page no-swipeback account-subpage" id='career-info'>
+<div class="page no-swipeback account-subpage" id='acad-info'>
 	<div class="navbar no-shadow">
 		<div class="navbar-inner sliding">
 			<div class="left">
 				<a class="link back"><i class='material-icons'>chevron_left</i></a>
 			</div>
-			<div class="title">Academic Information</div>
 		</div>
 	</div>	
-    <div class="page-content"> 
-        <div class="content">
-            <div id="list_schools">
-            	<div class="card">
-	                <div class='card-content card-content-padding align-self-stretch'>
-						<div class="list media-list">
-							<ul>
-								<li>
-									<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
-										<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div class="item-title">
-													Macabito Elementary School
-												</div>
-											</div>
-											<div class="item-subtitle">
-												2001-2006
-											</div>
-										</div>
-									</a>
-								</li>
-								<li>
-									<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
-										<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div class="item-title">
-													Calasiao Comprehensive National High School
-												</div>
-											</div>
-											<div class="item-subtitle">
-												2006-2010
-											</div>
-										</div>
-									</a>
-								</li>
-								<li>
-									<a class="item-link item-content popup-open" href="#" data-popup=".popup-acad">
-										<div class="item-media"><i class='material-icons text-color-gray'>school</i></div>
-										<div class="item-inner">
-											<div class="item-title-row">
-												<div class="item-title">
-													Pangasinan State University
-												</div>
-											</div>
-											<div class="item-subtitle">
-												2011-2015
-											</div>
-										</div>
-									</a>
-								</li>
-							</ul>
-						</div>
-	                </div>
-	            </div>
-            </div>
-
-            <div class='card no-bg'>
-	            <a class="col button button-fill button-round bg-color-white text-color-gray popup-open"  href="#" data-popup=".popup-newAcad">Add</a>
-            </div>
+    <div class="page-content list" id="list_schools">
+		<div class="title">Academic Information
+            <a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" data-popup=".popup-newAcad">
+            	<i class='material-icons'>add_circle_outline</i>
+           	</a>
+		</div>
+	    <div class="content accordion-list bg-color-white">
+			<div class="list media-list">
+				<ul>
+	        		<li>
+		        		<a class="col button button-small button-fill button-round in-field-btn popup-open" data-popup=".popup-newAcad">
+			            	<i class='material-icons'>add_circle_outline</i>
+			           	</a>
+	        		</li>					
+				</ul>
+			</div>
         </div>
     </div>
 	<div class="popup popup-acad">
-		<div class="navbar no-shadow">
-			<div class="navbar-inner sliding">
-				<div class="left">
-					<a class="link popup-close" href="#"><i class='material-icons'>close</i></a>
-				</div>
-				<div class="title">Academic Information</div>
-			</div>
-		</div>
         <div class='card'>
-            <div class='card-header align-items-flex-end'><i>Date will be saved automatically.</i></div>
+        	<div class="card-header">
+        		Academic Information
+				<div class="right">
+					<a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+				</div>
+        	</div>
             <div class='card-content card-content-padding align-self-stretch'>
-		        <form>
+		        <form id="form_updateAcad">
 		            <div class="list">
 		                <ul>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
+		                            <div class="item-title item-label">Level</div>
+		                            <div class="item-input-wrap">
+		                            	<select id='field_acad_level' name='field_acad_level' data-cmd='field' data-prop='field_acad_level' disabled="">
+		                            		<option>Elementary</option>
+		                            		<option>High School</option>
+		                            		<option>Vocational</option>
+		                            		<option>College</option>
+		                            		<option>Masters</option>
+		                            		<option>Doctorate</option>
+		                            	</select>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
 		                            <div class="item-title item-label">School</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="Name of school here">
+                                        <textarea class="resizable" id='field_acad_school' name='field_acad_school' data-cmd='field' data-prop='field_acad_school'></textarea>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input" id='display_acad_fielddegree'>
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Degree</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="null" id='field_acad_degree' name='field_acad_degree' data-cmd='field' data-prop='field_acad_degree'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input" id='display_acad_fieldunit'>
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Units</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="null" id='field_acad_units' name='field_acad_units' data-cmd='field' data-prop='field_acad_units'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -97,7 +79,7 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Year Started</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="January 01, 2018">
+		                                <input type="text" id='field_acad_yearfrom' name='field_acad_yearfrom' data-cmd='field' data-prop='field_acad_yearfrom'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -105,46 +87,69 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Year Ended</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="January 01, 2018">
+		                                <input type="text" id='field_acad_yearto' name='field_acad_yearto' data-cmd='field' data-prop='field_acad_yearto'>
 		                            </div>
 		                        </div>
 		                    </li>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                            <div class="item-title item-label">Remarks</div>
-		                            <div class="item-input-wrap">
-                                        <textarea class="resizable" placeholder="New skills"></textarea>
-		                            </div>
+					                <button class="col button button-round bg-color-white">Save</button>
 		                        </div>
 		                    </li>
 		                </ul>
 		            </div>
-		            <!-- <div class="block">
-		                <button class="col button button-fill button-round">Save</button>
-		            </div> -->
 		        </form>
             </div>
         </div>
 	</div>
 	<div class="popup popup-newAcad">
-		<div class="navbar no-shadow">
-			<div class="navbar-inner sliding">
-				<div class="left">
-					<a class="link popup-close" href="#"><i class='material-icons'>close</i></a>
-				</div>
-				<div class="title">New Academic Information</div>
-			</div>
-		</div>
         <div class='card'>
+        	<div class="card-header">
+        		Adding Academic Information
+				<div class="right">
+					<a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+				</div>
+        	</div>
             <div class='card-content card-content-padding align-self-stretch'>
-		        <form>
+		        <form id='form_newAcad'>
 		            <div class="list">
 		                <ul>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
+		                            <div class="item-title item-label">Level</div>
+		                            <div class="item-input-wrap">
+		                            	<select id='field_newacad_level' name='field_newacad_level' data-cmd='field' data-prop='field_newacad_level'>
+		                            		<option>Elementary</option>
+		                            		<option>High School</option>
+		                            		<option>Vocational</option>
+		                            		<option>College</option>
+		                            		<option>Masters</option>
+		                            		<option>Doctorate</option>
+		                            	</select>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
 		                            <div class="item-title item-label">School</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="">
+		                                <input type="text" id='field_newacad_newschool' name='field_newacad_newschool' data-cmd='field' data-prop='field_newacad_newschool'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input" id='display_newacad_fielddegree'>
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Degree</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="null" id='field_newacad_degree' name='field_newacad_degree' data-cmd='field' data-prop='field_newacad_degree'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input" id='display_newacad_fieldunit'>
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Units</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" value="null" id='field_newacad_units' name='field_newacad_units' data-cmd='field' data-prop='field_newacad_units'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -152,7 +157,7 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Year Started</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="">
+		                                <input type="text" id='field_newacad_newyearfrom' name='field_newacad_newyearfrom' data-cmd='field' data-prop='field_newacad_newyearfrom'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -160,22 +165,16 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Year Ended</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" value="">
+		                                <input type="text" id='field_newacad_newyearto' name='field_newacad_newyearto' data-cmd='field' data-prop='field_newacad_newyearto'>
 		                            </div>
 		                        </div>
 		                    </li>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                            <div class="item-title item-label">Remarks</div>
-		                            <div class="item-input-wrap">
-                                        <textarea class="resizable"></textarea>
-		                            </div>
+					                <button class="col button button-round bg-color-white">Save</button>
 		                        </div>
 		                    </li>
 		                </ul>
-		            </div>
-		            <div class="block">
-		                <button class="col button button-fill button-round">Save</button>
 		            </div>
 		        </form>
             </div>

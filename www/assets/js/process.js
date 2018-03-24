@@ -609,6 +609,7 @@ jobs = {
 		return ajax.responseText;
 	},
 	display:function(){
+
 		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
 		let data = JSON.parse(jobs.get(id,min,count));
         let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
@@ -685,6 +686,7 @@ jobs = {
 		});
 	},
 	process:function(data){
+		console.log(data);
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>1){
 			$.each(data,function(i,v){
@@ -769,6 +771,7 @@ job = {
 	ini:function(){
 		let id = localStorage.getItem('job');
 		let data = JSON.parse(this.get(id));
+		console.log(this.get(id));
 		this.display(data[0]);
 	},
 	get:function(data){
@@ -804,13 +807,18 @@ job = {
         });
 	},
 	display:function(data){
+		console.log(data);
 		let skills = "", logo = "";
 		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
 		logo  = ((typeof data[8] == 'object') || (data[8] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[8]}`;
 
 		$("#display_job").html(`
             <div class="row job-title">
-                <h3>${data[0]} <small class="text-color-gray">${data[1]}</small></h3>
+                <h1>${data[0]} <small class="text-color-gray">${data[1]}</small></h1>
+                <div class="job-actions">
+	                <a class="button button-large button-fill button-round bg-color-gray job_bookmark"><i class='material-icons text-color-white'>bookmark</i></a>  
+		            <a class="button button-large button-fill button-round bg-color-green job_apply"><i class='material-icons text-color-white'>done</i></a> 
+                </div>
             </div>
             <div class="row job-skills">
                 <h4>Skills</h4>
@@ -832,6 +840,15 @@ job = {
                 </div>
             </div>
 		`);
+
+		$("#display_job .job_bookmark").on('click',function(){
+			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			job.bookmark([job_id,account_id]);
+		});
+		$("#display_job .job_apply").on('click',function(){
+			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			job.apply([job_id,account_id]);
+		});
 	}
 }
 /*othan */
@@ -848,9 +865,8 @@ bookmark ={
 	display:function(data){
 		let	picture = "", id="";
 		$.each(data,function(i,v){
-			console.log(v);
 			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
-			$('#list_bookmarks ul li').append(`
+			$('#list_bookmarks ul').append(`
 				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
 					<div class="item-media"><img src="${picture}" width="44"/></div>
 					<div class="item-inner">
@@ -860,7 +876,7 @@ bookmark ={
 							</div>
 						</div>
 						<div class="item-subtitle">
-							${v[3]} | <small>1 day ago</small>
+							${v[3]} | <small>${v[4]}</small>
 						</div>
 					</div>
 				</a>`);
