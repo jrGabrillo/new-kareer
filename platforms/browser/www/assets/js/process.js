@@ -1,4 +1,7 @@
-let server = "http://localhost/kareer";
+let host = window.location;
+let server = `http://system.kareer-ph.com/`;
+
+console.log(`${server}/assets/images/logo/icon.png`);
 account = {
 	ini:function(){
 		let data = this.get()[0];
@@ -605,11 +608,9 @@ jobs = {
 		min = ((typeof min == undefined) || (min == null))?0:min;
 		max = ((typeof max == undefined) || (max == null))?10:max;
 		var ajax = system.ajax(system.host('get-jobs'),[id,min,max]);
-		console.log(ajax);
 		return ajax.responseText;
 	},
 	display:function(){
-
 		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
 		let data = JSON.parse(jobs.get(id,min,count));
         let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
