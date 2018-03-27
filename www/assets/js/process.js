@@ -1,7 +1,5 @@
 let host = window.location;
 let server = `http://system.kareer-ph.com/`;
-
-console.log(`${server}/assets/images/logo/icon.png`);
 account = {
 	ini:function(){
 		let data = this.get()[0];
