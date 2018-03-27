@@ -73,6 +73,7 @@ account = {
 
 		skills.display();
         this.update();
+        this.logout();
 	},
 	display:function(data){
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
@@ -144,6 +145,17 @@ account = {
 				});
 			}
 		})
+	},
+	logout:function(){
+		$("a[ data-cmd='logout']").on('click',function(){
+			console.log('logout');
+			localStorage.removeItem('account');
+			localStorage.removeItem('account_id');
+			localStorage.removeItem('business_id');
+			system.notification("Kareer",`Logout.`);
+			view.router.navigate('/home/');
+		});
+
 	}
 }
 
