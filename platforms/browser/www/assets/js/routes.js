@@ -6,12 +6,10 @@ var routes = [
             pageInit: function(e,page){
                 setTimeout(function(){
                     let callback = localStorage.getItem('callback'), account = localStorage.getItem('account');
-                    if(account == null)
-                        view.router.navigate('/signin/');  
-                    else
+                    if(account != null){
                         account = JSON.parse(account);
-
-                    auth.auto(account['email'],account['id'],callback);
+                        auth.auto(account['email'],account['id'],callback);
+                    }
                 },1000);
             }
         }

@@ -1,4 +1,7 @@
-let server = "http://localhost/kareer";
+let host = window.location;
+let server = `http://system.kareer-ph.com/`;
+
+console.log(`${server}/assets/images/logo/icon.png`);
 account = {
 	ini:function(){
 		let data = this.get()[0];
@@ -40,7 +43,6 @@ account = {
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
-
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
@@ -609,7 +611,6 @@ jobs = {
 		return ajax.responseText;
 	},
 	display:function(){
-
 		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
 		let data = JSON.parse(jobs.get(id,min,count));
         let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
@@ -686,13 +687,13 @@ jobs = {
 		});
 	},
 	process:function(data){
-		console.log(data);
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>1){
 			$.each(data,function(i,v){
+				console.log(v);
 				skills = ""; random = Math.floor(Math.random() * 100) + 1;
 				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
-				logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
+				logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
 				jobArr.push(`<div class='swiper-slide' data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
@@ -703,7 +704,7 @@ jobs = {
 												<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
 											</div>
 											<div class='information'>
-												<h3>${v[8]}<br/><small>${v[10]}</small></h3>
+												<h3>${v[9]}<br/><small>${v[11]}</small></h3>
 											</div>
 										</div>
 									</div>
@@ -728,7 +729,7 @@ jobs = {
 		else if(data.length==1){
 			skills = ""; v = data[0];
 			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
-			logo  = ((typeof v[9] == 'object') || (v[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[9]}`;
+			logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
 			jobArr = `<div class='swiper-slide' data-node='${v[0]}'>
 						<div class='card job'>
 							<div class='card-header align-items-flex-end'>
@@ -739,7 +740,7 @@ jobs = {
 										<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
 									</div>
 									<div class='information'>
-										<h3>${v[8]}<br/><small>${v[10]}</small></h3>
+										<h3>${v[9]}<br/><small>${v[11]}</small></h3>
 									</div>
 								</div>
 							</div>
@@ -771,7 +772,6 @@ job = {
 	ini:function(){
 		let id = localStorage.getItem('job');
 		let data = JSON.parse(this.get(id));
-		console.log(this.get(id));
 		this.display(data[0]);
 	},
 	get:function(data){
@@ -810,7 +810,7 @@ job = {
 		console.log(data);
 		let skills = "", logo = "";
 		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
-		logo  = ((typeof data[8] == 'object') || (data[8] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[8]}`;
+		logo  = ((typeof data[9] == 'object') || (data[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[9]}`;
 
 		$("#display_job").html(`
             <div class="row job-title">
@@ -826,17 +826,17 @@ job = {
             </div>
             <div class="row job-salary">
                 <h4>Salary Range</h4>
-                <div class="content">${data[3]}</div>
+                <div class="content">${data[3]} - ${data[4]}</div>
             </div>
             <div class="row job-description">
-                <div class="content">${data[4]}</div>
+                <div class="content ">${data[5]}</div>
             </div>
             <div class="row business-info">
                 <h6>About the company: <br/></h6>
                 <img src="${logo}" width='100%'>
                 <div class="company">
-                    <h3 class="name">${data[6]}</h3>
-                    <h6 class="address">${data[7]}</h6>
+                    <h3 class="name">${data[7]}</h3>
+                    <h6 class="address">${data[8]}</h6>
                 </div>
             </div>
 		`);
