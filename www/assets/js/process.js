@@ -40,6 +40,8 @@ account = {
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
+		console.log(data);
+		(data[0] == null)?account.logout():"";
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
 		return JSON.parse(data.responseText);
 	},
@@ -222,15 +224,9 @@ account = {
         }
     },
 	logout:function(){
-		$("a[ data-cmd='logout']").on('click',function(){
-			console.log('logout');
-			localStorage.removeItem('account');
-			localStorage.removeItem('account_id');
-			localStorage.removeItem('business_id');
-			system.notification("Kareer",`Logout.`);
-			view.router.navigate('/home/');
-		});
-
+		localStorage.clear();
+		// system.notification("Kareer",`Logout.`);
+		view.router.navigate('/home/');
 	}
 }
 
