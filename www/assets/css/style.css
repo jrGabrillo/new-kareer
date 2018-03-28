@@ -244,13 +244,13 @@ body {
 #profile.active h3.fullname{
 	margin:0px;
 	width: 250px;
-	left: 20px;
+	left: 70px;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-10px);
 	transition: 0.5s;
 	color: #fff;
-	/* text-align: left; */
+	text-align: left;
 	font-size: 15px;
 }
 /**/
@@ -798,6 +798,7 @@ button:disabled{
 
 .link.popup-close.in-field-btn{
 	background: transparent !important;
+	position: absolute !important;
 }
 
 #list_schools .media-list li a.popup-open.in-field-btn i, #list_jobs .media-list li a.popup-open.in-field-btn i{
@@ -899,4 +900,54 @@ a[data-cmd="read_company"]{
 	position: absolute;
 	transition: 0.4s;
 	z-index: 1;
+}
+
+#display_personal_info ul li:last-child{
+padding-bottom: 50px;
+}
+
+#display_accountPicture img{
+	width: 100px;
+	left: 50%;
+	transform: translate(-50px);
+	border-radius:  50%;
+	border: solid 2px #ccc;
+	position: relative;
+}
+
+#display_accountPicture a{
+	left: 65%;
+	top: 70%;
+	z-index: 1;
+	font-size: 5px !important;
+}
+
+#display_accountPicture a i{font-size:  15px;background:  #fff;border: 5px solid #fff;border-radius:  50%;opacity: 0.9;}
+
+#profile_picture2{
+	position: relative;
+	height: 100%;
+}
+#profile_picture2 .image-crop{
+	width: 200px;
+	height: 200px;
+	position: relative;
+	left:50%;
+	transform:translate(-100px);
+	margin-top: 20px;
+	background:  #ccc;
+}
+#profile_picture2 .crop-options{
+	width:100%;
+	position:  relative;
+}
+
+#change_picture{
+	height: 100px;
+	width:100px;
+	margin:0 auto;
+	left: 50%;
+	top: 25%;
+	position: relative;
+	transform: translate(-50px);
 }
