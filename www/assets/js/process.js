@@ -737,24 +737,19 @@ jobs = {
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
-			console.log('xxx');
 			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_info").on('click',function(){
-			console.log('xxx');
 			job_id = $("#tab_jobs ul li.active").data('node');
 			localStorage.setItem('job',job_id);
 			view.router.navigate('/job/');
 		});
 		$("#menu_job .job_bookmark").on('click',function(){
-			console.log('xxx');
 			job_id = $("#tab_jobs ul li.active").data('node');
 			job.bookmark([job_id,id]);
 			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_apply").on('click',function(){
-			console.log('xxx');
-			console.log('xxx');
 			job_id = $("#tab_jobs ul li.active").data('node');
 			job.apply([job_id,id]);
 			$("#tab_jobs").jTinder('like');
