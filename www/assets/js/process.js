@@ -756,7 +756,6 @@ jobs = {
 		});
 	},
 	process:function(data){
-		console.log(data);
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>=1){
 			$.each(data,function(i,v){
@@ -933,32 +932,66 @@ messages ={
 		var ajax = system.ajax(system.host('get-messages'),data);
 		return ajax.responseText;
 	},
+	getConvo:function(id){
+		var ajax = system.ajax(system.host('get-messageConvo'),id);
+		return ajax.responseText;
+	},
 	display:function(data){
 		let	picture = "", id="";
-		console.log(data);
-		// $.each(data,function(i,v){
-		// 	picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
-		// 	$('#list_bookmarks ul').append(`
-		// 		<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
-		// 			<div class="item-media"><img src="${picture}" width="44"/></div>
-		// 			<div class="item-inner">
-		// 				<div class="item-title-row">
-		// 					<div class="item-title">
-		// 						${v[1]}
-		// 					</div>
-		// 				</div>
-		// 				<div class="item-subtitle">
-		// 					${v[3]} | <small>${v[4]}</small>
-		// 				</div>
-		// 			</div>
-		// 		</a>`);
+		$.each(data,function(i,v){
+			picture  = ((typeof v[0][2] == 'object') || (v[0][2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[0][2]}`;
+			$('#list_messages ul').prepend(`
+				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0][0]}">
+					<div class="item-media"><img src="${picture}" width="44"/></div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title">
+								<strong>${v[0][1]}</strong>
+							</div>
+						</div>
+						<div class="item-subtitle">
+							${v[1]}
+						</div>
+					</div>
+				</a>`);
 
-		// })			
-		// 	$(`a[data-cmd='job-info']`).on('click',function(){
-		// 		id = $(this).data('node');
-		// 		localStorage.setItem('job',id);
-		// 		view.router.navigate('/job/');
-		// 	});
+		})			
+			$(`a[data-cmd='job-info']`).on('click',function(){
+				id = $(this).data('node');
+				view.router.navigate('/message/');
+				messages.convo(id);
+			});
+		$(`#list_messages img`).on('error',function(){
+			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
+		});
+	},
+	convo:function(id){
+		let data = JSON.parse(messages.getConvo(id)), business="";
+		$.each(data,function(i,v){
+            business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
+            $('#messageBox div').prepend(`
+            	<div class="message message-received">
+            		<div class="message-avatar" style="background-image:url(${server}/assets/images/logo/${business});"></div>
+	                <div class="message-content">
+	                <div class="message-name">${v[1]}</div>
+	                    <div class="message-bubble">
+	                        <div class="message-text">${v[2]}/div>
+	                    </div>
+	                </div>
+	            </div>
+            `);
+        });
+        // $('#messages ul').scrollTop($('#messages ul').prop("scrollHeight")); /*this will stick the scroll to bottom*/
+        $('a[data-cmd="send"]').on('click', function(){
+            let message = $("input").val();
+            if(message.length == 0){
+                    system.notification("Kareer","Message box is empty.");
+            }
+            else{
+            	console.log(message);
+            	system.notification("Kareer","Message sent.");
+            }
+        });
 	}
 }
 /**/
