@@ -693,56 +693,66 @@ jobs = {
 		return ajax.responseText;
 	},
 	display:function(){
-		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
+		let id = localStorage.getItem('account_id'), count = 5, min = 0, max = count, swipe = true, _data = [],slides =  [];	
 		let data = JSON.parse(jobs.get(id,min,count));
-        let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
-            flipEffect: {
-                rotate: 30,
-                slideShadows: false,
-            },
-            init: false,
-            preloadImages: true,
-            updateOnImagesReady:true,
-            speed: 800,
-            spaceBetween: 10,                    
-        });
+
         slides = jobs.process(data);
+        $.each(slides,function(i,v){
+	        $("#tab_jobs ul").prepend(v)
+        });
 
-		jobSwiper.appendSlide(slides);
-		jobSwiper.init();
-		jobSwiper.on('reachEnd',function(){
-			if(swipe){
-	            min = max;
-	            max = max+count;
-				_data = JSON.parse(jobs.get(id,min,count));
-		        slides = jobs.process(_data);
-				jobSwiper.appendSlide(slides);
-				swipe = (_data.length<1)?false:true;	
-			}
-		});
-		jobSwiper.on('slideChange, transitionEnd', function(){
-			if((jobSwiper.slides).length == (jobSwiper.activeIndex + 1))
-				app.toolbar.hide('#menu_job');
-			else
-				app.toolbar.show('#menu_job');
+        // $(`#tab_jobs ul li:nth-child(1)`).addClass("active");
+        // $(`#tab_jobs ul li:nth-child(2)`).addClass("next");
 
-			if(jobSwiper.activeIndex >= 15){
-				setTimeout(function(){
-					jobSwiper.removeSlide([0,1,2,3,4]);
-				},1000);
-			}
+		$("#tab_jobs").jTinder({
+		    onDislike: function (item){
+		        console.log('disliked');
+		    },
+		    onLike: function (item) {
+		        console.log('liked');
+		    },
+			animationRevertSpeed: 200,
+			animationSpeed: 400,
+			threshold: 1,
+			likeSelector: '.like',
+			dislikeSelector: '.dislike'
 		});
-		jobSwiper.on('click',function(e){
-			if(e.target.localName == 'a'){
-				let link = e.target.dataset;
-				if(link.cmd == 'read_company'){
-					localStorage.setItem('business',link.node);
-					view.router.navigate('/business/');
-				}
-			}
-		});
+
+		// jobSwiper.appendSlide(slides);
+		// jobSwiper.init();
+		// jobSwiper.on('reachEnd',function(){
+		// 	if(swipe){
+	 //            min = max;
+	 //            max = max+count;
+		// 		_data = JSON.parse(jobs.get(id,min,count));
+		//         slides = jobs.process(_data);
+		// 		jobSwiper.appendSlide(slides);
+		// 		swipe = (_data.length<1)?false:true;	
+		// 	}
+		// });
+		// jobSwiper.on('slideChange, transitionEnd', function(){
+		// 	if((jobSwiper.slides).length == (jobSwiper.activeIndex + 1))
+		// 		app.toolbar.hide('#menu_job');
+		// 	else
+		// 		app.toolbar.show('#menu_job');
+
+		// 	if(jobSwiper.activeIndex >= 15){
+		// 		setTimeout(function(){
+		// 			jobSwiper.removeSlide([0,1,2,3,4]);
+		// 		},1000);
+		// 	}
+		// });
+		// jobSwiper.on('click',function(e){
+		// 	if(e.target.localName == 'a'){
+		// 		let link = e.target.dataset;
+		// 		if(link.cmd == 'read_company'){
+		// 			localStorage.setItem('business',link.node);
+		// 			view.router.navigate('/business/');
+		// 		}
+		// 	}
+		// });
 		$("#menu_job .job_next").on('click',function(){
-			jobSwiper.slideNext();
+			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_info").on('click',function(){
 			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
@@ -758,15 +768,15 @@ jobs = {
 				console.log('xxx');				
 			},1000);
 		});
-		$("#menu_job .job_apply").on('click',function(){
-			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
-			job.apply([job_id,account_id]);
-			jobSwiper.slideNext();
-			setTimeout(function(){
-				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
-				console.log('xxx');				
-			},1000);
-		});
+		// $("#menu_job .job_apply").on('click',function(){
+		// 	let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
+		// 	job.apply([job_id,account_id]);
+		// 	jobSwiper.slideNext();
+		// 	setTimeout(function(){
+		// 		jobSwiper.removeSlide(jobSwiper.activeIndex-1);
+		// 		console.log('xxx');				
+		// 	},1000);
+		// });
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
@@ -775,7 +785,7 @@ jobs = {
 				skills = ""; random = Math.floor(Math.random() * 100) + 1;
 				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 				logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
-				jobArr.push(`<div class='swiper-slide' data-node='${v[0]}'>
+				jobArr.push(`<li class="pane_${i}" data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
@@ -804,7 +814,7 @@ jobs = {
 										</div>
 									</div>
 								</div>
-							</div>`);
+							</li>`);
 			});
 		}
 		else if(data.length==1){
