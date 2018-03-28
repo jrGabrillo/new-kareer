@@ -44,15 +44,19 @@ account = {
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
+		var fullDate = new Date()
+		var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : '0' + (fullDate.getMonth()+1);
+		var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
 		let data = this.get()[0];
         let ps = new PerfectScrollbar('#display_info .content');
 		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
+		let dob = (data[12] == "" || data[12] == null)?currentDate:data[12];
         $("#display_accountLogin").addClass(auth);
-
+        console.log(currentDate);
+        console.log(data[12]	);
         $("#field_fname").val(data[8]);
         $("#field_mname").val(data[10]);
         $("#field_lname").val(data[9]);
-        $("#field_dob").val(data[12]);
         $("#field_address").html(data[13]);
         $("#field_number").val(data[15]);
         $("#field_bio").html(data[1]);
@@ -65,7 +69,7 @@ account = {
 			openIn: 'customModal',
 			footer: true,
 			firstDay:0,
-			value:[data[12]],
+			value:[dob],
 		    disabled: {from: from}
 		});
 
