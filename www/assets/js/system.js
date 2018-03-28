@@ -82,6 +82,7 @@ var system = function() {
 		},
 		host:function(page){
 			return `http://system.kareer-ph.com/assets/harmony/mobile.php?${page}`;
+			// return `http://localhost/kareer/assets/harmony/mobile.php?${page}`;
 		},
 		notification:function(title,subtitle){
             let n = app.notification.create({
