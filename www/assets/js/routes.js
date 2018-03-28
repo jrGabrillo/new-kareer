@@ -210,6 +210,7 @@ var routes = [
         url: './pages/messages.html',
         on: {
             pageInit: function(e, page){
+                messages.ini();
                 console.log('messages');
             }
         }

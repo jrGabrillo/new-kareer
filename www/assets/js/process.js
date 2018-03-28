@@ -770,6 +770,7 @@ jobs = {
 		});
 	},
 	process:function(data){
+		console.log(data);
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
 		if(data.length>1){
 			$.each(data,function(i,v){
@@ -969,6 +970,44 @@ bookmark ={
 				localStorage.setItem('job',id);
 				view.router.navigate('/job/');
 			});
+	}
+}
+messages ={
+	ini:function(){
+		let id =  localStorage.getItem('account_id');
+		let data = JSON.parse(this.get(id));
+		this.display(data);
+	},
+	get:function(data){
+		var ajax = system.ajax(system.host('get-messages'),data);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let	picture = "", id="";
+		console.log(data);
+		// $.each(data,function(i,v){
+		// 	picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
+		// 	$('#list_bookmarks ul').append(`
+		// 		<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
+		// 			<div class="item-media"><img src="${picture}" width="44"/></div>
+		// 			<div class="item-inner">
+		// 				<div class="item-title-row">
+		// 					<div class="item-title">
+		// 						${v[1]}
+		// 					</div>
+		// 				</div>
+		// 				<div class="item-subtitle">
+		// 					${v[3]} | <small>${v[4]}</small>
+		// 				</div>
+		// 			</div>
+		// 		</a>`);
+
+		// })			
+		// 	$(`a[data-cmd='job-info']`).on('click',function(){
+		// 		id = $(this).data('node');
+		// 		localStorage.setItem('job',id);
+		// 		view.router.navigate('/job/');
+		// 	});
 	}
 }
 /**/
