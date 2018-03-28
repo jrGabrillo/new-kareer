@@ -925,7 +925,6 @@ bookmark ={
 		});
 	}
 }
-<<<<<<< HEAD
 messages ={
 	ini:function(){
 		let id =  localStorage.getItem('account_id');
@@ -999,9 +998,6 @@ messages ={
 	}
 }
 /**/
-=======
-
->>>>>>> f4350545425dbb4b8558337e4e4fd4977c80972d
 search = {
 	ini:function(){
 	}
