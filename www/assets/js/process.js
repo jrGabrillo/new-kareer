@@ -158,17 +158,19 @@ account = {
                                 <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
                                 Upload Picture
                             </label></p>
-                        	<p><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
+                        	<p class='hidden'><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
                         	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
                         	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
                         </div>`;
         $("#profile_picture2").html(content);
 
-		$("a[data-cmd='take-a-photo']").click(function() {
-			navigator.camera.getPicture(onSuccess, function(message) { alert ("Ouups!"); }, { destinationType: Camera.DestinationType.FILE_URI,
-				sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80
-			});
-		});
+		// $("a[data-cmd='take-a-photo']").click(function() {
+		// 	navigator.camera.getPicture(
+		// 	function(data){
+		// 	   $('#display_accountPicture img').attr({'src':`${data:image/jpeg;base64,${data}}`});
+		// 	}, 
+		// 	function(message){alert ("Ouups!");},{ destinationType: Camera.DestinationType.FILE_URI,sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80});
+		// });
 
         var $inputImage = $("#inputImage");
         var status = true;
