@@ -45,16 +45,10 @@ account = {
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
-		var fullDate = new Date()
-		var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : '0' + (fullDate.getMonth()+1);
-		var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
 		let data = this.get()[0];
         let ps = new PerfectScrollbar('#display_info .content');
 		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-		let dob = (data[12] == "" || data[12] == null)?currentDate:data[12];
         $("#display_accountLogin").addClass(auth);
-        console.log(currentDate);
-        console.log(data[12]	);
         $("#field_fname").val(data[8]);
         $("#field_mname").val(data[10]);
         $("#field_lname").val(data[9]);
@@ -70,7 +64,7 @@ account = {
 			openIn: 'customModal',
 			footer: true,
 			firstDay:0,
-			value:[dob],
+			value:[data[12]],
 		    disabled: {from: from}
 		});
 
@@ -227,8 +221,11 @@ account = {
         }
     },
 	logout:function(){
-		localStorage.clear();
-		view.router.navigate('/home/');
+		$("a[ data-cmd='logout']").on('click',function(){
+			localStorage.clear();
+			system.notification("Kareer",`Logout.`);
+			view.router.navigate('/home/');
+		});
 	}
 }
 
