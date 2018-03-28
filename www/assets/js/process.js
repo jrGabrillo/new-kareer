@@ -50,11 +50,9 @@ account = {
         let ps = new PerfectScrollbar('#display_info .content');
 		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
         $("#display_accountLogin").addClass(auth);
-
         $("#field_fname").val(data[8]);
         $("#field_mname").val(data[10]);
         $("#field_lname").val(data[9]);
-        $("#field_dob").val(data[12]);
         $("#field_address").html(data[13]);
         $("#field_number").val(data[15]);
         $("#field_bio").html(data[1]);
@@ -224,8 +222,11 @@ account = {
         }
     },
 	logout:function(){
-		localStorage.clear();
-		view.router.navigate('/home/');
+		$("a[ data-cmd='logout']").on('click',function(){
+			localStorage.clear();
+			system.notification("Kareer",`Logout.`);
+			view.router.navigate('/home/');
+		});
 	}
 }
 
