@@ -1,5 +1,6 @@
 let host = window.location;
 let server = `http://system.kareer-ph.com/`;
+let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
 		let data = this.get()[0];
@@ -693,91 +694,76 @@ jobs = {
 		var ajax = system.ajax(system.host('get-jobs1'),[id,min,max]);
 		return ajax.responseText;
 	},
+	loadMore:function(trigger){
+		if(trigger){
+            min = max;
+            max = max+count;
+	        slides = jobs.process(JSON.parse(jobs.get(localStorage.getItem('account_id'),min,count)));
+
+	        if((typeof slides) == "string"){
+	        	trigger = false;
+		        $("#tab_jobs ul").html(slides);
+	        }
+	        else{
+		        $.each(slides,function(i,v){
+			        $("#tab_jobs ul").prepend(v);
+		        });
+				$("#tab_jobs").jTinder({
+				    onDislike: function (item){
+				    	setTimeout(function(){
+					    	$("#tab_jobs ul li.previous").remove();
+				    	},2000);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
+				    },
+				    onLike: function (item){
+				    	setTimeout(function(){
+					    	$("#tab_jobs ul li.previous").remove();
+				    	},2000);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
+				    },
+					animationRevertSpeed: 200,
+					animationSpeed: 400,
+					threshold: 1,
+					likeSelector: '.like',
+					dislikeSelector: '.dislike'
+				});
+	        }
+		}
+	},
 	display:function(){
-		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
+		let id = localStorage.getItem('account_id'), swipe = true, _data = [], job_id = "";	
 		let data = JSON.parse(jobs.get(id,min,count));
-        let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
-            flipEffect: {
-                rotate: 30,
-                slideShadows: false,
-            },
-            init: false,
-            preloadImages: true,
-            updateOnImagesReady:true,
-            speed: 800,
-            spaceBetween: 10,                    
-        });
-        slides = jobs.process(data);
 
-		jobSwiper.appendSlide(slides);
-		jobSwiper.init();
-		jobSwiper.on('reachEnd',function(){
-			if(swipe){
-	            min = max;
-	            max = max+count;
-				_data = JSON.parse(jobs.get(id,min,count));
-		        slides = jobs.process(_data);
-				jobSwiper.appendSlide(slides);
-				swipe = (_data.length<1)?false:true;	
-			}
-		});
-		jobSwiper.on('slideChange, transitionEnd', function(){
-			if((jobSwiper.slides).length == (jobSwiper.activeIndex + 1))
-				app.toolbar.hide('#menu_job');
-			else
-				app.toolbar.show('#menu_job');
+        jobs.loadMore(true);
 
-			if(jobSwiper.activeIndex >= 15){
-				setTimeout(function(){
-					jobSwiper.removeSlide([0,1,2,3,4]);
-				},1000);
-			}
-		});
-		jobSwiper.on('click',function(e){
-			if(e.target.localName == 'a'){
-				let link = e.target.dataset;
-				if(link.cmd == 'read_company'){
-					localStorage.setItem('business',link.node);
-					view.router.navigate('/business/');
-				}
-			}
-		});
 		$("#menu_job .job_next").on('click',function(){
-			jobSwiper.slideNext();
+			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_info").on('click',function(){
-			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			job_id = $("#tab_jobs ul li.active").data('node');
 			localStorage.setItem('job',job_id);
 			view.router.navigate('/job/');
 		});
 		$("#menu_job .job_bookmark").on('click',function(){
-			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
-			job.bookmark([job_id,account_id]);
-			jobSwiper.slideNext();
-			setTimeout(function(){
-				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
-				console.log('xxx');				
-			},1000);
+			job_id = $("#tab_jobs ul li.active").data('node');
+			job.bookmark([job_id,id]);
+			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_apply").on('click',function(){
-			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
-			job.apply([job_id,account_id]);
-			jobSwiper.slideNext();
-			setTimeout(function(){
-				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
-				console.log('xxx');				
-			},1000);
+			job_id = $("#tab_jobs ul li.active").data('node');
+			job.apply([job_id,id]);
+			$("#tab_jobs").jTinder('like');
 		});
 	},
 	process:function(data){
 		console.log(data);
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
-		if(data.length>1){
+		if(data.length>=1){
 			$.each(data,function(i,v){
 				skills = ""; random = Math.floor(Math.random() * 100) + 1;
 				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 				logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
-				jobArr.push(`<div class='swiper-slide' data-node='${v[0]}'>
+				jobArr.push(`<li data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
@@ -806,46 +792,11 @@ jobs = {
 										</div>
 									</div>
 								</div>
-							</div>`);
+							</li>`);
 			});
 		}
-		else if(data.length==1){
-			skills = ""; v = data[0];
-			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
-			logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
-			jobArr = `<div class='swiper-slide' data-node='${v[0]}'>
-						<div class='card job'>
-							<div class='card-header align-items-flex-end'>
-								<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
-								<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[0]}">more_vert</a>
-								<div class='company'>
-									<div class='logo-holder'>
-										<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
-									</div>
-									<div class='information'>
-										<h3>${v[9]}<br/><small>${v[11]}</small></h3>
-									</div>
-								</div>
-							</div>
-							<div class='card-content card-content-padding align-self-stretch'>
-								<div class='job-description'>
-									<h3>${v[5]}</h3>
-									<p>${v[4]}</p>
-									<div class='row'>
-										<strong>Skills</strong><br/>
-										${skills}
-									</div>
-									<div class='row'>
-										<strong>Description</strong>
-										<p class='ellipsis'>${v[3]}</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>`;
-		}
 		else{
-			jobArr = `<div class='swiper-slide end'><h1 class="text-align-center text-color-white">No more job fetched.</h1></div>`;
+			jobArr = `<div class='end'><h1 class="text-align-center text-color-white">No more job fetched.</h1></div>`;
 		}
 		return jobArr;
 	},
