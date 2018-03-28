@@ -12,7 +12,14 @@
     },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "rnr.Kareer.com"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "rnr.Kareer.com"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "rnr.Kareer.com"
+    }
+  }
 }

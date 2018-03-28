@@ -1,14 +1,15 @@
 let host = window.location;
 let server = `http://system.kareer-ph.com/`;
-
-console.log(`${server}/assets/images/logo/icon.png`);
+let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
-		let data = this.get()[0];
+		let data = this.get()[0], scroll = 0;   
         localStorage.setItem('account_id',data[0]);
 		this.display(data);
+
         jobs.display();
 		app.toolbar.hide('#menu_job');
+
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
 		});
@@ -25,7 +26,6 @@ account = {
 			app.toolbar.show('#menu_job');
 		});
 
-        new PerfectScrollbar('#tab_account .other-info'), scroll = 0;   
 		$('#tab_account .other-info').on('ps-scroll-up', function(){
 			scroll = $(this).scrollTop();
 			if(scroll <= 10){
@@ -37,11 +37,10 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
-
-		skills.frontdisplay();
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
+		(data[0] == null)?account.logout():"";
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
 		return JSON.parse(data.responseText);
 	},
@@ -49,12 +48,12 @@ account = {
 		let data = this.get()[0];
         let ps = new PerfectScrollbar('#display_info .content');
 		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-        $("#display_accountLogin").addClass(auth);
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
 
+		$('#display_accountPicture img').attr({'src':`${picture}`});
         $("#field_fname").val(data[8]);
         $("#field_mname").val(data[10]);
         $("#field_lname").val(data[9]);
-        $("#field_dob").val(data[12]);
         $("#field_address").html(data[13]);
         $("#field_number").val(data[15]);
         $("#field_bio").html(data[1]);
@@ -71,8 +70,9 @@ account = {
 		    disabled: {from: from}
 		});
 
-		skills.display();
         this.update();
+        this.logout();
+		this.updatePicture(data[0]);
 	},
 	display:function(data){
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
@@ -141,9 +141,95 @@ account = {
 				let ajax = system.ajax(system.host('do-updateInfo'),['applicant',data.prop,id,val]);
 				ajax.done(function(data){
 					console.log(data);
+					account.ini();
 				});
 			}
 		})
+	},
+	updatePicture: function(id) {
+        window.Cropper;
+        var user = id;
+        var picture = `${server}/assets/images/logo/icon.png`;
+        var content = `<div class='image-crop col s12'>
+                            <img width='100%' src='${picture}' id='change_picture'>
+                        </div>
+                        <div class='crop-options col'>
+                        	<p><label for='inputImage' class='button button-outline button-round tooltipped' data-tooltip='Load image' data-position='left'>
+                                <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
+                                Upload Picture
+                            </label></p>
+                        	<p><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
+                        	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
+                        	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
+                        </div>`;
+        $("#profile_picture2").html(content);
+
+		$("a[data-cmd='take-a-photo']").click(function() {
+			navigator.camera.getPicture(onSuccess, function(message) { alert ("Ouups!"); }, { destinationType: Camera.DestinationType.FILE_URI,
+				sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80
+			});
+		});
+
+        var $inputImage = $("#inputImage");
+        var status = true;
+        if (window.FileReader) {
+            $inputImage.change(function(e) {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+                file = files[0];
+
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function(e) {
+                        $inputImage.val("");
+                        $("a[data-cmd='save']").html("Save").removeClass('disabled');
+                        $('#change_picture').attr('src', e.target.result);
+                        var image = document.getElementById('change_picture');
+                        var cropper = new Cropper(image, {
+                            aspectRatio: 1 / 1,
+                            autoCropArea: 0.80,
+                            ready: function() {
+                                $("a[data-cmd='save']").removeClass('hidden');
+                                $("a[data-cmd='rotate']").removeClass('hidden');
+
+                                $("a[data-cmd='save']").click(function() {
+                                    $(this).html("Uploading...").addClass('disabled');
+                                    if (status) {
+                                        var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
+                                        data.done(function(data) {
+                                        	console.log(data);
+                                            if (data == 1) {
+                                            	app.popup.close('.popup-picture',true);
+                                                account.ini();
+                                                system.notification("Kareer",`Picture Uploaded.`);
+                                            } 
+                                            else {
+                                            	system.notification("Kareer",`Failed to upload your picture. File too large.`);
+                                            }
+                                        });
+                                        status = false;
+                                    }
+                                });
+                            }
+                        });
+                    };
+                } 
+                else {
+                    showMessage("Please choose an image file.");
+                }
+            });
+        }
+        else {
+            $inputImage.addClass("hidden");
+        }
+    },
+	logout:function(){
+		$("a[ data-cmd='logout']").on('click',function(){
+			localStorage.clear();
+			system.notification("Kareer",`Logout.`);
+			view.router.navigate('/home/');
+		});
 	}
 }
 
@@ -175,7 +261,6 @@ skills = {
 	},
 	frontdisplay:function(){
 		let data = account.get()[0], id = localStorage.getItem('account_id'), _skills = JSON.parse(this.get(id));
-
 		$(".skills.block").html("");
         if(_skills.length>0){
         	$.each(_skills,function(i,v){
@@ -215,6 +300,7 @@ skills = {
 	        		`);
 
                     system.notification("Kareer",`Success. ${val} skill has been added.`);
+                    skills.frontdisplay();
 				}
 				else{
                     system.notification("Kareer","Failed. Try again later.");
@@ -607,94 +693,78 @@ jobs = {
 	get:function(id,min,max){
 		min = ((typeof min == undefined) || (min == null))?0:min;
 		max = ((typeof max == undefined) || (max == null))?10:max;
-		var ajax = system.ajax(system.host('get-jobs'),[id,min,max]);
+		var ajax = system.ajax(system.host('get-jobs1'),[id,min,max]);
 		return ajax.responseText;
 	},
+	loadMore:function(trigger){
+		if(trigger){
+            min = max;
+            max = max+count;
+	        slides = jobs.process(JSON.parse(jobs.get(localStorage.getItem('account_id'),min,count)));
+
+	        if((typeof slides) == "string"){
+	        	trigger = false;
+		        $("#tab_jobs ul").html(slides);
+	        }
+	        else{
+		        $.each(slides,function(i,v){
+			        $("#tab_jobs ul").prepend(v);
+		        });
+				$("#tab_jobs").jTinder({
+				    onDislike: function (item){
+				    	setTimeout(function(){
+					    	$("#tab_jobs ul li.previous").remove();
+				    	},2000);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
+				    },
+				    onLike: function (item){
+				    	setTimeout(function(){
+					    	$("#tab_jobs ul li.previous").remove();
+				    	},2000);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
+				    },
+					animationRevertSpeed: 200,
+					animationSpeed: 400,
+					threshold: 1,
+					likeSelector: '.like',
+					dislikeSelector: '.dislike'
+				});
+	        }
+		}
+	},
 	display:function(){
-		let id = localStorage.getItem('account_id'), count = 2, min = 0, max = count, swipe = true, _data = [],slides =  [];	
+		let id = localStorage.getItem('account_id'), swipe = true, _data = [], job_id = "";	
 		let data = JSON.parse(jobs.get(id,min,count));
-        let jobSwiper = new Swiper('#tab_jobs .swiper-container', {
-            flipEffect: {
-                rotate: 30,
-                slideShadows: false,
-            },
-            init: false,
-            preloadImages: true,
-            updateOnImagesReady:true,
-            speed: 800,
-            spaceBetween: 10,                    
-        });
-        slides = jobs.process(data);
 
-		jobSwiper.appendSlide(slides);
-		jobSwiper.init();
-		jobSwiper.on('reachEnd',function(){
-			if(swipe){
-	            min = max;
-	            max = max+count;
-				_data = JSON.parse(jobs.get(id,min,count));
-		        slides = jobs.process(_data);
-				jobSwiper.appendSlide(slides);
-				swipe = (_data.length<1)?false:true;	
-			}
-		});
-		jobSwiper.on('slideChange, transitionEnd', function(){
-			if((jobSwiper.slides).length == (jobSwiper.activeIndex + 1))
-				app.toolbar.hide('#menu_job');
-			else
-				app.toolbar.show('#menu_job');
+        jobs.loadMore(true);
 
-			if(jobSwiper.activeIndex >= 15){
-				setTimeout(function(){
-					jobSwiper.removeSlide([0,1,2,3,4]);
-				},1000);
-			}
-		});
-		jobSwiper.on('click',function(e){
-			if(e.target.localName == 'a'){
-				let link = e.target.dataset;
-				if(link.cmd == 'read_company'){
-					localStorage.setItem('business',link.node);
-					view.router.navigate('/business/');
-				}
-			}
-		});
 		$("#menu_job .job_next").on('click',function(){
-			jobSwiper.slideNext();
+			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_info").on('click',function(){
-			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node');
+			job_id = $("#tab_jobs ul li.active").data('node');
 			localStorage.setItem('job',job_id);
 			view.router.navigate('/job/');
 		});
 		$("#menu_job .job_bookmark").on('click',function(){
-			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
-			job.bookmark([job_id,account_id]);
-			jobSwiper.slideNext();
-			setTimeout(function(){
-				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
-				console.log('xxx');				
-			},1000);
+			job_id = $("#tab_jobs ul li.active").data('node');
+			job.bookmark([job_id,id]);
+			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_apply").on('click',function(){
-			let job_id = $(jobSwiper.slides[jobSwiper.activeIndex]).data('node'), account_id = localStorage.getItem('account_id');
-			job.apply([job_id,account_id]);
-			jobSwiper.slideNext();
-			setTimeout(function(){
-				jobSwiper.removeSlide(jobSwiper.activeIndex-1);
-				console.log('xxx');				
-			},1000);
+			job_id = $("#tab_jobs ul li.active").data('node');
+			job.apply([job_id,id]);
+			$("#tab_jobs").jTinder('like');
 		});
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
-		if(data.length>1){
+		if(data.length>=1){
 			$.each(data,function(i,v){
-				console.log(v);
 				skills = ""; random = Math.floor(Math.random() * 100) + 1;
 				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 				logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
-				jobArr.push(`<div class='swiper-slide' data-node='${v[0]}'>
+				jobArr.push(`<li data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
@@ -723,46 +793,11 @@ jobs = {
 										</div>
 									</div>
 								</div>
-							</div>`);
+							</li>`);
 			});
 		}
-		else if(data.length==1){
-			skills = ""; v = data[0];
-			$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
-			logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
-			jobArr = `<div class='swiper-slide' data-node='${v[0]}'>
-						<div class='card job'>
-							<div class='card-header align-items-flex-end'>
-								<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
-								<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[0]}">more_vert</a>
-								<div class='company'>
-									<div class='logo-holder'>
-										<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
-									</div>
-									<div class='information'>
-										<h3>${v[9]}<br/><small>${v[11]}</small></h3>
-									</div>
-								</div>
-							</div>
-							<div class='card-content card-content-padding align-self-stretch'>
-								<div class='job-description'>
-									<h3>${v[5]}</h3>
-									<p>${v[4]}</p>
-									<div class='row'>
-										<strong>Skills</strong><br/>
-										${skills}
-									</div>
-									<div class='row'>
-										<strong>Description</strong>
-										<p class='ellipsis'>${v[3]}</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>`;
-		}
 		else{
-			jobArr = `<div class='swiper-slide end'><h1 class="text-align-center text-color-white">No more job fetched.</h1></div>`;
+			jobArr = `<div class='end'><h1 class="text-align-center text-color-white">No more job fetched.</h1></div>`;
 		}
 		return jobArr;
 	},
@@ -851,7 +886,7 @@ job = {
 		});
 	}
 }
-/*othan */
+
 bookmark ={
 	ini:function(){
 		let id =  localStorage.getItem('account_id');
@@ -866,30 +901,29 @@ bookmark ={
 		let	picture = "", id="";
 		$.each(data,function(i,v){
 			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
-			$('#list_bookmarks ul').append(`
-				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
-					<div class="item-media"><img src="${picture}" width="44"/></div>
-					<div class="item-inner">
-						<div class="item-title-row">
-							<div class="item-title">
-								${v[1]}
-							</div>
-						</div>
-						<div class="item-subtitle">
-							${v[3]} | <small>${v[4]}</small>
-						</div>
-					</div>
-				</a>`);
+			$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
+				<div class="item-media"><img src="${picture}" width="44"/></div>
+				<div class="item-inner">
+					<div class="item-title-row"><div class="item-title">${v[1]}</div></div>
+					<div class="item-subtitle">${v[3]} | <small>${v[4]}</small></div>
+				</div>
+			</a>`);
+		});		
 
-		})			
-			$(`a[data-cmd='job-info']`).on('click',function(){
-				id = $(this).data('node');
-				localStorage.setItem('job',id);
-				view.router.navigate('/job/');
-			});
+
+		$(`#list_bookmarks .item-media img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
+
+
+		$(`a[data-cmd='job-info']`).on('click',function(){
+			id = $(this).data('node');
+			localStorage.setItem('job',id);
+			view.router.navigate('/job/');
+		});
 	}
 }
-/**/
+
 search = {
 	ini:function(){
 	}

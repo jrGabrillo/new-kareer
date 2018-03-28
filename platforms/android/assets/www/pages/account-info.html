@@ -8,144 +8,24 @@
 	</div>	
     <div class="page-content list" id="display_info">
 		<div class="title">Account Information
-            <a class="col button button-small button-fill button-round in-field-btn btn-nav popup-open" data-popup=".popup-newAcad" style="top:10px;">
-            	<i class='material-icons'>exit_to_app</i>
+            <a data-cmd="logout" class="col button button-small button-fill button-round in-field-btn btn-nav" style="top:10px;">
+            	<i class='material-icons text-color-white'>exit_to_app</i>
            	</a>
 		</div>
 	    <div class="content accordion-list bg-color-white">
 	        <div class='accordion-item'>
 	            <div class='align-items-flex-end accordion-item-toggle'>
-	            	<p class="item-inner">Personal Information</p>
-	            </div>
-	            <div class='align-self-stretch accordion-item-content'>
-	                <div class="row">
-				        <form>
-				            <div class="list">
-				                <ul>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">First Name</div>
-				                            <div class="item-input-wrap">
-				                                <input type="text" id='field_fname' name='field_fname' data-cmd='field' data-prop='field_fname'>
-				                            </div>
-				                        </div>
-				                    </li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Middle Name</div>
-				                            <div class="item-input-wrap">
-				                                <input type="text" id='field_mname' name='field_mname' data-cmd='field' data-prop='field_mname'>
-				                            </div>
-				                        </div>
-				                    </li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Last Name</div>
-				                            <div class="item-input-wrap">
-				                                <input type="text" id='field_lname' name='field_lname' data-cmd='field' data-prop='field_lname'>
-				                            </div>
-				                        </div>
-				                    </li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Date of Birth</div>
-				                            <div class="item-input-wrap">
-				                                <input type="text" id='field_dob' name='field_dob' data-cmd='field' data-prop='field_dob'>
-				                            </div>
-				                        </div>
-				                    </li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Address</div>
-				                            <div class="item-input-wrap">
-	                                            <textarea class="resizable" id='field_address' name='field_address' data-cmd='field' data-prop='field_address'></textarea>
-				                            </div>
-				                        </div>
-				                    </li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Phone Number</div>
-				                            <div class="item-input-wrap">
-				                                <input type="text" id='field_number' name='field_number' data-cmd='field' data-prop='field_number'>
-				                            </div>
-				                        </div>
-				                    </li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Bio</div>
-				                            <div class="item-input-wrap">
-	                                            <textarea class="resizable" id='field_bio' name='field_bio' data-cmd='field' data-prop='field_bio'></textarea>
-				                            </div>
-				                        </div>
-				                    </li>
-				                </ul>
-				            </div>
-				        </form>
-	                </div>
+	            	<a href="/personal-info/" class="item-link"><p class="item-inner">Personal Information</p></a>
 	            </div>
 	        </div>
 	        <div class='accordion-item' id='display_accountLogin'>
 	            <div class='align-items-flex-end accordion-item-toggle'>
-	            	<p class="item-inner">Account Information</p>
-	            </div>
-	            <div class='align-self-stretch accordion-item-content'>
-	                <div class="row">
-				        <form>
-				            <div class="list">
-				                <ul>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Email</div>
-				                            <div class="item-input-wrap">
-				                                <input type="email" id='field_email' name='field_email' data-cmd='field' data-prop='field_email'>
-				                            </div>
-				                        </div>
-				                    </li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Password</div>
-				                            <div class="item-input-wrap">
-				                                <input type="password" id='field_password' name='field_password' data-error=".error_field_email" data-cmd='field' data-prop='field_password' placeholder="Password">
-				                                <a class="col button button-small button-fill button-round in-field-btn item-input-password-preview" id='btn_addSkill'>
-				                                	<i class='material-icons'>visibility_off</i>
-				                               	</a>
-			                                    <div class="item-input-info error_field_password"></div>
-				                            </div>
-				                        </div>
-				                    </li>
-				                </ul>
-				            </div>
-				        </form>
-	                </div>
+	            	<a href="/settings_account/" class="item-link"><p class="item-inner">Account Information</p></a>
 	            </div>
 	        </div>	        
 	        <div class='accordion-item'>
 	            <div class='align-items-flex-end accordion-item-toggle'>
-	            	<p class="item-inner">Skills</p>
-	            </div>
-	            <div class='align-self-stretch accordion-item-content' id='display_skills'>
-	            	<form>
-		                <div class="row">
-				            <div class="list">
-				                <ul>
-				                	<li>
-					                	<div class="block"></div>
-				                	</li>
-				                    <li class="item-content item-input">
-				                        <div class="item-inner">
-				                            <div class="item-title item-label">Add new skills</div>
-				                            <div class="item-input-wrap">
-				                                <textarea class="resizable" id='field_skill' placeholder="Add new skill"></textarea>
-				                                <a class="col button button-small button-fill button-round in-field-btn" id='btn_addSkill'>
-				                                	<i class='material-icons'>add</i>
-				                               	</a>
-				                            </div>
-				                        </div>
-				                    </li>
-				                </ul>
-				            </div>
-		                </div>
-	            	</form>
+	            	<a href="/settings_skills/" class="item-link"><p class="item-inner">Skills</p></a>
 	            </div>
 	        </div>
 	        <div class='accordion-item'>
