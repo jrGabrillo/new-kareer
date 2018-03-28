@@ -1,5 +1,6 @@
 let host = window.location;
 let server = `http://system.kareer-ph.com/`;
+// let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
@@ -73,6 +74,10 @@ account = {
         this.update();
         this.logout();
 		this.updatePicture(data[0]);
+
+		$(`#display_accountPicture img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
 	},
 	display:function(data){
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
@@ -229,8 +234,8 @@ account = {
 	logout:function(){
 		$("a[ data-cmd='logout']").on('click',function(){
 			localStorage.clear();
-			system.notification("Kareer",`Logout.`);
 			view.router.navigate('/home/');
+			system.notification("Kareer",`Logout.`);
 		});
 	}
 }
@@ -914,7 +919,7 @@ bookmark ={
 
 
 		$(`#list_bookmarks .item-media img`).on('error',function(){
-			$(this).attr({'src':tempPicture});
+			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
 
 
