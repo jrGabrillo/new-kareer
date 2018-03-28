@@ -40,7 +40,6 @@ account = {
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
-		console.log(data);
 		(data[0] == null)?account.logout():"";
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
 		return JSON.parse(data.responseText);
@@ -225,7 +224,6 @@ account = {
     },
 	logout:function(){
 		localStorage.clear();
-		// system.notification("Kareer",`Logout.`);
 		view.router.navigate('/home/');
 	}
 }
@@ -691,7 +689,7 @@ jobs = {
 	get:function(id,min,max){
 		min = ((typeof min == undefined) || (min == null))?0:min;
 		max = ((typeof max == undefined) || (max == null))?10:max;
-		var ajax = system.ajax(system.host('get-jobs'),[id,min,max]);
+		var ajax = system.ajax(system.host('get-jobs1'),[id,min,max]);
 		return ajax.responseText;
 	},
 	display:function(){
