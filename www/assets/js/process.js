@@ -40,6 +40,7 @@ account = {
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
+		(data[0] == null)?account.logout():"";
         data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
 		return JSON.parse(data.responseText);
 	},
@@ -226,15 +227,8 @@ account = {
         }
     },
 	logout:function(){
-		$("a[ data-cmd='logout']").on('click',function(){
-			console.log('logout');
-			localStorage.removeItem('account');
-			localStorage.removeItem('account_id');
-			localStorage.removeItem('business_id');
-			system.notification("Kareer",`Logout.`);
-			view.router.navigate('/home/');
-		});
-
+		localStorage.clear();
+		view.router.navigate('/home/');
 	}
 }
 
@@ -699,7 +693,7 @@ jobs = {
 	get:function(id,min,max){
 		min = ((typeof min == undefined) || (min == null))?0:min;
 		max = ((typeof max == undefined) || (max == null))?10:max;
-		var ajax = system.ajax(system.host('get-jobs'),[id,min,max]);
+		var ajax = system.ajax(system.host('get-jobs1'),[id,min,max]);
 		return ajax.responseText;
 	},
 	display:function(){
