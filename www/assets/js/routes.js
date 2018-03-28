@@ -121,6 +121,7 @@ var routes = [
             pageInit: function(e, page){
                 setTimeout(function(){
                     account.ini();
+                    new PerfectScrollbar('#tab_account .other-info');
                 },1000);
             }
         }
@@ -130,13 +131,15 @@ var routes = [
         url: './pages/account-info.html',
         on: {
             pageInit: function(e, page){
-                account.settingsDisplay();
+                let data = account.get()[0];
+                let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
+                $("#display_accountLogin").addClass(auth);
             }
         }
     },
     {
         path: '/career-info/',
-        url: './pages/career-info.html',
+        url: './pages/settings_career_info.html',
         on: {
             pageInit: function(e, page){
                 let ps_list_schools = new PerfectScrollbar('#list_jobs .content');
@@ -148,13 +151,41 @@ var routes = [
     },
     {
         path: '/academic-info/',
-        url: './pages/academic-info.html',
+        url: './pages/settings_academic_info.html',
         on: {
             pageInit: function(e, page){
                 let ps_list_career = new PerfectScrollbar('#list_schools .content');
                 let ps_newCareer = new PerfectScrollbar('.popup-newAcad');
                 let ps_career = new PerfectScrollbar('.popup-acad');
                 academic.ini();
+            }
+        }
+    },
+    {
+        path: '/personal-info/',
+        url: './pages/settings_personal_info.html',
+        on: {
+            pageInit: function(e, page){
+                new PerfectScrollbar('#display_personal_info');
+                account.settingsDisplay();
+            }
+        }
+    },
+    {
+        path: '/settings_account/',
+        url: './pages/settings_account.html',
+        on: {
+            pageInit: function(e, page){
+                account.settingsDisplay();
+            }
+        }
+    },
+    {
+        path: '/settings_skills/',
+        url: './pages/settings_skills.html',
+        on: {
+            pageInit: function(e, page){
+                skills.display();
             }
         }
     },

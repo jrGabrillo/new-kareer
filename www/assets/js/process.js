@@ -3,11 +3,13 @@ let server = `http://system.kareer-ph.com/`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
-		let data = this.get()[0];
+		let data = this.get()[0], scroll = 0;   
         localStorage.setItem('account_id',data[0]);
 		this.display(data);
+
         jobs.display();
 		app.toolbar.hide('#menu_job');
+
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
 		});
@@ -24,7 +26,6 @@ account = {
 			app.toolbar.show('#menu_job');
 		});
 
-        new PerfectScrollbar('#tab_account .other-info'), scroll = 0;   
 		$('#tab_account .other-info').on('ps-scroll-up', function(){
 			scroll = $(this).scrollTop();
 			if(scroll <= 10){
@@ -36,8 +37,6 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
-
-		skills.frontdisplay();
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
@@ -49,7 +48,9 @@ account = {
 		let data = this.get()[0];
         let ps = new PerfectScrollbar('#display_info .content');
 		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-        $("#display_accountLogin").addClass(auth);
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
+
+		$('#display_accountPicture img').attr({'src':`${picture}`});
         $("#field_fname").val(data[8]);
         $("#field_mname").val(data[10]);
         $("#field_lname").val(data[9]);
@@ -69,9 +70,9 @@ account = {
 		    disabled: {from: from}
 		});
 
-		skills.display();
         this.update();
         this.logout();
+		this.updatePicture(data[0]);
 	},
 	display:function(data){
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
@@ -82,7 +83,6 @@ account = {
 		$(`#profile img`).on('error',function(){
 			$(this).attr({'src':tempPicture});
 		});
-		account.updatePicture(data[0]);
 	},
 	update:function(){
 		let c = 0;
@@ -150,22 +150,25 @@ account = {
         window.Cropper;
         var user = id;
         var picture = `${server}/assets/images/logo/icon.png`;
-        var content = `<div class='image-crop col s12' style='margin: 0 auto;'>
+        var content = `<div class='image-crop col s12'>
                             <img width='100%' src='${picture}' id='change_picture'>
                         </div>
-                        <div class='btn-group col s12'>
-                            <label for='inputImage' class='btn blue btn-floating btn-flat tooltipped' data-tooltip='Load image' data-position='left'>
+                        <div class='crop-options col'>
+                        	<p><label for='inputImage' class='button button-outline button-round tooltipped' data-tooltip='Load image' data-position='left'>
                                 <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
-                                <i class='f7-icons right hover white-text'>camera_fill</i>
-                            </label>
-                            <a class='btn blue btn-floating btn-flat' data-cmd='cancel' data-position='right'>
-                                <i class='f7-icons popup-close'>close_round</i>
-                            </a>
-                            <a class='btn blue btn-flat hidden right white-text' data-cmd='save'>
-                                <i class='f7-icons popup-close'>check_round_fill</i>
-                            </a>
+                                Upload Picture
+                            </label></p>
+                        	<p><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
+                        	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
+                        	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
                         </div>`;
         $("#profile_picture2").html(content);
+
+		$("a[data-cmd='take-a-photo']").click(function() {
+			navigator.camera.getPicture(onSuccess, function(message) { alert ("Ouups!"); }, { destinationType: Camera.DestinationType.FILE_URI,
+				sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80
+			});
+		});
 
         var $inputImage = $("#inputImage");
         var status = true;
@@ -258,7 +261,6 @@ skills = {
 	},
 	frontdisplay:function(){
 		let data = account.get()[0], id = localStorage.getItem('account_id'), _skills = JSON.parse(this.get(id));
-
 		$(".skills.block").html("");
         if(_skills.length>0){
         	$.each(_skills,function(i,v){
@@ -884,7 +886,7 @@ job = {
 		});
 	}
 }
-/*othan */
+
 bookmark ={
 	ini:function(){
 		let id =  localStorage.getItem('account_id');
@@ -899,30 +901,29 @@ bookmark ={
 		let	picture = "", id="";
 		$.each(data,function(i,v){
 			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
-			$('#list_bookmarks ul').append(`
-				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
-					<div class="item-media"><img src="${picture}" width="44"/></div>
-					<div class="item-inner">
-						<div class="item-title-row">
-							<div class="item-title">
-								${v[1]}
-							</div>
-						</div>
-						<div class="item-subtitle">
-							${v[3]} | <small>${v[4]}</small>
-						</div>
-					</div>
-				</a>`);
+			$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
+				<div class="item-media"><img src="${picture}" width="44"/></div>
+				<div class="item-inner">
+					<div class="item-title-row"><div class="item-title">${v[1]}</div></div>
+					<div class="item-subtitle">${v[3]} | <small>${v[4]}</small></div>
+				</div>
+			</a>`);
+		});		
 
-		})			
-			$(`a[data-cmd='job-info']`).on('click',function(){
-				id = $(this).data('node');
-				localStorage.setItem('job',id);
-				view.router.navigate('/job/');
-			});
+
+		$(`#list_bookmarks .item-media img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
+
+
+		$(`a[data-cmd='job-info']`).on('click',function(){
+			id = $(this).data('node');
+			localStorage.setItem('job',id);
+			view.router.navigate('/job/');
+		});
 	}
 }
-/**/
+
 search = {
 	ini:function(){
 	}

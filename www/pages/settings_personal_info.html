@@ -1,0 +1,101 @@
+<div class="page no-swipeback account-subpage" id='career-info'>
+	<div class="navbar no-shadow">
+		<div class="navbar-inner sliding">
+			<div class="left">
+				<a class="link back"><i class='material-icons'>chevron_left</i></a>
+			</div>
+		</div>
+	</div>	
+    <div class="page-content">
+		<div class="title">Personal Information</div>
+        <div class="content bg-color-white" id='display_personal_info'>
+            <div class="row">
+		        <form>
+		            <div class="list">
+		                <ul>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                        	<div class="" id="display_accountPicture">
+										<a class="col button button-small button-fill button-round in-field-btn popup-open" data-popup='.popup-picture' data-cmd='UpdatePic'><i class='f7-icons'>camera_fill</i></a>
+		                                <img src="" width='100%'>
+		                        	</div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">First Name</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_fname' name='field_fname' data-cmd='field' data-prop='field_fname'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Middle Name</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_mname' name='field_mname' data-cmd='field' data-prop='field_mname'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Last Name</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_lname' name='field_lname' data-cmd='field' data-prop='field_lname'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Date of Birth</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_dob' name='field_dob' data-cmd='field' data-prop='field_dob'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Address</div>
+		                            <div class="item-input-wrap">
+                                        <textarea class="resizable" id='field_address' name='field_address' data-cmd='field' data-prop='field_address'></textarea>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Phone Number</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_number' name='field_number' data-cmd='field' data-prop='field_number'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Bio</div>
+		                            <div class="item-input-wrap">
+                                        <textarea class="resizable" id='field_bio' name='field_bio' data-cmd='field' data-prop='field_bio'></textarea>
+		                            </div>
+		                        </div>
+		                    </li>
+		                </ul>
+		            </div>
+		        </form>
+            </div>
+        </div>
+    </div>
+    <div class="popup popup-picture">
+        <div class='card'>
+        	<div class="card-header">
+        		Updating profile picture
+				<div class="right"><a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a></div>
+        	</div>
+            <div class='card-content card-content-padding align-self-stretch'>
+                <div class='row'>
+                    <div class='col s12'>
+                        <div id='profile_picture2' class='ibox-content no-padding border-left-right '></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
