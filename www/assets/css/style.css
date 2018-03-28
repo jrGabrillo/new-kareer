@@ -456,11 +456,13 @@ display: block;
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
 	box-shadow: none !important;
-	height: 500px;
+	height: 450px;
 }
 #tab_jobs h3{
 	width:100%;
 	margin:0;
+	font-size: 12px;
+	line-height: 12px;
 }
 #tab_jobs .holder_action{
 	width: 50%;
@@ -895,6 +897,6 @@ a[data-cmd="read_company"]{
 
 #tab_jobs ul li{
 	position: absolute;
-	transition: 0.5s;
+	transition: 0.4s;
 	z-index: 1;
 }

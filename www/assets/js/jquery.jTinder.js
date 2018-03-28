@@ -37,41 +37,39 @@
 		init: function (element) {
 			container = $(">ul", element);
 			panes = $(">ul>li", element);
-			pane_width = container.width();
+			pane_width = container.width()*1.5;
 			pane_count = panes.length;
 			current_pane = panes.length - 1;
 			$that = this;
 
-			$(panes[3]).addClass('next');
-			$(panes[4]).addClass('active');
+			$(panes[current_pane-1]).addClass('next');
+			$(panes[current_pane]).addClass('active');
 
 			$(element).bind('touchstart mousedown', this.handler);
 			$(element).bind('touchmove mousemove', this.handler);
 			$(element).bind('touchend mouseup', this.handler);
 		},
+        bindNew: function(element){
+            panes = $(">ul>li", element);
+            pane_count = panes.length;
+            current_pane = panes.length - 1;
+        },		
 		showPane: function (index) {
-			panes.eq(current_pane).hide();
+			$(panes[current_pane-2]).addClass('next');
+			$(panes[current_pane-1]).removeClass('next').addClass('active');
+			$(panes[current_pane]).removeClass('active').addClass('previous');
 			current_pane = index;
-
-			console.log(current_pane);
 		},
-		next: function () {
+		next: function(){
 			return this.showPane(current_pane - 1);
 		},
 		dislike: function() {
-			console.log('xxx');
 			panes.eq(current_pane).animate({"transform": "translate(-" + (pane_width) + "px," + (pane_width*-1.5) + "px) rotate(-60deg)"}, $that.settings.animationSpeed, function () {
 				if($that.settings.onDislike) {
 					$that.settings.onDislike(panes.eq(current_pane));
 				}
 				$that.next();
 			});
-
-			console.log(current_pane);
-			setTimeout(function(){
-				console.log('xxx');
-				$(panes[current_pane]).remove();
-			},1000);
 		},
 		like: function() {
 			panes.eq(current_pane).animate({"transform": "translate(" + (pane_width) + "px," + (pane_width*-1.5) + "px) rotate(60deg)"}, $that.settings.animationSpeed, function () {
@@ -83,7 +81,6 @@
 		},
 		handler: function (ev) {
 			ev.preventDefault();
-
 			switch (ev.type) {
 				case 'touchstart':
 					if(touchStart === false) {
@@ -167,11 +164,14 @@
 	$.fn[ pluginName ] = function (options) {
 		this.each(function () {
 			if (!$.data(this, "plugin_" + pluginName)) {
-				$.data(this, "plugin_" + pluginName, new Plugin(this, options));
-			}
+                $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+            }
 			else if ($.isFunction(Plugin.prototype[options])) {
 				$.data(this, 'plugin_' + pluginName)[options]();
-		    }
+			}
+            else {
+                $.data(this, "plugin_" + pluginName).bindNew(this);
+            }
 		});
 
 		return this;
