@@ -172,7 +172,7 @@ account = {
 		// $("a[data-cmd='take-a-photo']").click(function() {
 		// 	navigator.camera.getPicture(
 		// 	function(data){
-		// 	   $('#display_accountPicture img').attr({'src':`${data:image/jpeg;base64,${data}}`});
+		// 	   $('#change_picture').attr({'src':`${data:image/jpeg;base64,${data}}`});
 		// 	}, 
 		// 	function(message){alert ("Ouups!");},{ destinationType: Camera.DestinationType.FILE_URI,sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80});
 		// });
@@ -778,7 +778,7 @@ jobs = {
 										<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[2]}">more_vert</a>
 										<div class='company'>
 											<div class='logo-holder'>
-												<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
+												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 80px;'></div>
 											</div>
 											<div class='information'>
 												<h3>${v[9]}<br/><small>${v[11]}</small></h3>

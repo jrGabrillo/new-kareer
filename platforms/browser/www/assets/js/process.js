@@ -1,5 +1,6 @@
 let host = window.location;
 let server = `http://system.kareer-ph.com/`;
+// let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
@@ -73,6 +74,10 @@ account = {
         this.update();
         this.logout();
 		this.updatePicture(data[0]);
+
+		$(`#display_accountPicture img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
 	},
 	display:function(data){
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
@@ -158,17 +163,19 @@ account = {
                                 <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
                                 Upload Picture
                             </label></p>
-                        	<p><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
+                        	<p class='hidden'><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
                         	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
                         	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
                         </div>`;
         $("#profile_picture2").html(content);
 
-		$("a[data-cmd='take-a-photo']").click(function() {
-			navigator.camera.getPicture(onSuccess, function(message) { alert ("Ouups!"); }, { destinationType: Camera.DestinationType.FILE_URI,
-				sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80
-			});
-		});
+		// $("a[data-cmd='take-a-photo']").click(function() {
+		// 	navigator.camera.getPicture(
+		// 	function(data){
+		// 	   $('#change_picture').attr({'src':`${data:image/jpeg;base64,${data}}`});
+		// 	}, 
+		// 	function(message){alert ("Ouups!");},{ destinationType: Camera.DestinationType.FILE_URI,sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80});
+		// });
 
         var $inputImage = $("#inputImage");
         var status = true;
@@ -227,8 +234,8 @@ account = {
 	logout:function(){
 		$("a[ data-cmd='logout']").on('click',function(){
 			localStorage.clear();
-			system.notification("Kareer",`Logout.`);
 			view.router.navigate('/home/');
+			system.notification("Kareer",`Logout.`);
 		});
 	}
 }
@@ -771,7 +778,7 @@ jobs = {
 										<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[2]}">more_vert</a>
 										<div class='company'>
 											<div class='logo-holder'>
-												<div class='logo' style='background:url(${logo}) center/cover no-repeat;'></div>
+												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 80px;'></div>
 											</div>
 											<div class='information'>
 												<h3>${v[9]}<br/><small>${v[11]}</small></h3>
@@ -912,7 +919,7 @@ bookmark ={
 
 
 		$(`#list_bookmarks .item-media img`).on('error',function(){
-			$(this).attr({'src':tempPicture});
+			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
 
 
@@ -923,7 +930,84 @@ bookmark ={
 		});
 	}
 }
+/*
+	problem in passing data in route pages
+	fetching messages still not ordered by date
+	problem in displaying convos per business message
+*/
+messages ={
+	ini:function(){
+		let id =  localStorage.getItem('account_id');
+		let data = JSON.parse(this.get(id));
+		this.display(data);
+	},
+	get:function(data){
+		var ajax = system.ajax(system.host('get-messages'),data);
+		return ajax.responseText;
+	},
+	getConvo:function(id){
+		var ajax = system.ajax(system.host('get-messageConvo'),id);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let	picture = "", id="";
+		$.each(data,function(i,v){
+			picture  = ((typeof v[0][2] == 'object') || (v[0][2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[0][2]}`;
+			$('#list_messages ul').prepend(`
+				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0][0]}">
+					<div class="item-media"><img src="${picture}" width="44"/></div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title">
+								<strong>${v[0][1]}</strong>
+							</div>
+						</div>
+						<div class="item-subtitle">
+							${v[1]}
+						</div>
+					</div>
+				</a>`);
 
+		})			
+			$(`a[data-cmd='job-info']`).on('click',function(){
+				id = $(this).data('node');
+				view.router.navigate('/message/');
+				messages.convo(id);
+			});
+		$(`#list_messages img`).on('error',function(){
+			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
+		});
+	},
+	convo:function(id){
+		let data = JSON.parse(messages.getConvo(id)), business="";
+		$.each(data,function(i,v){
+            business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
+            $('#messageBox div').prepend(`
+            	<div class="message message-received">
+            		<div class="message-avatar" style="background-image:url(${server}/assets/images/logo/${business});"></div>
+	                <div class="message-content">
+	                <div class="message-name">${v[1]}</div>
+	                    <div class="message-bubble">
+	                        <div class="message-text">${v[2]}/div>
+	                    </div>
+	                </div>
+	            </div>
+            `);
+        });
+        // $('#messages ul').scrollTop($('#messages ul').prop("scrollHeight")); /*this will stick the scroll to bottom*/
+        $('a[data-cmd="send"]').on('click', function(){
+            let message = $("input").val();
+            if(message.length == 0){
+                    system.notification("Kareer","Message box is empty.");
+            }
+            else{
+            	console.log(message);
+            	system.notification("Kareer","Message sent.");
+            }
+        });
+	}
+}
+/**/
 search = {
 	ini:function(){
 	}

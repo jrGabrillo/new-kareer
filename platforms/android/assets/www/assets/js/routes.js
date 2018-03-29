@@ -241,6 +241,8 @@ var routes = [
         url: './pages/messages.html',
         on: {
             pageInit: function(e, page){
+                messages.ini();
+                let ps = new PerfectScrollbar('.list.media-list');
                 console.log('messages');
             }
         }
@@ -250,6 +252,7 @@ var routes = [
         url: './pages/message.html',
         on: {
             pageInit: function(e, page){
+                console.log('convo');
                 let ps = new PerfectScrollbar('.messages-content');
             }
         }
