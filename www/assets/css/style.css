@@ -898,7 +898,7 @@ a[data-cmd="read_company"]{
 
 #tab_jobs ul li{
 	position: absolute;
-	transition: 0.4s;
+	transition: 0.1s;
 	z-index: 1;
 }
 
