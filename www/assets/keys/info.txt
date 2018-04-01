@@ -1,4 +1,0 @@
-keytool -genkey -v -keystore kareer.keystore -alias Kareer -keyalg RSA -keysize 2048 -validity 10000
-
-Owner: CN=Rufo N. Gabrillo Jr., OU=RNR Digital Consultancy, O=RNR Digital Consultancy, L=Lingayen, ST=Pangasinan, C=PH
-P:no time for love 1993
