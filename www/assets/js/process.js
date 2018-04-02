@@ -1114,8 +1114,7 @@ signup = {
 			rules: {
 				field_firstname: {required: true, maxlength: 50},
 				field_lastname: {required: true, maxlength: 50},
-				// field_email: {required: true, maxlength: 100, email:true, validateEmail:true},
-				field_email: {required: true, maxlength: 100, email:true},
+				field_email: {required: true, maxlength: 100, email:true, validateEmail:true},
 				field_password: {required: true, maxlength: 50},
 			},
 			errorElement : 'div',
@@ -1129,20 +1128,21 @@ signup = {
 				}
 			},
 			submitHandler: function (form) {
-				let _form = $(form).serializeArray();
+				let _form = $(form).serializeArray(), data = "";
 				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
-				let data = system.ajax(system.host('do-signUp'),form);
+				data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
-					console.log(data);
-					// if(data != 0){
-					// 	localStorage.setItem('callback','kareer-oauth');
-					// 	localStorage.setItem('account',data);
-					// 	system.notification("Kareer","Success. You are now officially registered.");
-					// 	view.router.navigate('/signin/');
-					// }
-					// else{
-					// 	system.notification("Kareer","Sign up failed.");
-					// }
+					if(data != 0){
+						data = JSON.parse(data);
+				        localStorage.setItem('account_id',data['id']);
+						localStorage.setItem('callback','kareer-oauth');
+						localStorage.setItem('account',data);
+						system.notification("Kareer","Success. You are now officially registered.");
+						view.router.navigate('/signin/');
+					}
+					else{
+						system.notification("Kareer","Sign up failed.");
+					}
 				});
 			}
 		}); 
