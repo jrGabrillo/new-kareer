@@ -5,9 +5,7 @@ let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
 		let data = this.get()[0], scroll = 0;   
-        localStorage.setItem('account_id',data[0]);
 		this.display(data);
-
         jobs.display();
 		app.toolbar.hide('#menu_job');
 
@@ -38,6 +36,9 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
+	},
+	id:function(){
+		return localStorage.getItem('account_id');
 	},
 	get:function(){
 		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
@@ -104,7 +105,7 @@ account = {
 		});
 
 		$("*[ data-cmd='field']").on('change',function(){
-			let data = $(this).data(), val = $(this).val(), id = localStorage.getItem('account_id');			
+			let data = $(this).data(), val = $(this).val(), id = account.id();			
 			let status = 0;
 
 			console.log(data.prop);
@@ -168,14 +169,6 @@ account = {
                         	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
                         </div>`;
         $("#profile_picture2").html(content);
-
-		// $("a[data-cmd='take-a-photo']").click(function() {
-		// 	navigator.camera.getPicture(
-		// 	function(data){
-		// 	   $('#change_picture').attr({'src':`${data:image/jpeg;base64,${data}}`});
-		// 	}, 
-		// 	function(message){alert ("Ouups!");},{ destinationType: Camera.DestinationType.FILE_URI,sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, quality: 80});
-		// });
 
         var $inputImage = $("#inputImage");
         var status = true;
@@ -247,7 +240,7 @@ skills = {
 		return ajax.responseText;
 	},
 	display:function(){
-		let data = account.get()[0], id = localStorage.getItem('account_id'), _skills = JSON.parse(this.get(id));
+		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
 
         if(_skills.length>0){
         	$.each(_skills,function(i,v){
@@ -267,7 +260,7 @@ skills = {
         this.remove();
 	},
 	frontdisplay:function(){
-		let data = account.get()[0], id = localStorage.getItem('account_id'), _skills = JSON.parse(this.get(id));
+		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
 		$(".skills.block").html("");
         if(_skills.length>0){
         	$.each(_skills,function(i,v){
@@ -287,7 +280,7 @@ skills = {
 	},
 	add:function(){
 		$("a#btn_addSkill").on('click',function(){
-			let val = $('#field_skill').val(), id = localStorage.getItem('account_id');
+			let val = $('#field_skill').val(), id = account.id();
 
 			let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val]);
 			ajax.done(function(data){
@@ -316,7 +309,7 @@ skills = {
 		});
 	},
 	remove:function(){
-		let id = localStorage.getItem('account_id');
+		let id = account.id();
 		$("a[data-cmd='deleteSkill']").on('click',function(){
 			let data = $(this).data();
 			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',id, data.node]);
@@ -335,7 +328,7 @@ skills = {
 
 academic = {
 	ini:function(){
-		let id =  localStorage.getItem('account_id');
+		let id =  account.id();
 		let data = JSON.parse(this.get(id));
 
 		this.display(data);
@@ -526,7 +519,7 @@ academic = {
 
 career = {
 	ini:function(){
-		let id =  localStorage.getItem('account_id');
+		let id =  account.id();
 		let data = JSON.parse(this.get(id));
 
 		this.display(data);
@@ -707,7 +700,7 @@ jobs = {
 		if(trigger){
             min = max;
             max = max+count;
-	        slides = jobs.process(JSON.parse(jobs.get(localStorage.getItem('account_id'),min,count)));
+	        slides = jobs.process(JSON.parse(jobs.get(account.id(),min,count)));
 
 	        if((typeof slides) == "string"){
 	        	trigger = false;
@@ -721,13 +714,16 @@ jobs = {
 				    onDislike: function (item){
 				    	setTimeout(function(){
 					    	$("#tab_jobs ul li.previous").remove();
-				    	},2000);
+				    	},500);
 				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
 				    },
 				    onLike: function (item){
 				    	setTimeout(function(){
 					    	$("#tab_jobs ul li.previous").remove();
-				    	},2000);
+				    	},500);
+	    				job_id = $("#tab_jobs ul li.active").data('node');
+						job.apply([job_id,account.id()]);
+
 				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
 				    },
 					animationRevertSpeed: 200,
@@ -740,7 +736,7 @@ jobs = {
 		}
 	},
 	display:function(){
-		let id = localStorage.getItem('account_id'), swipe = true, _data = [], job_id = "";	
+		let id = account.id(), swipe = true, _data = [], job_id = "";	
 		let data = JSON.parse(jobs.get(id,min,count));
 
         jobs.loadMore(true);
@@ -823,29 +819,29 @@ job = {
 	bookmark:function(data){
         var data = system.ajax(system.host('do-jobBookmark'),data);
         data.done(function(data){
-            if(data == 1){
-                system.notification("Kareer","Done.");
-            }
-            else if(data == 2){
-                system.notification("Kareer","Done.");
-            }
-            else{
-                system.notification("Kareer","Failed to apply.");
-            }
+            // if(data == 1){
+            //     system.notification("Kareer","Done.");
+            // }
+            // else if(data == 2){
+            //     system.notification("Kareer","Done.");
+            // }
+            // else{
+            //     system.notification("Kareer","Failed to apply.");
+            // }
         });
 	},
 	apply:function(data){
         var data = system.ajax(system.host('do-jobApply'),data);
         data.done(function(data){
-            if(data == 1){
-                system.notification("Kareer","Application sent.");
-            }
-            else if(data == 2){
-                system.notification("Kareer","Already sent application to this job.");
-            }
-            else{
-                system.notification("Kareer","Failed to apply.");
-            }
+            // if(data == 1){
+            //     system.notification("Kareer","Application sent.");
+            // }
+            // else if(data == 2){
+            //     system.notification("Kareer","Already sent application to this job.");
+            // }
+            // else{
+            //     system.notification("Kareer","Failed to apply.");
+            // }
         });
 	},
 	display:function(data){
@@ -884,11 +880,11 @@ job = {
 		`);
 
 		$("#display_job .job_bookmark").on('click',function(){
-			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			let job_id = localStorage.getItem('job'), account_id = account.id();
 			job.bookmark([job_id,account_id]);
 		});
 		$("#display_job .job_apply").on('click',function(){
-			let job_id = localStorage.getItem('job'), account_id = localStorage.getItem('account_id');
+			let job_id = localStorage.getItem('job'), account_id = account.id();
 			job.apply([job_id,account_id]);
 		});
 	}
@@ -896,7 +892,7 @@ job = {
 
 bookmark ={
 	ini:function(){
-		let id =  localStorage.getItem('account_id');
+		let id =  account.id();
 		let data = JSON.parse(this.get(id));
 		this.display(data);
 	},
@@ -930,16 +926,14 @@ bookmark ={
 		});
 	}
 }
-/*
-	problem in passing data in route pages
-	fetching messages still not ordered by date
-	problem in displaying convos per business message
-*/
+
 messages ={
 	ini:function(){
-		let id =  localStorage.getItem('account_id');
-		let data = JSON.parse(this.get(id));
-		this.display(data);
+		let id =  account.id();
+		let data = this.get(id);
+		// let data = JSON.parse(this.get(id));
+		console.log(data);
+		// this.display(data);
 	},
 	get:function(data){
 		var ajax = system.ajax(system.host('get-messages'),data);
@@ -1007,7 +1001,7 @@ messages ={
         });
 	}
 }
-/**/
+
 search = {
 	ini:function(){
 	}
@@ -1087,6 +1081,8 @@ signin = {
                     data = JSON.parse(data);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
+				        localStorage.setItem('callback','kareer-oauth');
+				        localStorage.setItem('account_id',data[2]['id']);
 						localStorage.setItem('account',JSON.stringify(data[2]));
                         view.router.navigate('/account/');                        
                     }
@@ -1132,11 +1128,13 @@ signup = {
 				}
 			},
 			submitHandler: function (form) {
-				let _form = $(form).serializeArray();
+				let _form = $(form).serializeArray(), data = "";
 				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
-				let data = system.ajax(system.host('do-signUp'),form);
+				data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
 					if(data != 0){
+						data = JSON.parse(data);
+				        localStorage.setItem('account_id',data['id']);
 						localStorage.setItem('callback','kareer-oauth');
 						localStorage.setItem('account',data);
 						system.notification("Kareer","Success. You are now officially registered.");
@@ -1179,7 +1177,7 @@ auth = {
 	                system.notification("Kareer","Sign in failed.");
 	            }
 	        });
-		},1000);
+		},500);
 	},
 	google:function(callback){
 		gapi.load('auth2', function() {
