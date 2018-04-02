@@ -936,11 +936,7 @@ bookmark ={
 		});
 	}
 }
-/*
-	problem in passing data in route pages
-	fetching messages still not ordered by date
-	problem in displaying convos per business message
-*/
+
 messages ={
 	ini:function(){
 		let id =  account.id();
@@ -1015,7 +1011,7 @@ messages ={
         });
 	}
 }
-/**/
+
 search = {
 	ini:function(){
 	}
