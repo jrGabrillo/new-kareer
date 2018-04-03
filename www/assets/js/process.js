@@ -230,10 +230,8 @@ account = {
         }
     },
 	logout:function(){
-		$("a[data-cmd='logout']").on('click',function(){
-			localStorage.clear();
-			view.router.navigate('/home/');
-		});
+		localStorage.clear();
+		view.router.navigate('/home/');
 	}
 }
 
@@ -716,19 +714,29 @@ jobs = {
 		        });
 				$("#tab_jobs").jTinder({
 				    onDislike: function (item){
-				    	setTimeout(function(){
-					    	$("#tab_jobs ul li.previous").remove();
-				    	},500);
+				    	console.log('xxx');
+				    	$("#tab_jobs ul li.previous").html("");
+
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
+					    	// $("#tab_jobs ul li.previous").remove();
+						},2000);
+
 				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
 				    },
 				    onLike: function (item){
-				    	setTimeout(function(){
+
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-				    	},500);
+						},2000);
+
 	    				job_id = $("#tab_jobs ul li.active").data('node');
 						job.apply([job_id,account.id()]);
 
-				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) == 0);
 				    },
 					animationRevertSpeed: 200,
 					animationSpeed: 400,
@@ -774,21 +782,20 @@ jobs = {
 				jobArr.push(`<li data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
-										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
+										<div class='job_banner'></div>
 										<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[2]}">more_vert</a>
 										<div class='company'>
 											<div class='logo-holder'>
-												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 80px;'></div>
+												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 50px;'></div>
 											</div>
 											<div class='information'>
-												<h3>${v[9]}<br/><small>${v[11]}</small></h3>
+												<h3>${v[9]}<br/><div class='single-ellipsis'>${v[11]}</div></h3>
 											</div>
 										</div>
 									</div>
 									<div class='card-content card-content-padding align-self-stretch'>
 										<div class='job-description'>
 											<h3>${v[5]}</h3>
-											<p>${v[4]}</p>
 											<div class='row'>
 												<strong>Skills</strong><br/>
 												${skills}
@@ -798,6 +805,9 @@ jobs = {
 												<p class='ellipsis'>${v[3]}</p>
 											</div>
 										</div>
+									</div>
+									<div class='card-footer'>
+										<button class="col button button-round" data-cmd="read_job" data-node="${v[0]}">Read more</button>
 									</div>
 								</div>
 							</li>`);
