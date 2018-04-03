@@ -183,7 +183,18 @@ var routes = [
         url: './pages/notifications.html',
         on: {
             pageInit: function(e, page){
-                let ps = new PerfectScrollbar('#list_jobs');
+                notifications.ini();
+                let ps = new PerfectScrollbar('#list_notifications');
+            }
+        }
+    },
+    {
+        path: '/notification/',
+        url: './pages/notification-info.html',
+        on: {
+            pageInit: function(e, page){
+                notification.ini();
+                let ps = new PerfectScrollbar('#list_notifications');
             }
         }
     },
