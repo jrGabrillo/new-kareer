@@ -1014,6 +1014,7 @@ notifications ={
 		return ajax.responseText;
 	},
 	display:function(data){
+		console.log(data);
 		let	picture = "", notification="",status="";
 		$.each(data,function(i,v){
 			status = (v[3] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
