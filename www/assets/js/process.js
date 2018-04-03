@@ -744,18 +744,13 @@ jobs = {
 		}
 	},
 	display:function(){
-		let id = account.id(), swipe = true, _data = [], job_id = "";	
+		let id = account.id(), swipe = true, _data = [], job_id = "", business_id = "";	
 		let data = JSON.parse(jobs.get(id,min,count));
 
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
 			$("#tab_jobs").jTinder('dislike');
-		});
-		$("#menu_job .job_info").on('click',function(){
-			job_id = $("#tab_jobs ul li.active").data('node');
-			localStorage.setItem('job',job_id);
-			view.router.navigate('/job/');
 		});
 		$("#menu_job .job_bookmark").on('click',function(){
 			job_id = $("#tab_jobs ul li.active").data('node');
@@ -766,6 +761,17 @@ jobs = {
 			job_id = $("#tab_jobs ul li.active").data('node');
 			job.apply([job_id,id]);
 			$("#tab_jobs").jTinder('like');
+		});
+
+		$('button[data-cmd="read_job"]').on('click',function(){
+			job_id = $(this).data('node');
+			localStorage.setItem('job',job_id);
+			view.router.navigate('/job/');
+		});
+		$('a[data-cmd="read_company"]').on('click',function(){
+			business_id = $(this).data('node');
+			localStorage.setItem('business',business_id);
+			view.router.navigate('/business/');
 		});
 	},
 	process:function(data){
@@ -779,7 +785,7 @@ jobs = {
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner'></div>
-										<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[2]}">more_vert</a>
+										<a class="col button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green" data-cmd="read_company" data-node="${v[2]}"><i class='material-icons text-color-gray'>more_vert</i></a>
 										<div class='company'>
 											<div class='logo-holder'>
 												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 50px;'></div>
