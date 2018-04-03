@@ -66,6 +66,7 @@ account = {
 		var calendarModal = app.calendar.create({
 			inputEl: '#field_dob',
 			openIn: 'customModal',
+			dateFormat: 'MM dd, yyyy',
 			footer: true,
 			firstDay:0,
 			value:[data[12]],
@@ -81,10 +82,14 @@ account = {
 		});
 	},
 	display:function(data){
+		skills.frontdisplay();
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
-		$('#profile img').attr({'src':`${picture}`});
-		$('#profile h3.fullname').html(`${data[8]} ${data[10]} ${data[9]}`);
-		$('#profile p.about').html(data[1]);
+		let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
+		let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
+
+		$('#profile img').attr({'src':picture});
+		$('#profile h3.fullname').html(name);
+		$('#profile p.about').html(about);
 
 		$(`#profile img`).on('error',function(){
 			$(this).attr({'src':tempPicture});
@@ -225,10 +230,9 @@ account = {
         }
     },
 	logout:function(){
-		$("a[ data-cmd='logout']").on('click',function(){
+		$("a[data-cmd='logout']").on('click',function(){
 			localStorage.clear();
 			view.router.navigate('/home/');
-			system.notification("Kareer",`Logout.`);
 		});
 	}
 }
@@ -272,7 +276,7 @@ skills = {
         	})
         }
         else{
-        	$(".skills.block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");        	
+        	$(".skills.block").html(`No skills yet. <a href="/settings_skills/">Add skills</a>`);        	
         }
 
         this.add();
@@ -1189,11 +1193,22 @@ signup = {
 				$("#display_form input[name='field_password']").attr({'type':'text'});
 			}
 		});
+		
+		var from = new Date((new Date()).getFullYear()-18, 1, 1);
+		var calendarModal = app.calendar.create({
+			inputEl: '#field_dob',
+			openIn: 'customModal',
+			dateFormat: 'MM dd, yyyy',
+			footer: true,
+			firstDay:0,
+		    disabled: {from: from}
+		});
 
 		$("#form_signup").validate({
 			rules: {
 				field_firstname: {required: true, maxlength: 50},
 				field_lastname: {required: true, maxlength: 50},
+				field_dob: {required: true, maxlength: 100},
 				field_email: {required: true, maxlength: 100, email:true, validateEmail:true},
 				field_password: {required: true, maxlength: 50},
 			},
@@ -1209,7 +1224,7 @@ signup = {
 			},
 			submitHandler: function (form) {
 				let _form = $(form).serializeArray(), data = "";
-				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
+				form = [form[0].value, form[1].value,form[3].value, form[4].value, form[2].value, "", "", ""];
 				data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
 					if(data != 0){
@@ -1228,17 +1243,21 @@ signup = {
 		}); 
 	},
 	auth:function(form){
-		var data = system.ajax(system.host('do-logInAuth'),form);
-		data.done(function(data){
-			data = JSON.parse(data);
-			if(data[1] == 'applicant'){
-				system.notification("Kareer","Signed in.");
-				view.router.navigate('/account/');                        
-			}
-			else{
-				system.notification("Kareer","You are not yet registered");
-			}
-		});
+		console.log(form);
+		// var data = system.ajax(system.host('do-logInAuth'),form);
+  //       data.done(function(data){
+  //           if(data == 1){
+  //               system.notification("Kareer","Success. You are now officially registered.");
+  //               view.router.navigate('/signin/');                        
+  //           }
+  //           else if(data == 2){
+  //               view.router.navigate('/signin/');                        
+  //               system.notification("Kareer","You are already signed in. Try signing in using your email.");
+  //           }
+  //           else{
+  //               system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
+  //           }
+  //       });
 	}
 }
 
@@ -1249,6 +1268,7 @@ auth = {
 		setTimeout(function(){
 	        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
 	        data.done(function(data){
+	        	console.log(data);
 	            data = JSON.parse(data);
 	            if(data[1] == 'applicant'){
 	                view.router.navigate('/account/');                        

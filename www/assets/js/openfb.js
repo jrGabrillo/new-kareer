@@ -223,6 +223,7 @@ fb = {
         path: '/v2.12/me',
         success: function(data){
             let picture = `http://graph.facebook.com/${data.id}/picture?type=large`;
+            console.log(data);
             localStorage.setItem('account',JSON.stringify(data));
         },
         error: fb.errorHandler});
