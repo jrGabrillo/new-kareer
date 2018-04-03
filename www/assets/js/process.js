@@ -1,6 +1,6 @@
 let host = window.location;
-let server = `http://system.kareer-ph.com/`;
-// let server = `http://localhost/kareer`;
+// let server = `http://system.kareer-ph.com/`;
+let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
@@ -1011,6 +1011,85 @@ messages ={
         });
 	}
 }
+
+/*notifications, application in the tbl_logs with status of 1 = unread */
+notifications ={
+	ini:function(){
+		let id =  account.id();
+		let data = this.get(id);
+		console.log(data);
+		this.display(JSON.parse(data));
+	},
+	get:function(data){
+		var ajax = system.ajax(system.host('get-notifications'),data);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let	picture = "", notification="",status="";
+		$.each(data,function(i,v){
+			status = (v[3] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
+			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
+			$('#list_notifications ul').prepend(`
+				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-node="${v[0]}" data-name ="${status[0]}">
+					<div class="item-media"><img src="${picture}" width="44"/></div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title">
+								<strong>${v[1]}</strong> responded to your ${v[5]}
+							</div>
+						</div>
+						<small>${v[4]}</small>
+					</div>
+				</a>`);
+
+		})			
+		$(`a[data-cmd='job-info']`).on('click',function(){
+			notification = $(this).data();
+			notifications.action(notification['node']); /*read function*/
+			localStorage.setItem('notification',JSON.stringify([notification['name'],notification['node']]));
+			view.router.navigate('/notification/');
+		});
+		$(`#list_notifications img`).on('error',function(){
+			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
+		});
+	},
+	action:function(id){ /*change application log status into read*/
+		var ajax = system.ajax(system.host('do-action'),[id,'notification']);
+        ajax.done(function(ajax){
+        	console.log((ajax == 1)?'read':'unread');
+        });
+	}
+}
+notification ={
+	ini:function(){
+		let notif = JSON.parse(localStorage.getItem('notification'));
+		this.display(notif);
+	},
+	get:function(id){
+		var ajax = system.ajax(system.host('get-notificationInfo'),id);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let notifInfo = JSON.parse(notification.get(data[1]))[0], logo = "",random = "", status ="";
+		logo  = ((typeof notifInfo[2] == 'object') || (notifInfo[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[2]}`;
+		$("#display_job").html(`
+            <div class="row job-title">
+                <a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${notifInfo[0]}">more_vert</a>
+            </div>
+            <div class="row business-info">
+                <img src="${logo}" width='100%'>
+                <div class="company">
+                    <h3 class="name">${notifInfo[1]}</h3>
+                </div>
+            </div>
+            <div class="row job-skills">
+                <h4>${notifInfo[3]}</h4>
+            </div>
+		`);
+	}
+
+}
+/**/
 
 search = {
 	ini:function(){
