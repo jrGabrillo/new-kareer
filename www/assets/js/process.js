@@ -1007,7 +1007,6 @@ notifications ={
 	ini:function(){
 		let id =  account.id();
 		let data = this.get(id);
-		console.log(data);
 		this.display(JSON.parse(data));
 	},
 	get:function(data){
@@ -1070,10 +1069,11 @@ notification ={
                 <img src="${logo}" width='100%'>
                 <div class="company">
                     <h3 class="name">${notifInfo[1]}</h3>
+                    <h4 class="address">Application for ${notifInfo[4]}</h4>
                 </div>
             </div>
             <div class="row job-skills">
-                <h4>${notifInfo[3]}</h4>
+                <h2>${notifInfo[3]}</h2>
             </div>
 		`);
 	}
