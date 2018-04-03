@@ -152,7 +152,7 @@ body {
 
 .block-login{
 	width: 150px;
-	margin: 50px;
+	margin: 5px;
 	position:  relative;
 }
 .block-create-account{
@@ -455,7 +455,7 @@ display: block;
 	height: 100%;
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
-	box-shadow: none !important;
+	/* box-shadow: none !important; */
 	height: 450px;
 }
 #tab_jobs h3{
@@ -836,6 +836,8 @@ button:disabled{
 	font-size: 20px;
 	text-align: -webkit-center;
 	vertical-align:  middle;
+	font-weight: bold;
+	text-shadow: 0px 0px 0px #6abc9c;
 }
 a[data-cmd="read_company"]{
 	top: 10%;
@@ -902,9 +904,14 @@ a[data-cmd="read_company"]{
 	transition: 0.1s;
 	z-index: 1;
 }
+.blocker{
+	width: 100%;
+	background: #ccc;
+	height: 500px;
+}
 
 #display_personal_info ul li:last-child{
-padding-bottom: 50px;
+	padding-bottom: 50px;
 }
 
 #display_accountPicture img{

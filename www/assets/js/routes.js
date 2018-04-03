@@ -4,7 +4,6 @@ var routes = [
         url: './pages/home.html',
         on: {
             pageInit: function(e,page){
-                localStorage.clear();
                 setTimeout(function(){
                     let callback = localStorage.getItem('callback'), account = localStorage.getItem('account');
                     if(account != null){
@@ -75,23 +74,10 @@ var routes = [
                         }
 
                         $("#form_signupAuth form").attr({style:'display:block;'});
-                        setTimeout(function(){
-                            form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
-                            let data = system.ajax(system.host('do-signUp'),form);
-                            data.done(function(data){
-                                if(data == 1){
-                                    system.notification("Kareer","Success. You are now officially registered.");
-                                    view.router.navigate('/signin/');                        
-                                }
-                                else if(data == 2){
-                                    view.router.navigate('/signin/');                        
-                                    system.notification("Kareer","You are already signed in. Try signing in using your email.");
-                                }
-                                else{
-                                    system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
-                                }
-                            });
-                        },500);
+                        // setTimeout(function(){
+                        //     form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
+                        //     signup.auth(form);
+                        // },500);
                     },500);
                 }
             }
