@@ -135,7 +135,7 @@ var routes = [
         url: './pages/settings_personal_info.html',
         on: {
             pageInit: function(e, page){
-                new PerfectScrollbar('#display_personal_info');
+                let ps = new PerfectScrollbar('#display_personal_info');
                 account.settingsDisplay();
             }
         }
@@ -164,7 +164,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 bookmark.ini();
-                let ps = new PerfectScrollbar('#list_bookmarks');
+                new PerfectScrollbar('#list_bookmarks');
                 console.log('bookmark');
             }
         }
@@ -183,9 +183,9 @@ var routes = [
         url: './pages/notifications.html',
         on: {
             pageInit: function(e, page){
-                notifications.ini();
-                let ps = new PerfectScrollbar('#list_notifications');
-            }
+                 notifications.ini();
+                 let ps = new PerfectScrollbar('#list_notifications');
+          }
         }
     },
     {
@@ -194,7 +194,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 notification.ini();
-                let ps = new PerfectScrollbar('#list_notifications');
+                let ps = new PerfectScrollbar('#list_notification');
             }
         }
     },

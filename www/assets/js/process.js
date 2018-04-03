@@ -714,19 +714,15 @@ jobs = {
 		        });
 				$("#tab_jobs").jTinder({
 				    onDislike: function (item){
-				    	console.log('xxx');
-				    	$("#tab_jobs ul li.previous").html("");
-
 				    	app.preloader.show();
 						setTimeout(function () {
 							app.preloader.hide();
-					    	// $("#tab_jobs ul li.previous").remove();
+					    	$("#tab_jobs ul li.previous").remove();
 						},2000);
 
 				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
 				    },
 				    onLike: function (item){
-
 				    	app.preloader.show();
 						setTimeout(function () {
 							app.preloader.hide();
@@ -1028,6 +1024,7 @@ notifications ={
 		return ajax.responseText;
 	},
 	display:function(data){
+		console.log(data);
 		let	picture = "", notification="",status="";
 		$.each(data,function(i,v){
 			status = (v[3] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
