@@ -4,13 +4,14 @@ var routes = [
         url: './pages/home.html',
         on: {
             pageInit: function(e,page){
+                localStorage.clear();
                 setTimeout(function(){
                     let callback = localStorage.getItem('callback'), account = localStorage.getItem('account');
                     if(account != null){
                         account = JSON.parse(account);
                         auth.auto(account['email'],account['id'],callback);
                     }
-                },1000);
+                },500);
             }
         }
     },
@@ -20,15 +21,6 @@ var routes = [
         on: {
             pageInit: function(e,page){
                 signin.form();
-                auth.google(function(){
-                    auth.googleSignIn(
-                        document.getElementById('signin_gmail'),
-                        function(){
-                            system.notification('Google','You are now signed in');
-                            view.router.navigate('/account/');     
-                        }
-                    );
-                });
                 $("#signin_facebook").on('click', function() {
                     fb.login(function(){
                         system.notification('Facebook','You are now signed in');
@@ -44,15 +36,6 @@ var routes = [
         on: {
             pageInit: function(e,page){
                 signup.form();
-                auth.google(function(){
-                    auth.googleSignIn(
-                        document.getElementById('signin_gmail'),
-                        function(){
-                            system.notification('Google','You are now signed in');
-                            view.router.navigate('/signup-auth/');
-                        }
-                    );
-                });
                 $("#signin_facebook").on('click', function() {
                     fb.login(function(){
                         system.notification('Facebook','You are now signed in');
@@ -71,7 +54,7 @@ var routes = [
                 if(!isSigned){
                     setTimeout(function(){
                         view.router.navigate('/home/');
-                    },1000);
+                    },500);
                 }
                 else{
                     setTimeout(function(){
@@ -108,8 +91,8 @@ var routes = [
                                     system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
                                 }
                             });
-                        },2000);
-                    },1000);
+                        },500);
+                    },500);
                 }
             }
         }
@@ -122,7 +105,7 @@ var routes = [
                 setTimeout(function(){
                     account.ini();
                     new PerfectScrollbar('#tab_account .other-info');
-                },1000);
+                },500);
             }
         }
     },
