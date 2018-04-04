@@ -206,9 +206,9 @@ var openFB = (function () {
 openFB.init({appId: '407673386340765'});
 fb = {
     login:function(callback){
-        localStorage.setItem('callback','fb-oauth');
         openFB.login(function(response){
             if(response.status == 'connected'){
+                localStorage.setItem('callback','fb-oauth');
                 fb.getProfile(response.authResponse.accessToken);
                 callback();
             }
@@ -223,6 +223,7 @@ fb = {
         path: '/v2.12/me',
         success: function(data){
             let picture = `http://graph.facebook.com/${data.id}/picture?type=large`;
+            console.log(data);
             localStorage.setItem('account',JSON.stringify(data));
         },
         error: fb.errorHandler});

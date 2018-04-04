@@ -9,7 +9,8 @@ var view = app.views.create('.view-main');
 
 // view.router.navigate('/job/'); 
 // view.router.navigate('/account/');
-view.router.navigate('/home/');
-// setTimeout(function () {
-//   app.preloader.hide();
-// }, 3000);
+
+setTimeout(function () {
+	view.router.navigate('/home/');
+	app.preloader.hide();
+}, 3000);

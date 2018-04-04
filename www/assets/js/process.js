@@ -1,13 +1,12 @@
 let host = window.location;
-// let server = `http://system.kareer-ph.com/`;
-let server = `http://localhost/kareer`;
+let server = `http://system.kareer-ph.com/`;
+// let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
 		let data = this.get()[0], scroll = 0;   
 		this.display(data);
         jobs.display();
-		app.toolbar.hide('#menu_job');
 
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
@@ -36,6 +35,8 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
+		app.toolbar.hide('#menu_account');
+		app.tab.show('#tab_jobs');
 	},
 	id:function(){
 		return localStorage.getItem('account_id');
@@ -230,10 +231,8 @@ account = {
         }
     },
 	logout:function(){
-		$("a[data-cmd='logout']").on('click',function(){
-			localStorage.clear();
-			view.router.navigate('/home/');
-		});
+		localStorage.clear();
+		view.router.navigate('/home/');
 	}
 }
 
@@ -716,19 +715,25 @@ jobs = {
 		        });
 				$("#tab_jobs").jTinder({
 				    onDislike: function (item){
-				    	setTimeout(function(){
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-				    	},500);
+						},2000);
+
 				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
 				    },
 				    onLike: function (item){
-				    	setTimeout(function(){
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-				    	},500);
+						},2000);
+
 	    				job_id = $("#tab_jobs ul li.active").data('node');
 						job.apply([job_id,account.id()]);
 
-				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) == 0);
 				    },
 					animationRevertSpeed: 200,
 					animationSpeed: 400,
@@ -740,18 +745,13 @@ jobs = {
 		}
 	},
 	display:function(){
-		let id = account.id(), swipe = true, _data = [], job_id = "";	
+		let id = account.id(), swipe = true, _data = [], job_id = "", business_id = "";	
 		let data = JSON.parse(jobs.get(id,min,count));
 
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
 			$("#tab_jobs").jTinder('dislike');
-		});
-		$("#menu_job .job_info").on('click',function(){
-			job_id = $("#tab_jobs ul li.active").data('node');
-			localStorage.setItem('job',job_id);
-			view.router.navigate('/job/');
 		});
 		$("#menu_job .job_bookmark").on('click',function(){
 			job_id = $("#tab_jobs ul li.active").data('node');
@@ -762,6 +762,17 @@ jobs = {
 			job_id = $("#tab_jobs ul li.active").data('node');
 			job.apply([job_id,id]);
 			$("#tab_jobs").jTinder('like');
+		});
+
+		$('button[data-cmd="read_job"]').on('click',function(){
+			job_id = $(this).data('node');
+			localStorage.setItem('job',job_id);
+			view.router.navigate('/job/');
+		});
+		$('a[data-cmd="read_company"]').on('click',function(){
+			business_id = $(this).data('node');
+			localStorage.setItem('business',business_id);
+			view.router.navigate('/business/');
 		});
 	},
 	process:function(data){
@@ -774,21 +785,20 @@ jobs = {
 				jobArr.push(`<li data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
-										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
-										<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[2]}">more_vert</a>
+										<div class='job_banner'></div>
+										<a class="col button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green" data-cmd="read_company" data-node="${v[2]}"><i class='material-icons text-color-gray'>more_vert</i></a>
 										<div class='company'>
 											<div class='logo-holder'>
-												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 80px;'></div>
+												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 50px;'></div>
 											</div>
 											<div class='information'>
-												<h3>${v[9]}<br/><small>${v[11]}</small></h3>
+												<h3>${v[9]}<br/><div class='single-ellipsis'>${v[11]}</div></h3>
 											</div>
 										</div>
 									</div>
 									<div class='card-content card-content-padding align-self-stretch'>
 										<div class='job-description'>
 											<h3>${v[5]}</h3>
-											<p>${v[4]}</p>
 											<div class='row'>
 												<strong>Skills</strong><br/>
 												${skills}
@@ -798,6 +808,9 @@ jobs = {
 												<p class='ellipsis'>${v[3]}</p>
 											</div>
 										</div>
+									</div>
+									<div class='card-footer'>
+										<button class="col button button-round" data-cmd="read_job" data-node="${v[0]}">Read more</button>
 									</div>
 								</div>
 							</li>`);
@@ -849,7 +862,6 @@ job = {
         });
 	},
 	display:function(data){
-		console.log(data);
 		let skills = "", logo = "";
 		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
 		logo  = ((typeof data[9] == 'object') || (data[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[9]}`;
