@@ -232,7 +232,8 @@ var routes = [
         url: './pages/message.html',
         on: {
             pageInit: function(e, page){
-                console.log('convo');
+                convo.ini();
+                // console.log('convo');
                 let ps = new PerfectScrollbar('.messages-content');
             }
         }
