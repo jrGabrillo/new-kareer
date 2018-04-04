@@ -1039,8 +1039,7 @@ messages ={
 		$(`#list_messages img`).on('error',function(){
 			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
-	},
-	
+	}
 }
 convo ={
 	ini:function(){
