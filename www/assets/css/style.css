@@ -455,6 +455,7 @@ z-index:  100001;
 }
 #tab_jobs .swiper-container, #tab_jobs .job{
 	height: calc(500px);
+	transform: scale(0.8);
 }
 #tab_jobs .company h3{font-size: 15px;}
 #tab_jobs h3{
@@ -832,12 +833,12 @@ button:disabled{
 	width: 50px;
 	height: 50px;
 	padding: 0px;
-	border: solid 5px #cccccc8a;
+	border: solid 5px #ffffff;
 	box-sizing: inherit;
 	box-shadow: 0px 0px 10px #8a8686;
 }
 #menu_job .toolbar-inner a:nth-child(1){
-	border: solid 5px rgba(244, 67, 54, 0.5);
+	/* border: solid 5px rgba(244, 67, 54, 0.5); */
 	box-sizing: inherit;
 }
 #menu_job .toolbar-inner a:nth-child(1) i{
@@ -856,7 +857,7 @@ button:disabled{
 }
 
 #menu_job .toolbar-inner a:nth-child(3){
-	border: solid 5px rgba(3, 169, 244, 0.5);
+	/* border: solid 5px rgba(3, 169, 244, 0.5); */
 	box-sizing: inherit;
 }
 #menu_job .toolbar-inner a:nth-child(3) i{
@@ -884,11 +885,12 @@ a[data-cmd="read_company"]{
 	list-style: unset !important;
 }
 #display_business, #display_job{
-	padding: 10px 10px 300px 10px;
+	padding: 0px;
 }
 #display_business .business-info img, #display_job .business-info img{
-	width: 80px;		
+	width: 80px;
 	height: 80px;
+	z-index:  10;
 }
 #display_business .business-info .company, #display_job .business-info .company{
 	width: 70%;
@@ -1007,4 +1009,48 @@ a[data-cmd="read_company"]{
 	box-shadow: 0px 0px 5px #d2d2d2;
 	margin: 0 auto;
 }
- 
+
+.panel-company{
+	width: 100%;
+}
+
+#display_company{
+	width: 100%;	
+	height:  100%;
+	left: 0% !important;
+	top: 0% !important;
+	border-radius:  0px;
+}
+
+#display_business .business-info img{
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	/* background: #f00; */
+	/* z-index:  1; */
+	left: 50%;
+	top: 50px;
+	/* position:  relative; */
+	transform: translate(-50px);
+	border-radius:  50%;
+	background:  #fff;
+	border: solid 2px #fff;
+	box-shadow: 0px 0px 4px 0px #191919;
+}
+#display_business .business-info .company-background{
+	width: 100%;
+	height: 100px;
+	/* position: absolute; */
+	z-index:  1;
+	background: #348F50;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #56B4D3, #348F50);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top left, #56B4D3, #348F50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	margin: 0px 0px 60px 0px;
+}
+#display_business .business-info .company{
+	width: 90%;
+	text-align: center;
+	margin: 0 auto;
+}
+#display_business .business-info .company .name{font-size: 20px;}
+#display_business .company-description{margin: 0px 20px;}

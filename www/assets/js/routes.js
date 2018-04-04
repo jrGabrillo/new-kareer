@@ -242,7 +242,6 @@ var routes = [
         url: './pages/business.html',
         on: {
             pageInit: function(e, page){
-                business.ini();
                 let ps_business = new PerfectScrollbar('#display_business');
             }
         }

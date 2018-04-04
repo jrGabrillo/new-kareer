@@ -10,4 +10,4 @@ var view = app.views.create('.view-main');
 setTimeout(function () {
 	view.router.navigate('/home/');
 	app.preloader.hide();
-}, 3000);
+}, 1000);

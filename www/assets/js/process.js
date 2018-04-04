@@ -769,11 +769,46 @@ jobs = {
 			localStorage.setItem('job',job_id);
 			view.router.navigate('/job/');
 		});
-		$('a[data-cmd="read_company"]').on('click',function(){
-			business_id = $(this).data('node');
-			localStorage.setItem('business',business_id);
-			view.router.navigate('/business/');
+
+		$(".company").on('click',function(){
+			let id = $(this).parents().find('li.active').data('business');
+			let business_data = JSON.parse(business.get(id))[0];
+			let	picture = "", tempPicture = `${server}/assets/images/logo/icon.png`, logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
+			let companyAbout = app.popover.create({
+				targetEl: '.company',
+				content: `<div class="popover" id='display_company'>
+							<div class='panel-company'>
+						        <div id='display_business'>
+						            <div class="row business-info">
+						                <div class="company-background">
+						                    <img src="${logo}" width='100%'>                    
+						                </div>
+						                <div class="company">
+						                    <h3 class="name">${business_data[0]}</h3>
+						                    <h6 class="address">${business_data[2]}</h6>
+						                    <h6 class="email">Email: ${business_data[3]} | Phone: ${business_data[4]}</h6>
+						                </div>
+						            </div>
+						            <div class="row company-description">
+						                <h4>About the company</h4>
+						                <div class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+						            </div>
+						        </div>
+							</div>
+						</div>`,
+				on: {
+					open: function (popover) {
+						console.log('Popover open');
+					},
+					opened: function (popover) {
+						console.log('Popover opened');
+					},
+				}
+			});
+            // let ps_business = new PerfectScrollbar('#display_business');
+			companyAbout.open();
 		});
+
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
@@ -782,7 +817,7 @@ jobs = {
 				skills = ""; random = Math.floor(Math.random() * 100) + 1;
 				$.each(JSON.parse(v[6]),function(i2,v2){skills += `<div class="chip color-blue"><div class="chip-label">${v2}</div></div> `;});
 				logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
-				jobArr.push(`<li data-node='${v[0]}'>
+				jobArr.push(`<li data-node='${v[0]}' data-business="${v[2]}">
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner'></div>
@@ -1015,6 +1050,13 @@ messages ={
             	system.notification("Kareer","Message sent.");
             }
         });
+	},
+	realtime:function(){
+		console.log('xxx');
+		setTimeout(function(){
+			messages.realtime();
+			//call your functions here
+		},5000);
 	}
 }
 
@@ -1118,25 +1160,15 @@ business = {
 		return ajax.responseText;
 	},
 	display:function(data){
-		let	picture = "", tempPicture = `${server}/assets/images/logo/icon.png`, logo  = ((typeof data[0][1] == 'object') || (data[0][1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[0][1]}`;
+		console.log(data);
+		let	picture = "", tempPicture = `${server}/assets/images/logo/icon.png`, logo  = ((typeof data[1] == 'object') || (data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[1]}`;
 
 		$("#display_business .business-info img").attr({'src':logo});
-		$("#display_business .business-info .company .name").html(data[0][0]);
-		$("#display_business .business-info .company .address").html(`<strong>Address:</strong> ${data[0][2]}`);
-		$("#display_business .business-info .company .email").html(`<strong>Email:</strong> ${data[0][3]}`);
-		$("#display_business .business-info .company .phone").html(`<strong>Phone:</strong> ${data[0][4]}`);
-		$("#display_business .company-description .content").html(data[0][5]);
-
-		let manager_title = (data[1]>1)?'Managers':'Manager';
-		$("#display_business .company-managers h4").html(manager_title);
-		$.each(data[1],function(i,v){
-			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
-			$("#display_business .company-managers ul").append(`<li><img src="${picture}" width="100%"></li>`);
-		});
-
-		$(`#display_business .company-managers ul li img`).on('error',function(){
-			$(this).attr({'src':tempPicture});
-		});
+		$("#display_business .business-info .company .name").html(data[0]);
+		$("#display_business .business-info .company .address").html(`<strong>Address:</strong> ${data[2]}`);
+		$("#display_business .business-info .company .email").html(`<strong>Email:</strong> ${data[3]}`);
+		$("#display_business .business-info .company .phone").html(`<strong>Phone:</strong> ${data[4]}`);
+		$("#display_business .company-description .content").html(data[5]);
 	}
 }
 
