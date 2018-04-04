@@ -194,7 +194,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 notification.ini();
-                let ps = new PerfectScrollbar('#list_notification');
+                let ps = new PerfectScrollbar('#display_job');
             }
         }
     },
