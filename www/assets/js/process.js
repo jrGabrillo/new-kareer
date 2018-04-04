@@ -1124,18 +1124,19 @@ notifications ={
 		return ajax.responseText;
 	},
 	display:function(data){
-		let	picture = "", notification="",status="";
+		let	picture = "", notification="",status="",tag="";
 		$.each(data,function(i,v){
-		console.log(v);
-			status = (v[5] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
-			picture  = ((typeof v[4] == 'object') || (v[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[4]}`;
+			console.log(v);
+			tag = (v[3] == 'application')?`updated your ${v[3]} status`:`set a ${v[3]}`
+			status = (v[6] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
+			picture  = ((typeof v[5] == 'object') || (v[5] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[5]}`;
 			$('#list_notifications ul').prepend(`
-				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-node="${v[0]}" data-name ="${status[0]}">
+				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-value="${v[1]}" data-prop = '${v[7]}' data-node="${v[0]}" data-name ="${status[0]}">
 					<div class="item-media"><img src="${picture}" width="44"/></div>
 					<div class="item-inner">
 						<div class="item-title-row">
 							<div class="item-title">
-								<strong>${v[3]}</strong> responded to your ${v[6]}
+								<strong>${v[4]}</strong> ${tag}
 							</div>
 						</div>
 						<small>${v[2]}</small>
@@ -1146,7 +1147,7 @@ notifications ={
 		$(`a[data-cmd='job-info']`).on('click',function(){
 			notification = $(this).data();
 			notifications.action(notification['node']); /*read function*/
-			localStorage.setItem('notification',JSON.stringify([notification['name'],notification['node']]));
+			localStorage.setItem('notification',JSON.stringify([notification['name'],notification['node'],notification['value'],notification['prop']]));
 			view.router.navigate('/notification/');
 		});
 		$(`#list_notifications img`).on('error',function(){
@@ -1164,29 +1165,30 @@ notifications ={
 notification ={
 	ini:function(){
 		let notif = JSON.parse(localStorage.getItem('notification'));
+		console.log(notif);
 		this.display(notif);
 	},
-	get:function(id){
-		var ajax = system.ajax(system.host('get-notificationInfo'),id);
+	get:function(log,id,job){
+		var ajax = system.ajax(system.host('get-notificationInfo'),[log,id,job]);
 		return ajax.responseText;
 	},
 	display:function(data){
-		let notifInfo = JSON.parse(notification.get(data[1]))[0], logo = "",random = "", status ="";
+		let notifInfo = JSON.parse(notification.get(data[1],data[2],data[3]))[0], logo = "",random = "", status ="";
 		console.log(notifInfo);
-		logo  = ((typeof notifInfo[3] == 'object') || (notifInfo[3] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[3]}`;
+		logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
 		$("#display_job").html(`
-            <div class="row job-title">
-                <a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${data[1]}">more_vert</a>
+            <div class="row ">
+                <a class="btn btn-flat material-icons text-color-black" data-cmd="read_company" data-node="">more_vert</a>
             </div>
-            <div class="row business-info">
-                <img src="${logo}" width='100%'>
-                <div class="company">
-                    <h3 class="name">${notifInfo[2]}</h3>
-                    <h4 class="address">Application for ${notifInfo[4]}</h4>
+            <div class="row ">
+                <img src="${logo}" width='20%'>
+                <div class="center">		
+                    <h3 class="name">${notifInfo[3]}</h3>
+                    <h4 class="address">Application for ${notifInfo[5]}</h4>
                 </div>
             </div>
             <div class="row job-skills">
-                <h2>${notifInfo[1]}</h2>
+                <h2>${notifInfo[2]}</h2>
             </div>
 		`);
 	}
