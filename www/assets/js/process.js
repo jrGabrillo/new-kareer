@@ -1,3 +1,4 @@
+let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
 let server = `http://system.kareer-ph.com/`;
 // let server = `http://localhost/kareer`;
@@ -745,8 +746,8 @@ jobs = {
 		}
 	},
 	display:function(){
-		let id = account.id(), swipe = true, _data = [], job_id = "", business_id = "";	
-		let data = JSON.parse(jobs.get(id,min,count));
+		let swipe=true,_data=[],job_id="",business_id="",jobData="",skills="",logo="",jobAbout="",companyAbout="",ps_job="",ps_business="",business_data="";	
+		let id = account.id(),data = JSON.parse(jobs.get(id,min,count));
 
         jobs.loadMore(true);
 
@@ -766,21 +767,57 @@ jobs = {
 
 		$('button[data-cmd="read_job"]').on('click',function(){
 			job_id = $(this).data('node');
-			localStorage.setItem('job',job_id);
-			view.router.navigate('/job/');
+			jobData = JSON.parse(job.get(job_id))[0];
+			$.each(JSON.parse(jobData[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
+			logo  = ((typeof jobData[9] == 'object') || (jobData[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${jobData[9]}`;
+			jobAbout = app.popover.create({
+				targetEl: '.company',
+				content: `<div class="popover" id='display_job'>
+							<div class='panel-company'>
+						        <div style='height:${h}px !important;'>
+						            <div class="row business-info">
+						                <div class="company-background">
+						                    <a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
+						                    <img src="${logo}" width='100%'>                    
+						                </div>
+						                <div class="company">
+						                    <h3 class="">${jobData[7]}</h3>
+						                </div>
+						            </div>
+						            <div class="row job-title">
+						                <h1>${jobData[0]} <small class="text-color-gray">${jobData[1]}</small></h1>
+						            </div>
+						            <div class="row job-skills">
+						                <h4>Skills</h4>
+						                <div class="content">${skills}</div>
+						            </div>
+						            <div class="row job-salary">
+						                <h4>Salary Range</h4>
+						                <div class="content">${jobData[3]} - ${jobData[4]}</div>
+						            </div>
+						            <div class="row job-description">
+						                <div class="content ">${jobData[5]}</div>
+						            </div>
+						        </div>
+							</div>
+						</div>`,
+			});
+			jobAbout.open();
+            ps_job = new PerfectScrollbar('#display_job');
 		});
 
 		$(".company").on('click',function(){
-			let id = $(this).parents().find('li.active').data('business');
-			let business_data = JSON.parse(business.get(id))[0];
-			let	picture = "", tempPicture = `${server}/assets/images/logo/icon.png`, logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
-			let companyAbout = app.popover.create({
+			business_data = $(this).parents().find('li.active').data('business');
+			business_data = JSON.parse(business.get(business_data))[0];
+			logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
+			companyAbout = app.popover.create({
 				targetEl: '.company',
 				content: `<div class="popover" id='display_company'>
 							<div class='panel-company'>
-						        <div id='display_business'>
+						        <div id='display_business' style='height:${h}px !important;'>
 						            <div class="row business-info">
 						                <div class="company-background">
+			                    			<a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
 						                    <img src="${logo}" width='100%'>                    
 						                </div>
 						                <div class="company">
@@ -790,25 +827,15 @@ jobs = {
 						                </div>
 						            </div>
 						            <div class="row company-description">
-						                <h4>About the company</h4>
-						                <div class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+						                <div class="content">${business_data[5]}</div>
 						            </div>
 						        </div>
 							</div>
 						</div>`,
-				on: {
-					open: function (popover) {
-						console.log('Popover open');
-					},
-					opened: function (popover) {
-						console.log('Popover opened');
-					},
-				}
 			});
-            // let ps_business = new PerfectScrollbar('#display_business');
 			companyAbout.open();
+            ps_business = new PerfectScrollbar('#display_business');
 		});
-
 	},
 	process:function(data){
 		let jobArr = [], logo = "", skills = "", v = "", random = Math.floor(Math.random() * 100) + 1;
@@ -821,7 +848,6 @@ jobs = {
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner'></div>
-										<a class="col button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green" data-cmd="read_company" data-node="${v[2]}"><i class='material-icons text-color-gray'>more_vert</i></a>
 										<div class='company'>
 											<div class='logo-holder'>
 												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 50px;'></div>
@@ -859,11 +885,6 @@ jobs = {
 }
 
 job = {
-	ini:function(){
-		let id = localStorage.getItem('job');
-		let data = JSON.parse(this.get(id));
-		this.display(data[0]);
-	},
 	get:function(data){
 		var ajax = system.ajax(system.host('get-jobById'),data);
 		return ajax.responseText;
@@ -1320,21 +1341,20 @@ signup = {
 		}); 
 	},
 	auth:function(form){
-		console.log(form);
-		// var data = system.ajax(system.host('do-logInAuth'),form);
-  //       data.done(function(data){
-  //           if(data == 1){
-  //               system.notification("Kareer","Success. You are now officially registered.");
-  //               view.router.navigate('/signin/');                        
-  //           }
-  //           else if(data == 2){
-  //               view.router.navigate('/signin/');                        
-  //               system.notification("Kareer","You are already signed in. Try signing in using your email.");
-  //           }
-  //           else{
-  //               system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
-  //           }
-  //       });
+		var data = system.ajax(system.host('do-logInAuth'),form);
+        data.done(function(data){
+            if(data == 1){
+                system.notification("Kareer","Success. You are now officially registered.");
+                view.router.navigate('/signin/');                        
+            }
+            else if(data == 2){
+                view.router.navigate('/signin/');                        
+                system.notification("Kareer","You are already signed in. Try signing in using your email.");
+            }
+            else{
+                system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
+            }
+        });
 	}
 }
 
