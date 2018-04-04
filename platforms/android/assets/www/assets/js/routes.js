@@ -4,7 +4,6 @@ var routes = [
         url: './pages/home.html',
         on: {
             pageInit: function(e,page){
-                localStorage.clear();
                 setTimeout(function(){
                     let callback = localStorage.getItem('callback'), account = localStorage.getItem('account');
                     if(account != null){
@@ -75,23 +74,10 @@ var routes = [
                         }
 
                         $("#form_signupAuth form").attr({style:'display:block;'});
-                        setTimeout(function(){
-                            form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
-                            let data = system.ajax(system.host('do-signUp'),form);
-                            data.done(function(data){
-                                if(data == 1){
-                                    system.notification("Kareer","Success. You are now officially registered.");
-                                    view.router.navigate('/signin/');                        
-                                }
-                                else if(data == 2){
-                                    view.router.navigate('/signin/');                        
-                                    system.notification("Kareer","You are already signed in. Try signing in using your email.");
-                                }
-                                else{
-                                    system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
-                                }
-                            });
-                        },500);
+                        // setTimeout(function(){
+                        //     form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
+                        //     signup.auth(form);
+                        // },500);
                     },500);
                 }
             }
@@ -149,7 +135,7 @@ var routes = [
         url: './pages/settings_personal_info.html',
         on: {
             pageInit: function(e, page){
-                new PerfectScrollbar('#display_personal_info');
+                let ps = new PerfectScrollbar('#display_personal_info');
                 account.settingsDisplay();
             }
         }
@@ -178,7 +164,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 bookmark.ini();
-                let ps = new PerfectScrollbar('#list_bookmarks');
+                new PerfectScrollbar('#list_bookmarks');
                 console.log('bookmark');
             }
         }
@@ -197,7 +183,18 @@ var routes = [
         url: './pages/notifications.html',
         on: {
             pageInit: function(e, page){
-                let ps = new PerfectScrollbar('#list_jobs');
+                 notifications.ini();
+                 let ps = new PerfectScrollbar('#list_notifications');
+          }
+        }
+    },
+    {
+        path: '/notification/',
+        url: './pages/notification-info.html',
+        on: {
+            pageInit: function(e, page){
+                notification.ini();
+                let ps = new PerfectScrollbar('#list_notification');
             }
         }
     },

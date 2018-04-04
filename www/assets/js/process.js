@@ -1,13 +1,12 @@
 let host = window.location;
-// let server = `http://system.kareer-ph.com/`;
-let server = `http://localhost/kareer`;
+let server = `http://system.kareer-ph.com/`;
+// let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
 		let data = this.get()[0], scroll = 0;   
 		this.display(data);
         jobs.display();
-		app.toolbar.hide('#menu_job');
 
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
@@ -36,6 +35,8 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
+		app.toolbar.hide('#menu_account');
+		app.tab.show('#tab_jobs');
 	},
 	id:function(){
 		return localStorage.getItem('account_id');
@@ -861,7 +862,6 @@ job = {
         });
 	},
 	display:function(data){
-		console.log(data);
 		let skills = "", logo = "";
 		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
 		logo  = ((typeof data[9] == 'object') || (data[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[9]}`;

@@ -422,13 +422,14 @@ z-index:  100001;
 	font-weight: 100;
 }
 #tab_jobs .card .card-content{
-	 border-radius: 20px 20px 20px 20px;
-	 height: calc(65%);
-	 margin: 20px 20px 10px 20px;
+	 border-radius: 20px;
+	 height: calc(68%);
+	 margin: 20px 20px 0px 20px;
 	 padding: 0px;
 }
 #tab_jobs .card .card-footer{
 	 background: #fff;
+	 box-shadow: 0px -20px 50px 20px #fff;
 }
 #tab_jobs .job-description p, #tab_jobs .job-description ul, #tab_jobs .job-description li{
 	font-size: 15px;
@@ -436,7 +437,7 @@ z-index:  100001;
 	text-align: left;
 }
 #tab_jobs .job-description{
-	height: 320px;
+	height: 350px;
 	overflow:  hidden;
 	/* text-align: center; */
 }
@@ -1006,4 +1007,4 @@ a[data-cmd="read_company"]{
 	box-shadow: 0px 0px 5px #d2d2d2;
 	margin: 0 auto;
 }
-
+ 

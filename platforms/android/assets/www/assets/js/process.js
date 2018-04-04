@@ -7,7 +7,6 @@ account = {
 		let data = this.get()[0], scroll = 0;   
 		this.display(data);
         jobs.display();
-		app.toolbar.hide('#menu_job');
 
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
@@ -36,6 +35,8 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
+		app.toolbar.hide('#menu_account');
+		app.tab.show('#tab_jobs');
 	},
 	id:function(){
 		return localStorage.getItem('account_id');
@@ -66,6 +67,7 @@ account = {
 		var calendarModal = app.calendar.create({
 			inputEl: '#field_dob',
 			openIn: 'customModal',
+			dateFormat: 'MM dd, yyyy',
 			footer: true,
 			firstDay:0,
 			value:[data[12]],
@@ -81,10 +83,14 @@ account = {
 		});
 	},
 	display:function(data){
+		skills.frontdisplay();
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
-		$('#profile img').attr({'src':`${picture}`});
-		$('#profile h3.fullname').html(`${data[8]} ${data[10]} ${data[9]}`);
-		$('#profile p.about').html(data[1]);
+		let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
+		let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
+
+		$('#profile img').attr({'src':picture});
+		$('#profile h3.fullname').html(name);
+		$('#profile p.about').html(about);
 
 		$(`#profile img`).on('error',function(){
 			$(this).attr({'src':tempPicture});
@@ -225,11 +231,8 @@ account = {
         }
     },
 	logout:function(){
-		$("a[ data-cmd='logout']").on('click',function(){
-			localStorage.clear();
-			view.router.navigate('/home/');
-			system.notification("Kareer",`Logout.`);
-		});
+		localStorage.clear();
+		view.router.navigate('/home/');
 	}
 }
 
@@ -272,7 +275,7 @@ skills = {
         	})
         }
         else{
-        	$(".skills.block").html("<h5 class='text-color-gray text-align-center'>- No skills -</h5>");        	
+        	$(".skills.block").html(`No skills yet. <a href="/settings_skills/">Add skills</a>`);        	
         }
 
         this.add();
@@ -712,19 +715,25 @@ jobs = {
 		        });
 				$("#tab_jobs").jTinder({
 				    onDislike: function (item){
-				    	setTimeout(function(){
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-				    	},500);
+						},2000);
+
 				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
 				    },
 				    onLike: function (item){
-				    	setTimeout(function(){
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-				    	},500);
+						},2000);
+
 	    				job_id = $("#tab_jobs ul li.active").data('node');
 						job.apply([job_id,account.id()]);
 
-				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) == 0);
 				    },
 					animationRevertSpeed: 200,
 					animationSpeed: 400,
@@ -736,18 +745,13 @@ jobs = {
 		}
 	},
 	display:function(){
-		let id = account.id(), swipe = true, _data = [], job_id = "";	
+		let id = account.id(), swipe = true, _data = [], job_id = "", business_id = "";	
 		let data = JSON.parse(jobs.get(id,min,count));
 
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
 			$("#tab_jobs").jTinder('dislike');
-		});
-		$("#menu_job .job_info").on('click',function(){
-			job_id = $("#tab_jobs ul li.active").data('node');
-			localStorage.setItem('job',job_id);
-			view.router.navigate('/job/');
 		});
 		$("#menu_job .job_bookmark").on('click',function(){
 			job_id = $("#tab_jobs ul li.active").data('node');
@@ -758,6 +762,17 @@ jobs = {
 			job_id = $("#tab_jobs ul li.active").data('node');
 			job.apply([job_id,id]);
 			$("#tab_jobs").jTinder('like');
+		});
+
+		$('button[data-cmd="read_job"]').on('click',function(){
+			job_id = $(this).data('node');
+			localStorage.setItem('job',job_id);
+			view.router.navigate('/job/');
+		});
+		$('a[data-cmd="read_company"]').on('click',function(){
+			business_id = $(this).data('node');
+			localStorage.setItem('business',business_id);
+			view.router.navigate('/business/');
 		});
 	},
 	process:function(data){
@@ -770,21 +785,20 @@ jobs = {
 				jobArr.push(`<li data-node='${v[0]}'>
 								<div class='card job'>
 									<div class='card-header align-items-flex-end'>
-										<div class='job_banner' style='background:url(${logo}); background-position:${random}% ${random}%;'></div>
-										<a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${v[2]}">more_vert</a>
+										<div class='job_banner'></div>
+										<a class="col button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green" data-cmd="read_company" data-node="${v[2]}"><i class='material-icons text-color-gray'>more_vert</i></a>
 										<div class='company'>
 											<div class='logo-holder'>
-												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 80px;'></div>
+												<div class='logo' style='background:url(${logo}) center/cover no-repeat; background-size: 50px;'></div>
 											</div>
 											<div class='information'>
-												<h3>${v[9]}<br/><small>${v[11]}</small></h3>
+												<h3>${v[9]}<br/><div class='single-ellipsis'>${v[11]}</div></h3>
 											</div>
 										</div>
 									</div>
 									<div class='card-content card-content-padding align-self-stretch'>
 										<div class='job-description'>
 											<h3>${v[5]}</h3>
-											<p>${v[4]}</p>
 											<div class='row'>
 												<strong>Skills</strong><br/>
 												${skills}
@@ -794,6 +808,9 @@ jobs = {
 												<p class='ellipsis'>${v[3]}</p>
 											</div>
 										</div>
+									</div>
+									<div class='card-footer'>
+										<button class="col button button-round" data-cmd="read_job" data-node="${v[0]}">Read more</button>
 									</div>
 								</div>
 							</li>`);
@@ -845,7 +862,6 @@ job = {
         });
 	},
 	display:function(data){
-		console.log(data);
 		let skills = "", logo = "";
 		$.each(JSON.parse(data[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
 		logo  = ((typeof data[9] == 'object') || (data[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${data[9]}`;
@@ -1002,6 +1018,86 @@ messages ={
 	}
 }
 
+/*notifications, application in the tbl_logs with status of 1 = unread */
+notifications ={
+	ini:function(){
+		let id =  account.id();
+		let data = this.get(id);
+		this.display(JSON.parse(data));
+	},
+	get:function(data){
+		var ajax = system.ajax(system.host('get-notifications'),data);
+		return ajax.responseText;
+	},
+	display:function(data){
+		console.log(data);
+		let	picture = "", notification="",status="";
+		$.each(data,function(i,v){
+			status = (v[3] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
+			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
+			$('#list_notifications ul').prepend(`
+				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-node="${v[0]}" data-name ="${status[0]}">
+					<div class="item-media"><img src="${picture}" width="44"/></div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title">
+								<strong>${v[1]}</strong> responded to your ${v[5]}
+							</div>
+						</div>
+						<small>${v[4]}</small>
+					</div>
+				</a>`);
+
+		})			
+		$(`a[data-cmd='job-info']`).on('click',function(){
+			notification = $(this).data();
+			notifications.action(notification['node']); /*read function*/
+			localStorage.setItem('notification',JSON.stringify([notification['name'],notification['node']]));
+			view.router.navigate('/notification/');
+		});
+		$(`#list_notifications img`).on('error',function(){
+			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
+		});
+	},
+	action:function(id){ /*change application log status into read*/
+		var ajax = system.ajax(system.host('do-action'),[id,'notification']);
+        ajax.done(function(ajax){
+        	console.log((ajax == 1)?'read':'unread');
+        });
+	}
+}
+notification ={
+	ini:function(){
+		let notif = JSON.parse(localStorage.getItem('notification'));
+		this.display(notif);
+	},
+	get:function(id){
+		var ajax = system.ajax(system.host('get-notificationInfo'),id);
+		return ajax.responseText;
+	},
+	display:function(data){
+		let notifInfo = JSON.parse(notification.get(data[1]))[0], logo = "",random = "", status ="";
+		logo  = ((typeof notifInfo[2] == 'object') || (notifInfo[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[2]}`;
+		$("#display_job").html(`
+            <div class="row job-title">
+                <a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${notifInfo[0]}">more_vert</a>
+            </div>
+            <div class="row business-info">
+                <img src="${logo}" width='100%'>
+                <div class="company">
+                    <h3 class="name">${notifInfo[1]}</h3>
+                    <h4 class="address">Application for ${notifInfo[4]}</h4>
+                </div>
+            </div>
+            <div class="row job-skills">
+                <h2>${notifInfo[3]}</h2>
+            </div>
+		`);
+	}
+
+}
+/**/
+
 search = {
 	ini:function(){
 	}
@@ -1109,11 +1205,22 @@ signup = {
 				$("#display_form input[name='field_password']").attr({'type':'text'});
 			}
 		});
+		
+		var from = new Date((new Date()).getFullYear()-18, 1, 1);
+		var calendarModal = app.calendar.create({
+			inputEl: '#field_dob',
+			openIn: 'customModal',
+			dateFormat: 'MM dd, yyyy',
+			footer: true,
+			firstDay:0,
+		    disabled: {from: from}
+		});
 
 		$("#form_signup").validate({
 			rules: {
 				field_firstname: {required: true, maxlength: 50},
 				field_lastname: {required: true, maxlength: 50},
+				field_dob: {required: true, maxlength: 100},
 				field_email: {required: true, maxlength: 100, email:true, validateEmail:true},
 				field_password: {required: true, maxlength: 50},
 			},
@@ -1129,7 +1236,7 @@ signup = {
 			},
 			submitHandler: function (form) {
 				let _form = $(form).serializeArray(), data = "";
-				form = [form[0].value, form[1].value, form[2].value, form[3].value, "", "", ""];
+				form = [form[0].value, form[1].value,form[3].value, form[4].value, form[2].value, "", "", ""];
 				data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
 					if(data != 0){
@@ -1148,17 +1255,21 @@ signup = {
 		}); 
 	},
 	auth:function(form){
-		var data = system.ajax(system.host('do-logInAuth'),form);
-		data.done(function(data){
-			data = JSON.parse(data);
-			if(data[1] == 'applicant'){
-				system.notification("Kareer","Signed in.");
-				view.router.navigate('/account/');                        
-			}
-			else{
-				system.notification("Kareer","You are not yet registered");
-			}
-		});
+		console.log(form);
+		// var data = system.ajax(system.host('do-logInAuth'),form);
+  //       data.done(function(data){
+  //           if(data == 1){
+  //               system.notification("Kareer","Success. You are now officially registered.");
+  //               view.router.navigate('/signin/');                        
+  //           }
+  //           else if(data == 2){
+  //               view.router.navigate('/signin/');                        
+  //               system.notification("Kareer","You are already signed in. Try signing in using your email.");
+  //           }
+  //           else{
+  //               system.notification("Kareer","Sign up failed.",false,3000,true,false,false);
+  //           }
+  //       });
 	}
 }
 
@@ -1169,6 +1280,7 @@ auth = {
 		setTimeout(function(){
 	        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
 	        data.done(function(data){
+	        	console.log(data);
 	            data = JSON.parse(data);
 	            if(data[1] == 'applicant'){
 	                view.router.navigate('/account/');                        

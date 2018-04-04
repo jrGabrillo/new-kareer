@@ -28,9 +28,18 @@
                         </li>
                         <li class="item-content item-input item-input-with-value">
                             <div class="item-inner">
+                                <div class="item-title item-floating-label">Date of Birth</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name='field_dob' data-cmd='field' data-prop='field_dob' id='field_dob'>
+                                    <div class="item-input-info error_field_dob"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input item-input-with-value">
+                            <div class="item-inner">
                                 <div class="item-title item-floating-label">Email</div>
                                 <div class="item-input-wrap">
-                                    <input class="" type="text" name="field_email" data-error=".error_field_email">
+                                    <input type="text" name="field_email" data-error=".error_field_email">
                                     <div class="item-input-info error_field_email"></div>
                                 </div>
                             </div>
@@ -70,4 +79,19 @@
             <a class="link" href='/signin/'>I have an account</a>
         </div>
     </div>
+    <div class="popup">
+        <div class='card'>
+            <div class="card-header">
+                Updating profile picture
+                <div class="right"><a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a></div>
+            </div>
+            <div class='card-content card-content-padding align-self-stretch'>
+                <div class='row'>
+                    <div class='col s12'>
+                        <div id='profile_picture2' class='ibox-content no-padding border-left-right '></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
 </div>
