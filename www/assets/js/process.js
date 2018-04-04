@@ -1053,7 +1053,6 @@ convo ={
 	},
 	send:function(id){
 		let data = JSON.parse(convo.get(id));
-		console.log(data);
 		let messages = app.messages.create({el: '.messages'});
 	    let messagebar = app.messagebar.create({el: '.messagebar'});
 	    let responseInProgress = false;
@@ -1087,8 +1086,12 @@ convo ={
 	},
 	display:function(id){
 		let data = JSON.parse(convo.get(id)), business="", sender="";
-		console.log(data);
 		// $('message-title').html(`Application for ${data[0][6]}`);
+        let realtime = setTimeout(function(){
+			$$('#messageBox').html('');
+			console.log('asda');
+			convo.display(id);
+		},5000);
 		$.each(data,function(i,v){
 			sender = (v[4] == account.id())?'sent':'received';
             business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
@@ -1103,24 +1106,8 @@ convo ={
 	            </div>
             `);
         });
+		$('#message-info .back').on('click',function(){clearTimeout(realtime);}); /*off realtime*/
         // $('#messages ul').scrollTop($('#messages ul').prop("scrollHeight")); /*this will stick the scroll to bottom*/
-        $('a[data-cmd="send"]').on('click', function(){
-            let message = $("input").val();
-            if(message.length == 0){
-                    system.notification("Kareer","Message box is empty.");
-            }
-            else{
-            	console.log(message);
-            	system.notification("Kareer","Message sent.");
-            }
-        });
-	},
-	realtime:function(){
-		console.log('xxx');
-		setTimeout(function(){
-			messages.realtime();
-			//call your functions here
-		},5000);
 	}
 }
 
@@ -1136,21 +1123,22 @@ notifications ={
 		return ajax.responseText;
 	},
 	display:function(data){
-		console.log(data);
-		let	picture = "", notification="",status="";
+		let	picture = "", notification="",status="",tag="";
 		$.each(data,function(i,v){
-			status = (v[3] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
-			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
+			console.log(v);
+			tag = (v[3] == 'application')?`updated your ${v[3]} status`:`set a ${v[3]}`
+			status = (v[6] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
+			picture  = ((typeof v[5] == 'object') || (v[5] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[5]}`;
 			$('#list_notifications ul').prepend(`
-				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-node="${v[0]}" data-name ="${status[0]}">
+				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-value="${v[1]}" data-prop = '${v[7]}' data-node="${v[0]}" data-name ="${status[0]}">
 					<div class="item-media"><img src="${picture}" width="44"/></div>
 					<div class="item-inner">
 						<div class="item-title-row">
 							<div class="item-title">
-								<strong>${v[1]}</strong> responded to your ${v[5]}
+								<strong>${v[4]}</strong> ${tag}
 							</div>
 						</div>
-						<small>${v[4]}</small>
+						<small>${v[2]}</small>
 					</div>
 				</a>`);
 
@@ -1158,12 +1146,13 @@ notifications ={
 		$(`a[data-cmd='job-info']`).on('click',function(){
 			notification = $(this).data();
 			notifications.action(notification['node']); /*read function*/
-			localStorage.setItem('notification',JSON.stringify([notification['name'],notification['node']]));
+			localStorage.setItem('notification',JSON.stringify([notification['name'],notification['node'],notification['value'],notification['prop']]));
 			view.router.navigate('/notification/');
 		});
 		$(`#list_notifications img`).on('error',function(){
 			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
+
 	},
 	action:function(id){ /*change application log status into read*/
 		var ajax = system.ajax(system.host('do-action'),[id,'notification']);
@@ -1175,29 +1164,30 @@ notifications ={
 notification ={
 	ini:function(){
 		let notif = JSON.parse(localStorage.getItem('notification'));
+		console.log(notif);
 		this.display(notif);
 	},
-	get:function(id){
-		var ajax = system.ajax(system.host('get-notificationInfo'),id);
+	get:function(log,id,job){
+		var ajax = system.ajax(system.host('get-notificationInfo'),[log,id,job]);
 		return ajax.responseText;
 	},
 	display:function(data){
-		let notifInfo = JSON.parse(notification.get(data[1]))[0], logo = "",random = "", status ="";
+		let notifInfo = JSON.parse(notification.get(data[1],data[2],data[3]))[0], logo = "",random = "", status ="";
 		console.log(notifInfo);
-		logo  = ((typeof notifInfo[2] == 'object') || (notifInfo[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[2]}`;
+		logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
 		$("#display_job").html(`
-            <div class="row job-title">
-                <a class="in-field-btn material-icons text-color-black" data-cmd="read_company" data-node="${notifInfo[0]}">more_vert</a>
+            <div class="row ">
+                <a class="btn btn-flat material-icons text-color-black" data-cmd="read_company" data-node="">more_vert</a>
             </div>
-            <div class="row business-info">
-                <img src="${logo}" width='100%'>
-                <div class="company">
-                    <h3 class="name">${notifInfo[1]}</h3>
-                    <h4 class="address">Application for ${notifInfo[4]}</h4>
+            <div class="row ">
+                <img src="${logo}" width='20%'>
+                <div class="center">		
+                    <h3 class="name">${notifInfo[3]}</h3>
+                    <h4 class="address">Application for ${notifInfo[5]}</h4>
                 </div>
             </div>
             <div class="row job-skills">
-                <h2>${notifInfo[3]}</h2>
+                <h2>${notifInfo[2]}</h2>
             </div>
 		`);
 	}
