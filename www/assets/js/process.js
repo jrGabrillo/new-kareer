@@ -934,25 +934,20 @@ bookmark ={
 messages ={
 	ini:function(){
 		let id =  account.id();
-		let data = this.get(id);
-		// let data = JSON.parse(this.get(id));
+		let data = JSON.parse(this.get(id));
 		console.log(data);
-		// this.display(data);
+		this.display(data);
 	},
 	get:function(data){
 		var ajax = system.ajax(system.host('get-messages'),data);
 		return ajax.responseText;
 	},
-	getConvo:function(id){
-		var ajax = system.ajax(system.host('get-messageConvo'),id);
-		return ajax.responseText;
-	},
 	display:function(data){
-		let	picture = "", id="";
+		let	picture = "", id="", convo ="";
 		$.each(data,function(i,v){
 			picture  = ((typeof v[0][2] == 'object') || (v[0][2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[0][2]}`;
 			$('#list_messages ul').prepend(`
-				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0][0]}">
+				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[2]}">
 					<div class="item-media"><img src="${picture}" width="44"/></div>
 					<div class="item-inner">
 						<div class="item-title-row">
@@ -968,41 +963,79 @@ messages ={
 
 		})			
 			$(`a[data-cmd='job-info']`).on('click',function(){
-				id = $(this).data('node');
+				convo = $(this).data('node');
+				localStorage.setItem('convo',convo);
 				view.router.navigate('/message/');
-				messages.convo(id);
 			});
 		$(`#list_messages img`).on('error',function(){
 			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
 	},
-	convo:function(id){
-		let data = JSON.parse(messages.getConvo(id)), business="";
+	
+}
+convo ={
+	ini:function(){
+		let id = localStorage.getItem('convo');
+		this.display(id);
+		this.send(id);
+	},
+	get:function(id){
+		var ajax = system.ajax(system.host('get-messageConvo'),id);
+		return ajax.responseText;
+	},
+	send:function(id){
+		let data = JSON.parse(convo.get(id));
+		console.log(data);
+		let messages = app.messages.create({el: '.messages'});
+	    let messagebar = app.messagebar.create({el: '.messagebar'});
+	    let responseInProgress = false;
+		$$('.demo-send-message-link').on('click', function () {			
+	      let text = messagebar.getValue().replace(/\n/g, '<br>').trim();
+	      if (responseInProgress) return;
+	      let user = account.get()[0];
+        	let picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
+            if(!text.length){
+                    system.notification("Kareer","Message box is empty.");
+            }
+            else{
+            	var ajax = system.ajax(system.host('do-message'),[account.id(),data[0][5],data[0][4],text,'application']);
+                ajax.done(function(ajax){
+                	console.log(ajax);
+                    if(ajax == 1){
+                        messagebar.clear();
+					    messagebar.focus();
+					    messages.addMessage({
+					       text: text
+					    });
+                        system.notification("Kareer","Message sent.");
+                            // $('#messageBox').scrollTop($('#messageBox').prop("scrollHeight"));/*this will stick the scroll to bottom*/
+                    }
+                    else{
+                        system.notification("Kareer","Message not sent.");
+                    }
+                });
+            }
+	    });
+	},
+	display:function(id){
+		let data = JSON.parse(convo.get(id)), business="", sender="";
+		console.log(data);
+		$('message-title').html(`Application for ${data[0][6]}`);
 		$.each(data,function(i,v){
+			sender = (v[4] == account.id())?'sent':'received';
             business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
-            $('#messageBox div').prepend(`
-            	<div class="message message-received">
-            		<div class="message-avatar" style="background-image:url(${server}/assets/images/logo/${business});"></div>
-	                <div class="message-content">
+            $('#messageBox').prepend(`
+            	<div class="message message-${sender}">
+            		<div class="message-content">
 	                <div class="message-name">${v[1]}</div>
 	                    <div class="message-bubble">
-	                        <div class="message-text">${v[2]}/div>
+	                        <div class="message-text">${v[2]}</div>
 	                    </div>
 	                </div>
 	            </div>
             `);
         });
-        // $('#messages ul').scrollTop($('#messages ul').prop("scrollHeight")); /*this will stick the scroll to bottom*/
-        $('a[data-cmd="send"]').on('click', function(){
-            let message = $("input").val();
-            if(message.length == 0){
-                    system.notification("Kareer","Message box is empty.");
-            }
-            else{
-            	console.log(message);
-            	system.notification("Kareer","Message sent.");
-            }
-        });
+        // $('#messageBox').scrollTop($('#messageBox').prop("scrollHeight")); /*this will stick the scroll to bottom*/
 	}
 }
 
