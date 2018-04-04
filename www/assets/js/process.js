@@ -982,7 +982,7 @@ messages ={
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
-		console.log(data);
+		console.log(this.get(id));
 		this.display(data);
 	},
 	get:function(data){
@@ -990,6 +990,7 @@ messages ={
 		return ajax.responseText;
 	},
 	display:function(data){
+		console.log(data);
 		let	picture = "", id="", convo ="";
 		$.each(data,function(i,v){
 			picture  = ((typeof v[0][2] == 'object') || (v[0][2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[0][2]}`;
@@ -1067,7 +1068,7 @@ convo ={
 	display:function(id){
 		let data = JSON.parse(convo.get(id)), business="", sender="";
 		console.log(data);
-		$('message-title').html(`Application for ${data[0][6]}`);
+		// $('message-title').html(`Application for ${data[0][6]}`);
 		$.each(data,function(i,v){
 			sender = (v[4] == account.id())?'sent':'received';
             business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
@@ -1162,6 +1163,7 @@ notification ={
 	},
 	display:function(data){
 		let notifInfo = JSON.parse(notification.get(data[1]))[0], logo = "",random = "", status ="";
+		console.log(notifInfo);
 		logo  = ((typeof notifInfo[2] == 'object') || (notifInfo[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[2]}`;
 		$("#display_job").html(`
             <div class="row job-title">
