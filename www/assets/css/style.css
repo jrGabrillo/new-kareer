@@ -956,7 +956,7 @@ a.close{
 
 #tab_jobs ul li{
 	position: absolute;
-	transition: 0.5s;
+	transition: 0.5s linear;
 	z-index: 1;
 	height: calc(100% - 10px);
 }
