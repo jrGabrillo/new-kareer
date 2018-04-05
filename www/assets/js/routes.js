@@ -74,10 +74,10 @@ var routes = [
                         }
 
                         $("#form_signupAuth form").attr({style:'display:block;'});
-                        // setTimeout(function(){
-                        //     form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
-                        //     signup.auth(form);
-                        // },500);
+                        setTimeout(function(){
+                            form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
+                            signup.auth(form);
+                        },500);
                     },500);
                 }
             }
@@ -88,8 +88,10 @@ var routes = [
         url: './pages/account.html',
         on: {
             pageInit: function(e, page){
+                system.loading();
                 setTimeout(function(){
                     account.ini();
+                    jobs.ini();
                     new PerfectScrollbar('#tab_account .other-info');
                 },500);
             }

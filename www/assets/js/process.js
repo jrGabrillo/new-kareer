@@ -3,11 +3,13 @@ let host = window.location;
 let server = `http://system.kareer-ph.com/`;
 // let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
+
 account = {
 	ini:function(){
 		let data = this.get()[0], scroll = 0;   
 		this.display(data);
-        jobs.display();
+		app.toolbar.hide('#menu_account');
+		app.tab.show('#tab_jobs');
 
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
@@ -36,8 +38,6 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
-		app.toolbar.hide('#menu_account');
-		app.tab.show('#tab_jobs');
 	},
 	id:function(){
 		return localStorage.getItem('account_id');
@@ -693,6 +693,10 @@ career = {
 
 jobs = {
 	ini:function(){
+        this.display();
+        setTimeout(function(){
+			$('.load-block').remove();
+        },500);
 	},
 	get:function(id,min,max){
 		min = ((typeof min == undefined) || (min == null))?0:min;
