@@ -81,8 +81,8 @@ var system = function() {
 			return data;
 		},
 		host:function(page){
-			return `http://system.kareer-ph.com/assets/harmony/mobile.php?${page}`;
-			// return `http://localhost/kareer/assets/harmony/mobile.php?${page}`;
+			// return `http://system.kareer-ph.com/assets/harmony/mobile.php?${page}`;
+			return `http://localhost/kareer/assets/harmony/mobile.php?${page}`;
 		},
 		notification:function(title,subtitle){
             let n = app.notification.create({
@@ -96,7 +96,7 @@ var system = function() {
 			$("#app").append(`<div class="load-block inactive">
 					            <div class="inner">
 					                <div class="loading"></div>
-					                <img src='assets/img/bg/loading.svg' width='100%'>
+					                <img src='assets/img/bg/loading.png' width='100%'>
 					            </div>
 					        </div>`);
 		}

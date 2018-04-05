@@ -4,6 +4,7 @@ var routes = [
         url: './pages/home.html',
         on: {
             pageInit: function(e,page){
+                localStorage.setItem('load','true');
                 setTimeout(function(){
                     let callback = localStorage.getItem('callback'), account = localStorage.getItem('account');
                     if(account != null){
@@ -88,7 +89,9 @@ var routes = [
         url: './pages/account.html',
         on: {
             pageInit: function(e, page){
-                system.loading();
+                if(localStorage.getItem('load')){
+                    system.loading();
+                }
                 setTimeout(function(){
                     account.ini();
                     jobs.ini();
@@ -254,8 +257,15 @@ var routes = [
         url: './pages/job.html',
         on: {
             pageInit: function(e, page){
-                // job.ini();
-                let ps_business = new PerfectScrollbar('#display_job');
+            }
+        }
+    },
+    {
+        path: '/logout/',
+        url: './pages/logout.html',
+        on: {
+            pageInit: function(e, page){
+                this.logout();
             }
         }
     },

@@ -7,20 +7,28 @@
 		</div>
 	</div>	
     <div class="page-content">
-		<div class="title">Personal Information</div>
+		<div class="title">Personal Information
+            <a id='button_personalInfo' class="col button button-small button-fill button-round in-field-btn btn-nav">
+            	<i class='material-icons text-color-white'>done</i>
+           	</a>
+		</div>
         <div class="content bg-color-white" id='display_personal_info'>
             <div class="row">
-		        <form>
+	            <div class="list">
+	                <ul>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                        	<div class="" id="display_accountPicture">
+									<a class="col button button-small button-fill button-round in-field-btn popup-open" data-popup='.popup-picture' data-cmd='UpdatePic'><i class='f7-icons'>camera_fill</i></a>
+	                                <img src="" width='100%'>
+	                        	</div>
+	                        </div>
+	                    </li>
+	                </ul>
+	            </div>
+		        <form id='form_personalInfo'>
 		            <div class="list">
 		                <ul>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                        	<div class="" id="display_accountPicture">
-										<a class="col button button-small button-fill button-round in-field-btn popup-open" data-popup='.popup-picture' data-cmd='UpdatePic'><i class='f7-icons'>camera_fill</i></a>
-		                                <img src="" width='100%'>
-		                        	</div>
-		                        </div>
-		                    </li>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">First Name</div>

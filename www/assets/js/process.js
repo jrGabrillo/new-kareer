@@ -49,9 +49,7 @@ account = {
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
-		let data = this.get()[0];
-        let ps = new PerfectScrollbar('#display_info .content');
-		let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
+		let data = this.get()[0], ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
 
 		$('#display_accountPicture img').attr({'src':`${picture}`});
@@ -64,21 +62,19 @@ account = {
 
         $("#field_email").val(data[2]);
 
-		var from = new Date((new Date()).getFullYear()-18, 1, 1);
-		var calendarModal = app.calendar.create({
+        let dob = (data[12] == "")?"January 26, 1993":data[12];
+		let from = new Date((new Date()).getFullYear()-18, 1, 1);
+		app.calendar.create({
 			inputEl: '#field_dob',
 			openIn: 'customModal',
 			dateFormat: 'MM dd, yyyy',
 			footer: true,
 			firstDay:0,
-			value:[data[12]],
+			value:[dob],
 		    disabled: {from: from}
 		});
-
         this.update();
-        this.logout();
 		this.updatePicture(data[0]);
-
 		$(`#display_accountPicture img`).on('error',function(){
 			$(this).attr({'src':tempPicture});
 		});
@@ -98,7 +94,7 @@ account = {
 		});
 	},
 	update:function(){
-		let c = 0;
+		let c = 0, _form = "", id = account.id();
 		$(".item-input-password-preview").on('click',function(){
 			c++;
 			if((c%2)==0){
@@ -111,50 +107,59 @@ account = {
 			}
 		});
 
-		$("*[ data-cmd='field']").on('change',function(){
-			let data = $(this).data(), val = $(this).val(), id = account.id();			
-			let status = 0;
-
-			console.log(data.prop);
-			if((data.prop == 'field_fname') && (val.length >= 1) && (val.length <= 100)){
-				status = 1;
-			}
-			else if((data.prop == 'field_mname') && (val.length >= 1) && (val.length <= 100)){
-				status = 1;
-			}
-			else if((data.prop == 'field_lname') && (val.length >= 1) && (val.length <= 100)){
-				status = 1;
-			}
-			else if((data.prop == 'field_dob') && (val.length >= 1) && (val.length <= 20)){
-				status = 1;
-			}
-			else if((data.prop == 'field_address') && (val.length >= 1) && (val.length <= 300)){
-				status = 1;
-			}
-			else if((data.prop == 'field_number') && (val.length >= 1) && (val.length <= 100)){
-				status = 1;
-			}
-			else if((data.prop == 'field_bio') && (val.length >= 1) && (val.length <= 1000)){
-				status = 1;
-			}
-			else if((data.prop == 'field_email') && (val.length >= 1) && (val.length <= 100) && (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val))){
-				status = 1;
-			}
-			else if((data.prop == 'field_password') && (val.length >= 1) && (val.length <= 100)){
-				if((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,50}/.test(val))){
-					status = 1;
-					$(".error_field_password").html('');
-				}
+		$("#form_personalInfo").validate({
+		    rules: {
+		        field_fname: {required: true,maxlength: 100},
+		        field_mname: {required: true,maxlength: 100},
+		        field_lname: {required: true,maxlength: 100},
+		        field_dob: {required: true,maxlength: 100},
+		        field_address: {required: true,maxlength: 300},
+		        field_number: {required: true,maxlength: 50},
+		        field_bio: {required: true,maxlength: 1000},
+		    },
+		    errorElement : 'div',
+		    errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
 				else{
-					$(".error_field_password").html('Password is weak');				
+					error.insertAfter(element);
 				}
-			}
+			},
+			// submitHandler: function (form) {
+			// 	var _form = $(form).serializeArray();
+			// 	if((data.value[0] == _form[0]['value']) || (data.value[1] == _form[1]['value'])){
+			// 		system.alert('You did not even change the value.', function(){});
+			// 	}
+			// 	else{
+			// 		var ajax = system.ajax('../assets/harmony/Process.php?do-updateInfo',['admin','name',sessionStorage.getItem('kareer'),_form[0]['value'], _form[1]['value']]);
+			// 		ajax.done(function(ajax){
+			// 			if(ajax == 1){
+			// 				$('#modal_confirm').modal('close');	
+			// 				$(`.card-title[for='${data.for}'], .display_name`).html(`${_form[0]['value']} ${_form[1]['value']}`);
+			// 				$(_this).attr({'data-value':JSON.stringify([_form[0]['value'],_form[1]['value']]), 'data-name':`${_form[0]['value']} ${_form[1]['value']}`});
+			// 				system.alert('Name updated.', function(){});
+			// 			}
+			// 			else{
+			// 				system.alert('Failed to update.', function(){});
+			// 			}
+			// 		});
+			// 	}
+		 //    }
+		}); 
 
-			if(status){
-				let ajax = system.ajax(system.host('do-updateInfo'),['applicant',data.prop,id,val]);
+		$("#button_personalInfo").on('click',function(){
+			if($("#form_personalInfo").validate().form()){
+				_form = $("#form_personalInfo").serializeArray();
+				let ajax = system.ajax(system.host('do-updateInfo'),[id,_form[0]['value'],_form[1]['value'],_form[2]['value'],_form[3]['value'],_form[4]['value'],_form[5]['value'],_form[6]['value']]);
 				ajax.done(function(data){
-					console.log(data);
-					account.ini();
+					if(data == 1){
+	                    system.notification("Kareer",`Updated`);
+					}
+					else{
+	                    system.notification("Kareer",`Update failed`);
+					}
 				});
 			}
 		})
@@ -695,8 +700,11 @@ jobs = {
 	ini:function(){
         this.display();
         setTimeout(function(){
-			$('.load-block').remove();
-        },500);
+			if(localStorage.getItem('load') != null){
+				$('.load-block').remove();
+				localStorage.removeItem('load');
+			}
+        },1500);
 	},
 	get:function(id,min,max){
 		min = ((typeof min == undefined) || (min == null))?0:min;
