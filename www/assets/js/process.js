@@ -127,26 +127,6 @@ account = {
 					error.insertAfter(element);
 				}
 			},
-			// submitHandler: function (form) {
-			// 	var _form = $(form).serializeArray();
-			// 	if((data.value[0] == _form[0]['value']) || (data.value[1] == _form[1]['value'])){
-			// 		system.alert('You did not even change the value.', function(){});
-			// 	}
-			// 	else{
-			// 		var ajax = system.ajax('../assets/harmony/Process.php?do-updateInfo',['admin','name',sessionStorage.getItem('kareer'),_form[0]['value'], _form[1]['value']]);
-			// 		ajax.done(function(ajax){
-			// 			if(ajax == 1){
-			// 				$('#modal_confirm').modal('close');	
-			// 				$(`.card-title[for='${data.for}'], .display_name`).html(`${_form[0]['value']} ${_form[1]['value']}`);
-			// 				$(_this).attr({'data-value':JSON.stringify([_form[0]['value'],_form[1]['value']]), 'data-name':`${_form[0]['value']} ${_form[1]['value']}`});
-			// 				system.alert('Name updated.', function(){});
-			// 			}
-			// 			else{
-			// 				system.alert('Failed to update.', function(){});
-			// 			}
-			// 		});
-			// 	}
-		 //    }
 		}); 
 
 		$("#button_personalInfo").on('click',function(){
