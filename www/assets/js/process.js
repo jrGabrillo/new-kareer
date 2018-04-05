@@ -1063,7 +1063,7 @@ convo ={
 		$$('.demo-send-message-link').on('click', function () {			
 	      let text = messagebar.getValue().replace(/\n/g, '<br>').trim();
 	      if (responseInProgress) return;
-	      let user = account.get()[0];
+	       let user = account.get()[0], tempPicture = "";
         	let picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
             if(!text.length){
                     system.notification("Kareer","Message box is empty.");
