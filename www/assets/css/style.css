@@ -179,6 +179,7 @@ overflow:  h;
 
 .tab-link{
 	color: rgba(255,255,255, 0.3) !important;
+	z-index:  0;
 }
 .tab-link-active{
 	color: #fff!important;
@@ -438,9 +439,9 @@ margin: 0px;
 }
 #tab_jobs .card .card-content{
 	 border-radius: 20px;
-	 height: calc(60%);
 	 margin: 20px 20px 0px 20px;
 	 padding: 0px;
+	 height: 300px;
 }
 #tab_jobs .card .card-footer{
 	 background: #fff;
@@ -452,8 +453,8 @@ margin: 0px;
 	text-align: left;
 }
 #tab_jobs .job-description{
-	height: 350px;
-	overflow:  hidden;
+	min-height: 60%;
+	overflow: hidden;
 	/* text-align: center; */
 }
 #tab_jobs .job-description .ellipsis{
@@ -477,7 +478,7 @@ margin: 0px;
 	transition: 0.5s;
 }
 #tab_jobs .job{
-	height: calc(490px);
+	height: calc(100% - 20px);
 	box-shadow: 0px 0px 20px 0px #00000042;
 	transform: translateY(-45px) scale(0.8);
 }
@@ -971,7 +972,6 @@ a.close{
 	position: absolute;
 	transition: 0.2s linear;
 	z-index: 1;
-	height: calc(100% - 10px);
 }
 .blocker{
 	width: 100%;

@@ -53,14 +53,14 @@ account = {
 		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
 
 		$('#display_accountPicture img').attr({'src':`${picture}`});
-        $("#field_fname").val(data[8]);
-        $("#field_mname").val(data[10]);
-        $("#field_lname").val(data[9]);
-        $("#field_address").html(data[13]);
-        $("#field_number").val(data[15]);
-        $("#field_bio").html(data[1]);
-
-        $("#field_email").val(data[2]);
+        $("._gname").val(data[8]);
+        $("._mname").val(data[10]);
+        $("._lname").val(data[9]);
+        $("._address").html(data[13]);
+        $("._number").val(data[15]);
+        $("._bio").html(data[1]);
+        $("._email").val(data[2]);
+        $(`._gender option[value='${data[11]}']`).attr({'selected':true});
 
         let dob = (data[12] == "")?"January 26, 1993":data[12];
 		let from = new Date((new Date()).getFullYear()-18, 1, 1);
@@ -73,7 +73,8 @@ account = {
 			value:[dob],
 		    disabled: {from: from}
 		});
-        this.update();
+        this.update(data[0]);
+		this.updatePassword(data[0]);
 		this.updatePicture(data[0]);
 		$(`#display_accountPicture img`).on('error',function(){
 			$(this).attr({'src':tempPicture});
@@ -93,20 +94,7 @@ account = {
 			$(this).attr({'src':tempPicture});
 		});
 	},
-	update:function(){
-		let c = 0, _form = "", id = account.id();
-		$(".item-input-password-preview").on('click',function(){
-			c++;
-			if((c%2)==0){
-				$(this).children('i').html('visibility_off');
-				$("input[name='field_password']").attr({'type':'password'});
-			}
-			else{
-				$(this).children('i').html('visibility');
-				$("input[name='field_password']").attr({'type':'text'});
-			}
-		});
-
+	update:function(id){
 		$("#form_personalInfo").validate({
 		    rules: {
 		        field_fname: {required: true,maxlength: 100},
@@ -115,6 +103,8 @@ account = {
 		        field_dob: {required: true,maxlength: 100},
 		        field_address: {required: true,maxlength: 300},
 		        field_number: {required: true,maxlength: 50},
+		        field_gender: {required: true,maxlength: 50},
+		        field_email: {required: true,maxlength: 100,email:true},
 		        field_bio: {required: true,maxlength: 1000},
 		    },
 		    errorElement : 'div',
@@ -131,10 +121,24 @@ account = {
 
 		$("#button_personalInfo").on('click',function(){
 			if($("#form_personalInfo").validate().form()){
-				_form = $("#form_personalInfo").serializeArray();
-				let ajax = system.ajax(system.host('do-updateInfo'),[id,_form[0]['value'],_form[1]['value'],_form[2]['value'],_form[3]['value'],_form[4]['value'],_form[5]['value'],_form[6]['value']]);
+				let _form = $("#form_personalInfo").serializeArray();
+		    	app.preloader.show();
+		    	_form = [id,_form[0]['value'],_form[1]['value'],_form[2]['value'],_form[3]['value'],_form[4]['value'],_form[5]['value'],_form[6]['value'],_form[7]['value'],_form[8]['value']];
+				
+				console.log(_form);
+				let ajax = system.ajax(system.host('do-updateInfo'),_form);
 				ajax.done(function(data){
+			    	app.preloader.hide();				
 					if(data == 1){
+				        $("._gname").html(_form[1]);
+				        $("._mname").html(_form[2]);
+				        $("._lname").html(_form[3]);
+				        $("._dob").html(_form[4]);
+				        $("._address").html(_form[5]);
+				        $("._number").html(_form[7]);
+				        $("._bio").html(_form[9]);
+				        $("._email").html(_form[8]);
+				        $(`._gender`).html(_form[6]);
 	                    system.notification("Kareer",`Updated`);
 					}
 					else{
@@ -142,7 +146,62 @@ account = {
 					}
 				});
 			}
-		})
+		});
+	},
+	updatePassword:function(id){
+		$(".item-input-password-preview").on('click',function(){
+			let preview = $(this).data('show');
+			if($(`input[name='${preview}']`)[0].type=="text"){
+				$(`.${preview}`).html('visibility_off');
+				$(`input[name='${preview}']`).attr({'type':'password'});
+			}
+			else{
+				$(`.${preview}`).html('visibility');
+				$(`input[name='${preview}']`).attr({'type':'text'});
+			}
+		});
+
+		$("#form_password").validate({
+		    rules: {
+		        field_oldPassword: {required: true, maxlength: 100, validatePassword:true, checkPassword:account.id()},
+		        field_newPassword: {required: true, maxlength: 100, validatePassword:true},
+		    },
+		    errorElement : 'div',
+		    errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+		}); 
+
+		$("#button_accountInfo").on('click',function(){
+			if($("#form_password").validate().form()){
+				let _form = $("#form_password").serializeArray();
+				_form = [account.id(),_form[0]['value'],_form[1]['value']];
+				if(_form[1] == _form[2]){
+                    system.notification("Kareer",`Please enter a password that you haven't used before.`);
+				}
+				else{
+			    	app.preloader.show();
+					let ajax = system.ajax(system.host('do-updatePassword'),_form);
+					ajax.done(function(data){
+				    	app.preloader.hide();				
+						if(data == 1){
+							$("#form_password input").val("");
+		                    system.notification("Kareer",`Password updated`);
+						}
+						else{
+		                    system.notification("Kareer",`Password update failed`);
+						}
+					});
+				}
+			}
+		});
+
 	},
 	updatePicture: function(id) {
         window.Cropper;
@@ -849,7 +908,7 @@ jobs = {
 											</div>
 										</div>
 									</div>
-									<div class='card-content card-content-padding align-self-stretch'>
+									<div class='card-content card-content-padding align-self-stretch' style='height:calc(${h}px - 320px);'>
 										<div class='job-description'>
 											<h3>${v[5]}</h3>
 											<div class='row'>
