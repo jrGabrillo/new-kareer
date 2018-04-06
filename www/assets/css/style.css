@@ -477,7 +477,7 @@ margin: 0px;
 	transition: 0.5s;
 }
 #tab_jobs .job{
-	height: calc(400px);
+	height: calc(490px);
 	box-shadow: 0px 0px 20px 0px #00000042;
 	transform: translateY(-45px) scale(0.8);
 }
