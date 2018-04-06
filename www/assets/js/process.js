@@ -740,7 +740,6 @@ jobs = {
 	display:function(){
 		let swipe=true,_data=[],job_id="",business_id="",jobData="",skills="",logo="",jobAbout="",companyAbout="",ps_job="",ps_business="",business_data="";	
 		let id = account.id(),data = JSON.parse(jobs.get(id,min,count));
-
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
@@ -760,6 +759,7 @@ jobs = {
 		$('button[data-cmd="read_job"]').on('click',function(){
 			job_id = $(this).data('node');
 			jobData = JSON.parse(job.get(job_id))[0];
+			skills = "";
 			$.each(JSON.parse(jobData[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
 			logo  = ((typeof jobData[9] == 'object') || (jobData[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${jobData[9]}`;
 			jobAbout = app.popover.create({
@@ -965,10 +965,10 @@ bookmark ={
 		return ajax.responseText;
 	},
 	display:function(data){
-		let	picture = "", id="";
+		let	picture = "", id="",ps_notif="";
 		$.each(data,function(i,v){
 			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
-			$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[0]}">
+			$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="read_job" data-node="${v[0]}">
 				<div class="item-media"><img src="${picture}" width="44"/></div>
 				<div class="item-inner">
 					<div class="item-title-row"><div class="item-title">${v[1]}</div></div>
@@ -982,11 +982,77 @@ bookmark ={
 			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
 
-
-		$(`a[data-cmd='job-info']`).on('click',function(){
-			id = $(this).data('node');
-			localStorage.setItem('job',id);
-			view.router.navigate('/job/');
+		$('a[data-cmd="read_job"]').on('click',function(){
+			job_id = $(this).data('node');
+			jobData = JSON.parse(job.get(job_id))[0];
+			skills = "";
+			$.each(JSON.parse(jobData[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
+			logo  = ((typeof jobData[9] == 'object') || (jobData[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${jobData[9]}`;
+			jobAbout = app.popover.create({
+				targetEl: '.company',
+				content: `<div class="popover" id='display_job'>
+							<div class='panel-company'>
+						        <div style='height:${h}px !important;'>
+						            <div class="row business-info">
+						                <div class="company-background">
+						                    <a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
+						                    <img src="${logo}" width='100%'>                    
+						                </div>
+						                <div class="company popover-close" data-business = '${jobData[10]}'>
+						                    <h3 class="">${jobData[7]}</h3>
+						                </div>
+						            </div>
+						            <div class="row job-title">
+						                <h1>${jobData[0]} <small class="text-color-gray">${jobData[1]}</small></h1>
+						            </div>
+						            <div class="row job-skills">
+						                <h4>Skills</h4>
+						                <div class="content">${skills}</div>
+						            </div>
+						            <div class="row job-salary">
+						                <h4>Salary Range</h4>
+						                <div class="content">${jobData[3]} - ${jobData[4]}</div>
+						            </div>
+						            <div class="row job-description">
+						                <div class="content ">${jobData[5]}</div>
+						            </div>
+						        </div>
+							</div>
+						</div>`,
+			});
+			jobAbout.open();
+            ps_notif = new PerfectScrollbar('#display_job');
+            
+            $(".company").on('click',function(){
+				business_data = $(this).data('business');
+				business_data = JSON.parse(business.get(business_data))[0];
+				logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
+				companyAbout = app.popover.create({
+					targetEl: '.company',
+					content: `<div class="popover" id='display_company'>
+								<div class='panel-company'>
+							        <div id='display_business' style='height:${h}px !important;'>
+							            <div class="row business-info">
+							                <div class="company-background">
+				                    			<a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
+							                    <img src="${logo}" width='100%'>                    
+							                </div>
+							                <div class="company">
+							                    <h3 class="name">${business_data[0]}</h3>
+							                    <h6 class="address">${business_data[2]}</h6>
+							                    <h6 class="email">Email: ${business_data[3]} | Phone: ${business_data[4]}</h6>
+							                </div>
+							            </div>
+							            <div class="row company-description">
+							                <div class="content">${business_data[5]}</div>
+							            </div>
+							        </div>
+								</div>
+							</div>`,
+				});
+				companyAbout.open();
+	            ps_business = new PerfectScrollbar('#display_business');
+			});
 		});
 	}
 }
@@ -1115,9 +1181,9 @@ notifications ={
 		return ajax.responseText;
 	},
 	display:function(data){
-		let	picture = "", notification="",status="",tag="";
+		let	picture = "", notifName ="", notifValue = "", notifProp ="", status="",tag="",ps_notif="";
 		$.each(data,function(i,v){
-			console.log(v);
+			// console.log(v);
 			tag = (v[3] == 'application')?`updated your ${v[3]} status`:`set a ${v[3]}`
 			status = (v[6] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
 			picture  = ((typeof v[5] == 'object') || (v[5] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[5]}`;
@@ -1136,14 +1202,73 @@ notifications ={
 
 		})			
 		$(`a[data-cmd='job-info']`).on('click',function(){
-			notification = $(this).data();
-			notifications.action(notification['node']); /*read function*/
-			localStorage.setItem('notification',JSON.stringify([notification['name'],notification['node'],notification['value'],notification['prop']]));
-			view.router.navigate('/notification/');
+			notifNode = $(this).data('node');
+			notifValue = $(this).data('value');
+			notifProp = $(this).data('prop');
+			notifications.action($(this).data('node')); /*read function*/
+			let notifInfo = JSON.parse(notification.get(notifNode,notifValue,notifProp))[0], logo = "",random = "", status ="";
+			logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
+			notifAbout = app.popover.create({
+				targetEl: '.company',
+				content: `<div class="popover" id='display_job'>
+							<div class='panel-company'>
+						        <div style='height:${h}px !important;'>
+						            <div class="row business-info">
+						                <div class="company-background">
+						                    <a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
+						                    <img src="${logo}" width='100%'>                    
+						                </div>
+						                <div class="company popover-close" data-business='${notifInfo[7]}'>
+						                    <h2 class="">${notifInfo[3]}</h2>
+						                    <h4 class="">${notifInfo[5]}</h4>
+						                </div>
+						            </div>
+						            <div class="row job-title">
+						                <h1>${notifInfo[2]} <small class="text-color-gray">${notifInfo[6]}</small></h1>
+						            </div>
+						        </div>
+							</div>
+						</div>`,
+			});
+			notifAbout.open();
+            ps_job = new PerfectScrollbar('#display_job');
+
+            $(".company").on('click',function(){
+				business_data = $(this).data('business');
+				business_data = JSON.parse(business.get(business_data))[0];
+				logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
+				companyAbout = app.popover.create({
+					targetEl: '.company',
+					content: `<div class="popover" id='display_company'>
+								<div class='panel-company'>
+							        <div id='display_business' style='height:${h}px !important;'>
+							            <div class="row business-info">
+							                <div class="company-background">
+				                    			<a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
+							                    <img src="${logo}" width='100%'>                    
+							                </div>
+							                <div class="company">
+							                    <h3 class="name">${business_data[0]}</h3>
+							                    <h6 class="address">${business_data[2]}</h6>
+							                    <h6 class="email">Email: ${business_data[3]} | Phone: ${business_data[4]}</h6>
+							                </div>
+							            </div>
+							            <div class="row company-description">
+							                <div class="content">${business_data[5]}</div>
+							            </div>
+							        </div>
+								</div>
+							</div>`,
+				});
+				companyAbout.open();
+	            ps_business = new PerfectScrollbar('#display_business');
+			});
 		});
 		$(`#list_notifications img`).on('error',function(){
 			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
+        ps_notif = new PerfectScrollbar('#list_notifications');
+
 
 	},
 	action:function(id){ /*change application log status into read*/
@@ -1154,34 +1279,9 @@ notifications ={
 	}
 }
 notification ={
-	ini:function(){
-		let notif = JSON.parse(localStorage.getItem('notification'));
-		console.log(notif);
-		this.display(notif);
-	},
 	get:function(log,id,job){
 		var ajax = system.ajax(system.host('get-notificationInfo'),[log,id,job]);
 		return ajax.responseText;
-	},
-	display:function(data){
-		let notifInfo = JSON.parse(notification.get(data[1],data[2],data[3]))[0], logo = "",random = "", status ="";
-		console.log(notifInfo);
-		logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
-		$("#display_job").html(`
-            <div class="row ">
-                <a class="btn btn-flat material-icons text-color-black" data-cmd="read_company" data-node="">more_vert</a>
-            </div>
-            <div class="row ">
-                <img src="${logo}" width='20%'>
-                <div class="center">		
-                    <h3 class="name">${notifInfo[3]}</h3>
-                    <h4 class="address">Application for ${notifInfo[5]}</h4>
-                </div>
-            </div>
-            <div class="row job-skills">
-                <h2>${notifInfo[2]}</h2>
-            </div>
-		`);
 	}
 
 }

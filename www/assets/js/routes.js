@@ -189,7 +189,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                  notifications.ini();
-                 let ps = new PerfectScrollbar('#list_notifications');
+                 // let ps = new PerfectScrollbar('#list_notifications');
           }
         }
     },
