@@ -437,19 +437,11 @@ margin: 0px;
 	-webkit-box-orient: vertical;
 	font-weight: 100;
 }
-<<<<<<< HEAD
 #tab_jobs .card .card-content{
 	 border-radius: 20px;
 	 margin: 20px 20px 0px 20px;
 	 padding: 0px;
 	 height: 300px;
-=======
-#tab_jobs .card .card-content{
-	 border-radius: 20px;
-	 height: calc(60%);
-	 margin: 20px 20px 0px 20px;
-	 padding: 0px;
->>>>>>> c09db1cb6d29ac9d48623108ce51b431d9f01dfb
 }
 #tab_jobs .card .card-footer{
 	 background: #fff;
