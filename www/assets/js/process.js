@@ -1222,7 +1222,7 @@ convo ={
 		$.each(data,function(i,v){
 			sender = (v[4] == account.id())?'sent':'received';
             business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
-            // $('#messageBox .messages').prepend(`
+            $('#messageBox .messages').prepend(`
             	<div class="message message-${sender}">
             		<div class="message-content">
 	                <div class="message-name">${v[1]}</div>
