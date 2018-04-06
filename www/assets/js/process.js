@@ -1,7 +1,7 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-let server = `http://system.kareer-ph.com/`;
-// let server = `http://localhost/kareer`;
+// let server = `http://system.kareer-ph.com/`;
+let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 
 account = {
@@ -1215,14 +1215,14 @@ convo ={
 		let data = JSON.parse(convo.get(id)), business="", sender="";
 		// $('message-title').html(`Application for ${data[0][6]}`);
         let realtime = setTimeout(function(){
-			$$('#messageBox').html('');
+			$$('#messageBox .messages').html('');
 			console.log('asda');
 			convo.display(id);
-		},5000);
+		},50000);
 		$.each(data,function(i,v){
 			sender = (v[4] == account.id())?'sent':'received';
             business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
-            $('#messageBox').prepend(`
+            // $('#messageBox .messages').prepend(`
             	<div class="message message-${sender}">
             		<div class="message-content">
 	                <div class="message-name">${v[1]}</div>
