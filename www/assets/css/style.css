@@ -781,7 +781,11 @@ button:disabled{
 #menu_account{
 	border-top: solid 1px #e0e0e0;
 }
-
+span.badge {
+    margin-left: 0 !important;
+    left: 50% !important;
+    top: 5px !important;
+}
 #profile .other-info{
 	padding: 0px 10px 10px 10px;
 	text-align:  left;
