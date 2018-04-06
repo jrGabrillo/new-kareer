@@ -6,7 +6,7 @@ let slides = [], count = 5, min = 0, max = count;
 
 account = {
 	ini:function(){
-		let data = this.get()[0], scroll = 0;   
+		let data = this.get()[0], scroll = 0, badge ="";   
 		this.display(data);
 		app.toolbar.hide('#menu_account');
 		app.tab.show('#tab_jobs');
@@ -38,6 +38,16 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
+		$.each(JSON.parse(notifications.get(account.id())),function(i,v){
+			if(v[6] == 1){
+				badge+=v[6];
+			}
+		});
+		console.log(badge.length);
+		$('span.badge.notif').html((badge.length > 0)?badge.length:'0');
+		$('span.badge.chat').html('0');
+
+
 	},
 	id:function(){
 		return localStorage.getItem('account_id');
@@ -1240,7 +1250,7 @@ notifications ={
 		return ajax.responseText;
 	},
 	display:function(data){
-		let	picture = "", notifName ="", notifValue = "", notifProp ="", status="",tag="",ps_notif="";
+		let	picture = "", notifName ="", notifValue = "", notifProp ="", status="",tag="",ps_notif="",badge ="";
 		$.each(data,function(i,v){
 			// console.log(v);
 			tag = (v[3] == 'application')?`updated your ${v[3]} status`:`set a ${v[3]}`
@@ -1326,14 +1336,26 @@ notifications ={
 		$(`#list_notifications img`).on('error',function(){
 			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
-        ps_notif = new PerfectScrollbar('#list_notifications');
-
+        ps_notif = new PerfectScrollbar('#list_notifications .content');
+        
+        $('#notification-info .back').on('click', function(){
+        	$.each(JSON.parse(notifications.get(account.id())),function(i,v){
+			if(v[6] == 1){
+				badge+=v[6];
+			}
+			});
+			console.log(badge.length);
+			$('span.badge.notif').html((badge.length > 0)?badge.length:'0');
+        });
 
 	},
-	action:function(id){ /*change application log status into read*/
+	action:function(id){ /*change application log status into read and update the number of notifications*/
 		var ajax = system.ajax(system.host('do-action'),[id,'notification']);
         ajax.done(function(ajax){
         	console.log((ajax == 1)?'read':'unread');
+        	$(`a[data-node='${id}']`).removeClass('bg-color-grey');
+        	$(`a[data-node='${id}']`).addClass('bg-color-white');
+        	// account.ini();
         });
 	}
 }
