@@ -101,8 +101,8 @@ var routes = [
         }
     },
     {
-        path: '/account-info/',
-        url: './pages/account-info.html',
+        path: '/account_info/',
+        url: './pages/account_info.html',
         on: {
             pageInit: function(e, page){
                 let data = account.get()[0];

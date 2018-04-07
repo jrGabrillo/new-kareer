@@ -43,11 +43,8 @@ account = {
 				badge+=v[6];
 			}
 		});
-		console.log(badge.length);
 		$('span.badge.notif').html((badge.length > 0)?badge.length:'0');
 		$('span.badge.chat').html('0');
-
-
 	},
 	id:function(){
 		return localStorage.getItem('account_id');
@@ -148,7 +145,6 @@ account = {
 				        $("._number").html(_form[7]);
 				        $("._bio").html(_form[9]);
 				        $("._email").html(_form[8]);
-				        $(`._gender`).html(_form[6]);
 	                    system.notification("Kareer",`Updated`);
 					}
 					else{
@@ -211,79 +207,100 @@ account = {
 				}
 			}
 		});
-
 	},
 	updatePicture: function(id) {
         window.Cropper;
         var user = id;
-        var picture = `${server}/assets/images/logo/icon.png`;
-        var content = `<div class='image-crop col s12'>
-                            <img width='100%' src='${picture}' id='change_picture'>
-                        </div>
-                        <div class='crop-options col'>
-                        	<p><label for='inputImage' class='button button-outline button-round tooltipped' data-tooltip='Load image' data-position='left'>
-                                <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
-                                Upload Picture
-                            </label></p>
-                        	<p class='hidden'><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
-                        	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
-                        	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
-                        </div>`;
-        $("#profile_picture2").html(content);
+		console.log("hello world");
 
-        var $inputImage = $("#inputImage");
-        var status = true;
-        if (window.FileReader) {
-            $inputImage.change(function(e) {
-                var fileReader = new FileReader(),
-                    files = this.files,
-                    file;
-                file = files[0];
+		let p = app.actions.create({
+			buttons: [
+				{
+					text: 'Choose picture',
+					onClick: function () {
+						app.dialog.alert('Button1 clicked')
+					}
+				},
+				{
+					text: 'Cancel',
+					onClick: function () {
+						// app.dialog.alert('Button2 clicked')
+						p.close();
+					}
+				},
+			]
+		});
+		p.open();
+		
 
-                if (/^image\/\w+$/.test(file.type)) {
-                    fileReader.readAsDataURL(file);
-                    fileReader.onload = function(e) {
-                        $inputImage.val("");
-                        $("a[data-cmd='save']").html("Save").removeClass('disabled');
-                        $('#change_picture').attr('src', e.target.result);
-                        var image = document.getElementById('change_picture');
-                        var cropper = new Cropper(image, {
-                            aspectRatio: 1 / 1,
-                            autoCropArea: 0.80,
-                            ready: function() {
-                                $("a[data-cmd='save']").removeClass('hidden');
-                                $("a[data-cmd='rotate']").removeClass('hidden');
+        // var picture = `${server}/assets/images/logo/icon.png`;
+        // var content = `<div class='image-crop col s12'>
+        //                     <img width='100%' src='${picture}' id='change_picture'>
+        //                 </div>
+        //                 <div class='crop-options col'>
+        //                 	<p><label for='inputImage' class='button button-outline button-round tooltipped' data-tooltip='Load image' data-position='left'>
+        //                         <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
+        //                         Upload Picture
+        //                     </label></p>
+        //                 	<p class='hidden'><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
+        //                 	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
+        //                 	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
+        //                 </div>`;
+        // $("#profile_picture2").html(content);
 
-                                $("a[data-cmd='save']").click(function() {
-                                    $(this).html("Uploading...").addClass('disabled');
-                                    if (status) {
-                                        var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
-                                        data.done(function(data) {
-                                        	console.log(data);
-                                            if (data == 1) {
-                                            	app.popup.close('.popup-picture',true);
-                                                account.ini();
-                                                system.notification("Kareer",`Picture Uploaded.`);
-                                            } 
-                                            else {
-                                            	system.notification("Kareer",`Failed to upload your picture. File too large.`);
-                                            }
-                                        });
-                                        status = false;
-                                    }
-                                });
-                            }
-                        });
-                    };
-                } 
-                else {
-                    showMessage("Please choose an image file.");
-                }
-            });
-        }
-        else {
-            $inputImage.addClass("hidden");
-        }
+        // var $inputImage = $("#inputImage");
+        // var status = true;
+        // if (window.FileReader) {
+        //     $inputImage.change(function(e) {
+        //         var fileReader = new FileReader(),
+        //             files = this.files,
+        //             file;
+        //         file = files[0];
+
+        //         if (/^image\/\w+$/.test(file.type)) {
+        //             fileReader.readAsDataURL(file);
+        //             fileReader.onload = function(e) {
+        //                 $inputImage.val("");
+        //                 $("a[data-cmd='save']").html("Save").removeClass('disabled');
+        //                 $('#change_picture').attr('src', e.target.result);
+        //                 var image = document.getElementById('change_picture');
+        //                 var cropper = new Cropper(image, {
+        //                     aspectRatio: 1 / 1,
+        //                     autoCropArea: 0.80,
+        //                     ready: function() {
+        //                         $("a[data-cmd='save']").removeClass('hidden');
+        //                         $("a[data-cmd='rotate']").removeClass('hidden');
+
+        //                         $("a[data-cmd='save']").click(function() {
+        //                             $(this).html("Uploading...").addClass('disabled');
+        //                             if (status) {
+        //                                 var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
+        //                                 data.done(function(data) {
+        //                                 	console.log(data);
+        //                                     if (data == 1) {
+        //                                     	app.popup.close('.popup-picture',true);
+        //                                         account.ini();
+        //                                         system.notification("Kareer",`Picture Uploaded.`);
+        //                                     } 
+        //                                     else {
+        //                                     	system.notification("Kareer",`Failed to upload your picture. File too large.`);
+        //                                     }
+        //                                 });
+        //                                 status = false;
+        //                             }
+        //                         });
+        //                     }
+        //                 });
+        //             };
+        //         } 
+        //         else {
+        //             showMessage("Please choose an image file.");
+        //         }
+        //     });
+        // }
+        // else {
+        //     $inputImage.addClass("hidden");
+        // }
     },
 	logout:function(){
 		localStorage.clear();
@@ -1168,6 +1185,7 @@ messages ={
 		});
 	}
 }
+
 convo ={
 	ini:function(){
 		let id = localStorage.getItem('convo');
@@ -1238,7 +1256,6 @@ convo ={
 	}
 }
 
-/*notifications, application in the tbl_logs with status of 1 = unread */
 notifications ={
 	ini:function(){
 		let id =  account.id();
@@ -1250,11 +1267,10 @@ notifications ={
 		return ajax.responseText;
 	},
 	display:function(data){
-		let	picture = "", notifName ="", notifValue = "", notifProp ="", status="",tag="",ps_notif="",badge ="";
+		let	picture="",notifName="",notifValue="",notifProp="",status="",tag="",ps_notif="",badge="";
 		$.each(data,function(i,v){
-			// console.log(v);
 			tag = (v[3] == 'application')?`updated your ${v[3]} status`:`set a ${v[3]}`
-			status = (v[6] == 1)?['unread','bg-color-gray']:['read','bg-color-white']; /*color indicator if read or unread*/
+			status = (v[6] == 1)?['unread','bg-color-gray']:['read','bg-color-white'];
 			picture  = ((typeof v[5] == 'object') || (v[5] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[5]}`;
 			$('#list_notifications ul').prepend(`
 				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-value="${v[1]}" data-prop = '${v[7]}' data-node="${v[0]}" data-name ="${status[0]}">
@@ -1268,8 +1284,8 @@ notifications ={
 						<small>${v[2]}</small>
 					</div>
 				</a>`);
+		});
 
-		})			
 		$(`a[data-cmd='job-info']`).on('click',function(){
 			notifNode = $(this).data('node');
 			notifValue = $(this).data('value');
@@ -1277,6 +1293,7 @@ notifications ={
 			notifications.action($(this).data('node')); /*read function*/
 			let notifInfo = JSON.parse(notification.get(notifNode,notifValue,notifProp))[0], logo = "",random = "", status ="";
 			logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
+			
 			notifAbout = app.popover.create({
 				targetEl: '.company',
 				content: `<div class="popover" id='display_job'>
@@ -1333,9 +1350,11 @@ notifications ={
 	            ps_business = new PerfectScrollbar('#display_business');
 			});
 		});
+
 		$(`#list_notifications img`).on('error',function(){
 			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 		});
+
         ps_notif = new PerfectScrollbar('#list_notifications .content');
         
         $('#notification-info .back').on('click', function(){
@@ -1347,26 +1366,22 @@ notifications ={
 			console.log(badge.length);
 			$('span.badge.notif').html((badge.length > 0)?badge.length:'0');
         });
-
 	},
-	action:function(id){ /*change application log status into read and update the number of notifications*/
+	action:function(id){
 		var ajax = system.ajax(system.host('do-action'),[id,'notification']);
         ajax.done(function(ajax){
-        	console.log((ajax == 1)?'read':'unread');
         	$(`a[data-node='${id}']`).removeClass('bg-color-grey');
         	$(`a[data-node='${id}']`).addClass('bg-color-white');
-        	// account.ini();
         });
 	}
 }
+
 notification ={
 	get:function(log,id,job){
 		var ajax = system.ajax(system.host('get-notificationInfo'),[log,id,job]);
 		return ajax.responseText;
 	}
-
 }
-/**/
 
 search = {
 	ini:function(){

@@ -1,17 +1,12 @@
 <div class="page no-swipeback account-subpage" id='settings-personal-info'>
 	<div class="navbar no-shadow">
 		<div class="navbar-inner sliding">
-			<div class="left">
-				<a class="link back"><i class='material-icons'>chevron_left</i></a>
-			</div>
+			<div class="left"><a class="link back"><i class='material-icons'>chevron_left</i></a></div>
+	        <div class="title">Personal Information</div>
+	        <div class="right"><a id='button_personalInfo' class="link"><i class='material-icons text-color-white'>done</i></a></div>
 		</div>
 	</div>	
     <div class="page-content">
-		<div class="title">Personal Information
-            <a id='button_personalInfo' class="col button button-small button-fill button-round in-field-btn btn-nav">
-            	<i class='material-icons text-color-white'>done</i>
-           	</a>
-		</div>
         <div class="content bg-color-white" id='display_personal_info'>
             <div class="row">
 	            <div class="list">
@@ -19,9 +14,9 @@
 	                    <li class="item-content item-input">
 	                        <div class="item-inner">
 	                        	<div class="" id="display_accountPicture">
-									<a class="col button button-small button-fill button-round in-field-btn popup-open" data-popup='.popup-picture' data-cmd='UpdatePic'><i class='f7-icons'>camera_fill</i></a>
 	                                <img src="" width='100%'>
 	                        	</div>
+								<a class="col button button-small button-fill button-round color-white text-color-black" onclick="account.updatePicture();">Update picture</a>
 	                        </div>
 	                    </li>
 	                </ul>
