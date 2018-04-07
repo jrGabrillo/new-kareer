@@ -91,6 +91,14 @@ var system = function() {
                 closeButton: true,
                 closeTimeout: 3000,
             });n.open();
+		},
+		loading:function(){
+			$("#app").append(`<div class="load-block inactive">
+					            <div class="inner">
+					                <div class="loading"></div>
+					                <img src='assets/img/bg/loading.png' width='100%'>
+					            </div>
+					        </div>`);
 		}
 	}
 }();

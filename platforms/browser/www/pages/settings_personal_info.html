@@ -1,31 +1,34 @@
 <div class="page no-swipeback account-subpage" id='settings-personal-info'>
 	<div class="navbar no-shadow">
 		<div class="navbar-inner sliding">
-			<div class="left">
-				<a class="link back"><i class='material-icons'>chevron_left</i></a>
-			</div>
+			<div class="left"><a class="link back"><i class='material-icons'>chevron_left</i></a></div>
+	        <div class="title">Personal Information</div>
+	        <div class="right"><a id='button_personalInfo' class="link"><i class='material-icons text-color-white'>done</i></a></div>
 		</div>
 	</div>	
     <div class="page-content">
-		<div class="title">Personal Information</div>
         <div class="content bg-color-white" id='display_personal_info'>
             <div class="row">
-		        <form>
+	            <div class="list">
+	                <ul>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                        	<div class="" id="display_accountPicture">
+	                                <img src="" width='100%'>
+	                        	</div>
+								<a class="col button button-small button-fill button-round color-white text-color-black" onclick="account.updatePicture();">Update picture</a>
+	                        </div>
+	                    </li>
+	                </ul>
+	            </div>
+		        <form id='form_personalInfo'>
 		            <div class="list">
 		                <ul>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                        	<div class="" id="display_accountPicture">
-										<a class="col button button-small button-fill button-round in-field-btn popup-open" data-popup='.popup-picture' data-cmd='UpdatePic'><i class='f7-icons'>camera_fill</i></a>
-		                                <img src="" width='100%'>
-		                        	</div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
 		                            <div class="item-title item-label">First Name</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_fname' name='field_fname' data-cmd='field' data-prop='field_fname'>
+		                                <input type="text" id='field_fname' name='field_fname' class='_gname'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -33,7 +36,7 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Middle Name</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_mname' name='field_mname' data-cmd='field' data-prop='field_mname'>
+		                                <input type="text" id='field_mname' name='field_mname' class='_mname'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -41,7 +44,7 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Last Name</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_lname' name='field_lname' data-cmd='field' data-prop='field_lname'>
+		                                <input type="text" id='field_lname' name='field_lname' class='_lname'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -49,7 +52,7 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Date of Birth</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_dob' name='field_dob' data-cmd='field' data-prop='field_dob'>
+		                                <input type="text" id='field_dob' name='field_dob' class='_dob'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -57,7 +60,19 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Address</div>
 		                            <div class="item-input-wrap">
-                                        <textarea class="resizable" id='field_address' name='field_address' data-cmd='field' data-prop='field_address'></textarea>
+                                        <textarea class="resizable _address" id='field_address' name='field_dob'></textarea>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Gender</div>
+		                            <div class="item-input-wrap">
+	                        	         <select id='field_gender' name='field_gender' class='_gender'>
+											<option value="">Not specified</option>
+											<option value="Male">Male</option>
+											<option value="Female">Female</option>
+										</select>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -65,7 +80,15 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Phone Number</div>
 		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_number' name='field_number' data-cmd='field' data-prop='field_number'>
+		                                <input type="text" id='field_number' name='field_number' class='_number'>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="item-content item-input">
+		                        <div class="item-inner">
+		                            <div class="item-title item-label">Email</div>
+		                            <div class="item-input-wrap">
+		                                <input type="text" id='field_email' name='field_email' class='_email'>
 		                            </div>
 		                        </div>
 		                    </li>
@@ -73,7 +96,7 @@
 		                        <div class="item-inner">
 		                            <div class="item-title item-label">Bio</div>
 		                            <div class="item-input-wrap">
-                                        <textarea class="resizable" id='field_bio' name='field_bio' data-cmd='field' data-prop='field_bio'></textarea>
+                                        <textarea class="resizable _bio" id='field_bio' name='field_bio'></textarea>
 		                            </div>
 		                        </div>
 		                    </li>

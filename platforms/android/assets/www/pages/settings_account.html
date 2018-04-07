@@ -1,35 +1,38 @@
 <div class="page no-swipeback account-subpage" id='settings-account-info'>
 	<div class="navbar no-shadow">
 		<div class="navbar-inner sliding">
-			<div class="left">
-				<a class="link back"><i class='material-icons'>chevron_left</i></a>
-			</div>
+			<div class="left"><a class="link back"><i class='material-icons'>chevron_left</i></a></div>
+	        <div class="title">Edit password</div>
+	        <div class="right"><a id='button_accountInfo' class="link"><i class='material-icons text-color-white'>done</i></a></div>
 		</div>
 	</div>	
     <div class="page-content" id="list_jobs">
-		<div class="title">Account</div>
         <div class="content bg-color-white">
 			<div class="list media-list">
-		        <form>
+		        <form id='form_password'>
 		            <div class="list">
 		                <ul>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                            <div class="item-title item-label">Email</div>
+		                            <div class="item-title item-floating-label">Old Password</div>
 		                            <div class="item-input-wrap">
-		                                <input type="email" id='field_email' name='field_email' data-cmd='field' data-prop='field_email'>
+		                                <input type="password" id='field_oldPassword' name='field_oldPassword' data-error=".error_field_oldPassword" placeholder="Old Password">
+		                                <a class="col button button-small button-fill button-round in-field-btn item-input-password-preview" data-show='field_oldPassword'>
+		                                	<i class='material-icons field_oldPassword'>visibility_off</i>
+		                               	</a>
+	                                    <div class="item-input-info error_field_oldPassword"></div>
 		                            </div>
 		                        </div>
 		                    </li>
 		                    <li class="item-content item-input">
 		                        <div class="item-inner">
-		                            <div class="item-title item-label">Password</div>
+		                            <div class="item-title item-floating-label">New Password</div>
 		                            <div class="item-input-wrap">
-		                                <input type="password" id='field_password' name='field_password' data-error=".error_field_email" data-cmd='field' data-prop='field_password' placeholder="Password">
-		                                <a class="col button button-small button-fill button-round in-field-btn item-input-password-preview" id='btn_addSkill'>
-		                                	<i class='material-icons'>visibility_off</i>
+		                                <input type="password" id='field_newPassword' name='field_newPassword' data-error=".error_field_newPassword" placeholder="New Password">
+		                                <a class="col button button-small button-fill button-round in-field-btn item-input-password-preview" data-show='field_newPassword'>
+		                                	<i class='material-icons field_newPassword'>visibility_off</i>
 		                               	</a>
-	                                    <div class="item-input-info error_field_password"></div>
+	                                    <div class="item-input-info error_field_newPassword"></div>
 		                            </div>
 		                        </div>
 		                    </li>

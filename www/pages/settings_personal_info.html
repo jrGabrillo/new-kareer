@@ -16,7 +16,7 @@
 	                        	<div class="" id="display_accountPicture">
 	                                <img src="" width='100%'>
 	                        	</div>
-								<a class="col button button-small button-fill button-round color-white text-color-black" onclick="account.updatePicture();">Update picture</a>
+								<a class="col button button-small button-fill button-round color-white text-color-black actions-open" data-actions=".action_picture">Update picture</a>
 	                        </div>
 	                    </li>
 	                </ul>
@@ -106,19 +106,14 @@
             </div>
         </div>
     </div>
-    <div class="popup popup-picture">
-        <div class='card'>
-        	<div class="card-header">
-        		Updating profile picture
-				<div class="right"><a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a></div>
-        	</div>
-            <div class='card-content card-content-padding align-self-stretch'>
-                <div class='row'>
-                    <div class='col s12'>
-                        <div id='profile_picture2' class='ibox-content no-padding border-left-right '></div>
-                    </div>
-                </div>
-            </div>
+	<div class="actions-modal action_picture">
+        <div class='crop-options col'>
+        	<p><label for='inputImage' class='button' data-tooltip='Load image' data-position='left'>
+                <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
+                Upload Picture
+            </label></p>
+        	<p class='hidden'><a class="button" data-cmd='take-a-photo'>Take a photo</a></p>
+        	<p><a class="button" data-cmd='cancel' data-position='right'>Cancel</a></p>
         </div>
-    </div>
+	</div>
 </div>

@@ -15,6 +15,9 @@
     },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "rnr.Kareer.com"
+    },
+    "cordova-plugin-image-picker": {
+      "PACKAGE_NAME": "rnr.kareer.com"
     }
   },
   "dependent_plugins": {

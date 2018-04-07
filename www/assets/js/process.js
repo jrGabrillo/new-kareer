@@ -210,97 +210,74 @@ account = {
 	},
 	updatePicture: function(id) {
         window.Cropper;
-        var user = id;
-		console.log("hello world");
+        var user = id, popover_picture = "";
 
-		let p = app.actions.create({
-			buttons: [
-				{
-					text: 'Choose picture',
-					onClick: function () {
-						app.dialog.alert('Button1 clicked')
-					}
-				},
-				{
-					text: 'Cancel',
-					onClick: function () {
-						// app.dialog.alert('Button2 clicked')
-						p.close();
-					}
-				},
-			]
+        var $inputImage = $("#inputImage");
+        var status = true;
+        if (window.FileReader) {
+            $inputImage.change(function(e) {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+                file = files[0];
+
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function(e) {
+                        $inputImage.val("");
+                        account.processPicture(e.target.result);
+                    };
+                } 
+                else {
+                    showMessage("Please choose an image file.");
+                }
+            });
+        }
+        else {
+            $inputImage.addClass("hidden");
+        }
+    },
+    processPicture:function(data){
+    	console.log(data);
+		popover_picture = app.popover.create({
+			targetEl: '.company',
+			content: `<div class="popover" id='display_job'>
+						<div class='panel-company'>
+							Hello world
+
+						</div>
+					</div>`,
 		});
-		p.open();
-		
+		popover_picture.open();
 
-        // var picture = `${server}/assets/images/logo/icon.png`;
-        // var content = `<div class='image-crop col s12'>
-        //                     <img width='100%' src='${picture}' id='change_picture'>
-        //                 </div>
-        //                 <div class='crop-options col'>
-        //                 	<p><label for='inputImage' class='button button-outline button-round tooltipped' data-tooltip='Load image' data-position='left'>
-        //                         <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
-        //                         Upload Picture
-        //                     </label></p>
-        //                 	<p class='hidden'><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
-        //                 	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
-        //                 	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
-        //                 </div>`;
-        // $("#profile_picture2").html(content);
-
-        // var $inputImage = $("#inputImage");
-        // var status = true;
-        // if (window.FileReader) {
-        //     $inputImage.change(function(e) {
-        //         var fileReader = new FileReader(),
-        //             files = this.files,
-        //             file;
-        //         file = files[0];
-
-        //         if (/^image\/\w+$/.test(file.type)) {
-        //             fileReader.readAsDataURL(file);
-        //             fileReader.onload = function(e) {
-        //                 $inputImage.val("");
-        //                 $("a[data-cmd='save']").html("Save").removeClass('disabled');
-        //                 $('#change_picture').attr('src', e.target.result);
-        //                 var image = document.getElementById('change_picture');
-        //                 var cropper = new Cropper(image, {
-        //                     aspectRatio: 1 / 1,
-        //                     autoCropArea: 0.80,
-        //                     ready: function() {
-        //                         $("a[data-cmd='save']").removeClass('hidden');
-        //                         $("a[data-cmd='rotate']").removeClass('hidden');
-
-        //                         $("a[data-cmd='save']").click(function() {
-        //                             $(this).html("Uploading...").addClass('disabled');
-        //                             if (status) {
-        //                                 var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
-        //                                 data.done(function(data) {
-        //                                 	console.log(data);
-        //                                     if (data == 1) {
-        //                                     	app.popup.close('.popup-picture',true);
-        //                                         account.ini();
-        //                                         system.notification("Kareer",`Picture Uploaded.`);
-        //                                     } 
-        //                                     else {
-        //                                     	system.notification("Kareer",`Failed to upload your picture. File too large.`);
-        //                                     }
-        //                                 });
-        //                                 status = false;
-        //                             }
-        //                         });
-        //                     }
-        //                 });
-        //             };
-        //         } 
-        //         else {
-        //             showMessage("Please choose an image file.");
-        //         }
-        //     });
-        // }
-        // else {
-        //     $inputImage.addClass("hidden");
-        // }
+        $('#display_picture img').attr('src', data);
+        var image = document.getElementById('display_picture img');
+        var cropper = new Cropper(image, {
+            aspectRatio: 1 / 1,
+            autoCropArea: 0.80,
+            ready: function(){
+                // $("a[data-cmd='save']").removeClass('hidden');
+                // $("a[data-cmd='rotate']").removeClass('hidden');
+                // $("a[data-cmd='save']").click(function() {
+                //     $(this).html("Uploading...").addClass('disabled');
+                //     if (status) {
+                //         var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
+                //         data.done(function(data) {
+                //         	console.log(data);
+                //             if (data == 1) {
+                //             	app.popup.close('.popup-picture',true);
+                //                 account.ini();
+                //                 system.notification("Kareer",`Picture Uploaded.`);
+                //             }
+                //             else {
+                //             	system.notification("Kareer",`Failed to upload your picture. File too large.`);
+                //             }
+                //         });
+                //         status = false;
+                //     }
+                // });
+            }
+        });
     },
 	logout:function(){
 		localStorage.clear();
@@ -1040,7 +1017,7 @@ job = {
 	}
 }
 
-bookmark ={
+bookmark = {
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
@@ -1143,7 +1120,7 @@ bookmark ={
 	}
 }
 
-messages ={
+messages = {
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
@@ -1186,7 +1163,7 @@ messages ={
 	}
 }
 
-convo ={
+convo = {
 	ini:function(){
 		let id = localStorage.getItem('convo');
 		this.display(id);
@@ -1256,7 +1233,7 @@ convo ={
 	}
 }
 
-notifications ={
+notifications = {
 	ini:function(){
 		let id =  account.id();
 		let data = this.get(id);
@@ -1376,7 +1353,7 @@ notifications ={
 	}
 }
 
-notification ={
+notification = {
 	get:function(log,id,job){
 		var ajax = system.ajax(system.host('get-notificationInfo'),[log,id,job]);
 		return ajax.responseText;

@@ -8,6 +8,7 @@ var app = new Framework7({
 var view = app.views.create('.view-main');
 
 setTimeout(function () {
-	view.router.navigate('/home/');
+	view.router.navigate('/business/');
+	// view.router.navigate('/home/');
 	app.preloader.hide();
 }, 1000);	

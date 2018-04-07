@@ -4,6 +4,7 @@ var routes = [
         url: './pages/home.html',
         on: {
             pageInit: function(e,page){
+                localStorage.setItem('load','true');
                 setTimeout(function(){
                     let callback = localStorage.getItem('callback'), account = localStorage.getItem('account');
                     if(account != null){
@@ -74,10 +75,10 @@ var routes = [
                         }
 
                         $("#form_signupAuth form").attr({style:'display:block;'});
-                        // setTimeout(function(){
-                        //     form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
-                        //     signup.auth(form);
-                        // },500);
+                        setTimeout(function(){
+                            form = [profile.first_name, profile.last_name, profile.email, "", auth, profile.id, profile.picture];
+                            signup.auth(form);
+                        },500);
                     },500);
                 }
             }
@@ -88,16 +89,20 @@ var routes = [
         url: './pages/account.html',
         on: {
             pageInit: function(e, page){
+                if(localStorage.getItem('load')){
+                    system.loading();
+                }
                 setTimeout(function(){
                     account.ini();
+                    jobs.ini();
                     new PerfectScrollbar('#tab_account .other-info');
                 },500);
             }
         }
     },
     {
-        path: '/account-info/',
-        url: './pages/account-info.html',
+        path: '/account_info/',
+        url: './pages/account_info.html',
         on: {
             pageInit: function(e, page){
                 let data = account.get()[0];
@@ -184,7 +189,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                  notifications.ini();
-                 let ps = new PerfectScrollbar('#list_notifications');
+                 // let ps = new PerfectScrollbar('#list_notifications');
           }
         }
     },
@@ -194,7 +199,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 notification.ini();
-                let ps = new PerfectScrollbar('#list_notification');
+                let ps = new PerfectScrollbar('#display_job');
             }
         }
     },
@@ -232,7 +237,8 @@ var routes = [
         url: './pages/message.html',
         on: {
             pageInit: function(e, page){
-                console.log('convo');
+                convo.ini();
+                // console.log('convo');
                 let ps = new PerfectScrollbar('.messages-content');
             }
         }
@@ -242,7 +248,6 @@ var routes = [
         url: './pages/business.html',
         on: {
             pageInit: function(e, page){
-                business.ini();
                 let ps_business = new PerfectScrollbar('#display_business');
             }
         }
@@ -252,8 +257,15 @@ var routes = [
         url: './pages/job.html',
         on: {
             pageInit: function(e, page){
-                job.ini();
-                let ps_business = new PerfectScrollbar('#display_job');
+            }
+        }
+    },
+    {
+        path: '/logout/',
+        url: './pages/logout.html',
+        on: {
+            pageInit: function(e, page){
+                this.logout();
             }
         }
     },
