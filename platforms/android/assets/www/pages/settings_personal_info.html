@@ -1,7 +1,7 @@
 <div class="page no-swipeback account-subpage" id='settings-personal-info'>
 	<div class="navbar no-shadow">
 		<div class="navbar-inner sliding">
-			<div class="left"><a class="link back"><i class='material-icons'>chevron_left</i></a></div>
+			<div class="left"><a class="link back"><i class='material-icons'>close</i></a></div>
 	        <div class="title">Personal Information</div>
 	        <div class="right"><a id='button_personalInfo' class="link"><i class='material-icons text-color-white'>done</i></a></div>
 		</div>
@@ -16,7 +16,7 @@
 	                        	<div class="" id="display_accountPicture">
 	                                <img src="" width='100%'>
 	                        	</div>
-								<a class="col button button-small button-fill button-round color-white text-color-black" onclick="account.updatePicture();">Update picture</a>
+								<a class="col button button-small button-fill button-round color-white text-color-black actions-open" data-actions=".action_picture">Update picture</a>
 	                        </div>
 	                    </li>
 	                </ul>
@@ -106,19 +106,14 @@
             </div>
         </div>
     </div>
-    <div class="popup popup-picture">
-        <div class='card'>
-        	<div class="card-header">
-        		Updating profile picture
-				<div class="right"><a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a></div>
-        	</div>
-            <div class='card-content card-content-padding align-self-stretch'>
-                <div class='row'>
-                    <div class='col s12'>
-                        <div id='profile_picture2' class='ibox-content no-padding border-left-right '></div>
-                    </div>
-                </div>
-            </div>
+	<div class="actions-modal actions-grid action_picture">
+        <div class='crop-options col'>
+        	<label for='inputImage' class='button button-big' data-tooltip='Load image' data-position='left'>
+                <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
+                Upload Picture
+            </label>
+        	<a class="button button-big hidden" data-cmd='take-a-photo'>Take a photo</a>
+        	<a class="button button-big" data-cmd='cancel' data-position='right'>Cancel</a>
         </div>
-    </div>
+	</div>
 </div>

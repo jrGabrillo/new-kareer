@@ -57,7 +57,7 @@ account = {
 	},
 	settingsDisplay:function(){
 		let data = this.get()[0], ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
 
 		$('#display_accountPicture img').attr({'src':`${picture}`});
         $("._gname").val(data[8]);
@@ -89,10 +89,10 @@ account = {
 	},
 	display:function(data){
 		skills.frontdisplay();
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
+		let tempPicture = `${server}/assets/images/logo/icon.png`, 
+		picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
 		let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
 		let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
-
 		$('#profile img').attr({'src':picture});
 		$('#profile h3.fullname').html(name);
 		$('#profile p.about').html(about);
@@ -210,99 +210,90 @@ account = {
 	},
 	updatePicture: function(id) {
         window.Cropper;
-        var user = id;
-		console.log("hello world");
+        var user = id, popover_picture = "";
+        var $inputImage = $("#inputImage");
+        var status = true;
+        if (window.FileReader) {
+            $inputImage.change(function(e) {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+                file = files[0];
 
-		let p = app.actions.create({
-			buttons: [
-				{
-					text: 'Choose picture',
-					onClick: function () {
-						fileChooser.open(function(uri) {
-							alert(uri);
-						});
-					}
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function(e) {
+                        $inputImage.val("");
+                        app.actions.close();
+						app.preloader.show();
+                        account.processPicture(e.target.result);
+                    };
+                } 
+                else {
+                    showMessage("Please choose an image file.");
+                }
+            });
+        }
+        else {
+            $inputImage.addClass("hidden");
+        }
+    },
+    processPicture:function(image){
+		popover_picture = app.popover.create({
+			content: `<div class="popover bg-gradient" id='display_updatePicture'>
+		                <div class="navbar no-shadow bg-gradient">
+		                    <div class="navbar-inner sliding">
+		                        <div class="left"><a class="link close"><i class='material-icons'>close</i></a></div>
+		                        <div class="title">Update picture</div>
+		                        <div class="right"><a id='button_updatePicture' class="link"><i class='material-icons text-color-white'>done</i></a></div>
+		                    </div>
+		                </div>
+		                <div class='canvas'><img src='${image}' width="100%"></div>
+					</div>`,
+			on: {
+				opened: function (popover) {
+					app.preloader.hide();
+			        let el_image = $('#display_updatePicture .canvas img')[0];
+			        let cropper = new Cropper(el_image, {
+	                    aspectRatio: 1 / 1,
+	                    autoCropArea: 0.80,
+	                    viewMode:2,
+	                    minCropBoxWidth:100,
+	                    minCropBoxHeight:100,
+			            ready: function(){
+			                $("#button_updatePicture").on('click',function() {
+			                	image = cropper.getCroppedCanvas().toDataURL('image/png');
+								app.preloader.show();
+								setTimeout(function(){
+			                        let data = system.ajax(system.host('do-updateImage'),[account.id(), 'picture', image]);
+			                        data.done(function(data) {
+			                            if (data == 1) {
+			                            	$("#display_accountPicture img, #profile img").attr({'src':image});
+											setTimeout(function(){
+												app.preloader.hide();
+												popover_picture.close();
+												cropper.destroy();
+				                                system.notification("Kareer",`Picture Uploaded.`);
+											},2000);
+			                            }
+			                            else {
+											app.preloader.hide();
+			                            	system.notification("Kareer",`Failed to upload your picture. File too large.`);
+			                            }
+			                        });
+								},500);
+			                });
+			            }
+			        });
+
+					$(".close").on('click',function(){
+						popover_picture.close();
+						cropper.destroy();
+					})
 				},
-				{
-					text: 'Cancel',
-					onClick: function () {
-						// app.dialog.alert('Button2 clicked')
-						p.close();
-					}
-				},
-			]
+			}
 		});
-		p.open();
-		
-
-        // var picture = `${server}/assets/images/logo/icon.png`;
-        // var content = `<div class='image-crop col s12'>
-        //                     <img width='100%' src='${picture}' id='change_picture'>
-        //                 </div>
-        //                 <div class='crop-options col'>
-        //                 	<p><label for='inputImage' class='button button-outline button-round tooltipped' data-tooltip='Load image' data-position='left'>
-        //                         <input type='file' accept='image/*' name='file' id='inputImage' class='hidden'>
-        //                         Upload Picture
-        //                     </label></p>
-        //                 	<p class='hidden'><a class="button button-outline button-round" data-cmd='take-a-photo'>Take a photo</a></p>
-        //                 	<p><a class="button button-outline button-round" data-cmd='save'>Save</a></p>
-        //                 	<p><a class="button button-outline button-round" data-cmd='cancel' data-position='right'>Cancel</a></p>
-        //                 </div>`;
-        // $("#profile_picture2").html(content);
-
-        // var $inputImage = $("#inputImage");
-        // var status = true;
-        // if (window.FileReader) {
-        //     $inputImage.change(function(e) {
-        //         var fileReader = new FileReader(),
-        //             files = this.files,
-        //             file;
-        //         file = files[0];
-
-        //         if (/^image\/\w+$/.test(file.type)) {
-        //             fileReader.readAsDataURL(file);
-        //             fileReader.onload = function(e) {
-        //                 $inputImage.val("");
-        //                 $("a[data-cmd='save']").html("Save").removeClass('disabled');
-        //                 $('#change_picture').attr('src', e.target.result);
-        //                 var image = document.getElementById('change_picture');
-        //                 var cropper = new Cropper(image, {
-        //                     aspectRatio: 1 / 1,
-        //                     autoCropArea: 0.80,
-        //                     ready: function() {
-        //                         $("a[data-cmd='save']").removeClass('hidden');
-        //                         $("a[data-cmd='rotate']").removeClass('hidden');
-
-        //                         $("a[data-cmd='save']").click(function() {
-        //                             $(this).html("Uploading...").addClass('disabled');
-        //                             if (status) {
-        //                                 var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
-        //                                 data.done(function(data) {
-        //                                 	console.log(data);
-        //                                     if (data == 1) {
-        //                                     	app.popup.close('.popup-picture',true);
-        //                                         account.ini();
-        //                                         system.notification("Kareer",`Picture Uploaded.`);
-        //                                     } 
-        //                                     else {
-        //                                     	system.notification("Kareer",`Failed to upload your picture. File too large.`);
-        //                                     }
-        //                                 });
-        //                                 status = false;
-        //                             }
-        //                         });
-        //                     }
-        //                 });
-        //             };
-        //         } 
-        //         else {
-        //             showMessage("Please choose an image file.");
-        //         }
-        //     });
-        // }
-        // else {
-        //     $inputImage.addClass("hidden");
-        // }
+		popover_picture.open();
     },
 	logout:function(){
 		localStorage.clear();
@@ -892,9 +883,9 @@ jobs = {
 			logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
 			companyAbout = app.popover.create({
 				targetEl: '.company',
-				content: `<div class="popover" id='display_company'>
+				content: `<div class="popover" id='display_business'>
 							<div class='panel-company'>
-						        <div id='display_business' style='height:${h}px !important;'>
+						        <div style='height:${h}px !important;'>
 						            <div class="row business-info">
 						                <div class="company-background">
 			                    			<a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
@@ -1042,7 +1033,7 @@ job = {
 	}
 }
 
-bookmark ={
+bookmark = {
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
@@ -1145,7 +1136,7 @@ bookmark ={
 	}
 }
 
-messages ={
+messages = {
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
@@ -1188,7 +1179,7 @@ messages ={
 	}
 }
 
-convo ={
+convo = {
 	ini:function(){
 		let id = localStorage.getItem('convo');
 		this.display(id);
@@ -1258,7 +1249,7 @@ convo ={
 	}
 }
 
-notifications ={
+notifications = {
 	ini:function(){
 		let id =  account.id();
 		let data = this.get(id);
@@ -1378,7 +1369,7 @@ notifications ={
 	}
 }
 
-notification ={
+notification = {
 	get:function(log,id,job){
 		var ajax = system.ajax(system.host('get-notificationInfo'),[log,id,job]);
 		return ajax.responseText;

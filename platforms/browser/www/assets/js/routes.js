@@ -146,6 +146,14 @@ var routes = [
         }
     },
     {
+        path: '/upload_picture/',
+        url: './pages/settings_upload_picture.html',
+        on: {
+            pageInit: function(e, page){
+            }
+        }
+    },
+    {
         path: '/settings_account/',
         url: './pages/settings_account.html',
         on: {
@@ -248,7 +256,6 @@ var routes = [
         url: './pages/business.html',
         on: {
             pageInit: function(e, page){
-                let ps_business = new PerfectScrollbar('#display_business');
             }
         }
     },

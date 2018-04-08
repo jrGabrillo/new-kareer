@@ -263,24 +263,25 @@ account = {
 			            ready: function(){
 			                $("#button_updatePicture").on('click',function() {
 			                	image = cropper.getCroppedCanvas().toDataURL('image/png');
-                            	$("#display_accountPicture img, #profile img").attr({'src':image});
 								app.preloader.show();
-		                        let data = system.ajax(system.host('do-updateImage'),[account.id(), 'picture', image]);
-		                        data.done(function(data) {
-		                        	console.log(data);
-		                            if (data == 1) {
-										setTimeout(function(){
+								setTimeout(function(){
+			                        let data = system.ajax(system.host('do-updateImage'),[account.id(), 'picture', image]);
+			                        data.done(function(data) {
+			                            if (data == 1) {
+			                            	$("#display_accountPicture img, #profile img").attr({'src':image});
+											setTimeout(function(){
+												app.preloader.hide();
+												popover_picture.close();
+												cropper.destroy();
+				                                system.notification("Kareer",`Picture Uploaded.`);
+											},2000);
+			                            }
+			                            else {
 											app.preloader.hide();
-											popover_picture.close();
-											cropper.destroy();
-			                                system.notification("Kareer",`Picture Uploaded.`);
-										},2000);
-		                            }
-		                            else {
-										app.preloader.hide();
-		                            	system.notification("Kareer",`Failed to upload your picture. File too large.`);
-		                            }
-		                        });
+			                            	system.notification("Kareer",`Failed to upload your picture. File too large.`);
+			                            }
+			                        });
+								},500);
 			                });
 			            }
 			        });
