@@ -256,35 +256,36 @@ var routes = [
         url: './pages/business.html',
         on: {
             pageInit: function(e, page){
-
-        var image = $("#display_picture1 img")[0]; // document.getElementById('display_picture1');
-        var cropper = new Cropper(image, {
-            aspectRatio: 1 / 1,
-            autoCropArea: 0.80,
-            viewMode:2,
-            ready: function(){
-                // $("a[data-cmd='save']").removeClass('hidden');
-                // $("a[data-cmd='rotate']").removeClass('hidden');
-                // $("a[data-cmd='save']").click(function() {
-                //     $(this).html("Uploading...").addClass('disabled');
-                //     if (status) {
-                //         var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
-                //         data.done(function(data) {
-                //          console.log(data);
-                //             if (data == 1) {
-                //              app.popup.close('.popup-picture',true);
-                //                 account.ini();
-                //                 system.notification("Kareer",`Picture Uploaded.`);
-                //             }
-                //             else {
-                //              system.notification("Kareer",`Failed to upload your picture. File too large.`);
-                //             }
-                //         });
-                //         status = false;
-                //     }
-                // });
-            }
-        });
+                var image = $("#display_picture1 img")[0]; // document.getElementById('display_picture1');
+                var cropper = new Cropper(image, {
+                    aspectRatio: 1 / 1,
+                    autoCropArea: 0.80,
+                    viewMode:2,
+                    minCropBoxWidth:100,
+                    minCropBoxHeight:100,
+                    ready: function(){
+                        // $("a[data-cmd='save']").removeClass('hidden');
+                        // $("a[data-cmd='rotate']").removeClass('hidden');
+                        // $("a[data-cmd='save']").click(function() {
+                        //     $(this).html("Uploading...").addClass('disabled');
+                        //     if (status) {
+                        //         var data = system.ajax(system.host('do-updateImage'),[user, 'picture', cropper.getCroppedCanvas().toDataURL('image/png')]);
+                        //         data.done(function(data) {
+                        //          console.log(data);
+                        //             if (data == 1) {
+                        //              app.popup.close('.popup-picture',true);
+                        //                 account.ini();
+                        //                 system.notification("Kareer",`Picture Uploaded.`);
+                        //             }
+                        //             else {
+                        //              system.notification("Kareer",`Failed to upload your picture. File too large.`);
+                        //             }
+                        //         });
+                        //         status = false;
+                        //     }
+                        // });
+                    }
+                });
             }
         }
     },
