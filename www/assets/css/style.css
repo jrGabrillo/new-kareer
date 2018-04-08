@@ -342,7 +342,7 @@ margin: 0px;
 .tabbar{
 	 background: unset !important; 
 }
-#tab_account, #tab_jobs, #tab_search, .account-subpage, .load-block{
+#tab_account, #tab_jobs, #tab_search, .account-subpage, .load-block, .bg-gradient{
 	height:  100%;
 	z-index: 10000;
 	background: #348F50;
@@ -670,7 +670,7 @@ margin: 0px;
 	margin: 0px;
 }
 #display_info .item-link{
-	margin: 10px 0 !important;
+	/* margin: 10px 0 !important; */
 }
 #display_info .item-inner:after{
 	background: transparent;
@@ -906,21 +906,23 @@ span.badge {
 	text-shadow: 0px 0px 0px #6abc9c;
 }
 a.close{
-	top: 10px;
+	/* top: 10px; */
 	z-index: 1001;
 	position:  relative;
 	height: 28px !important;
-	opacity: 0.5;
+	/* opacity: 0.5; */
 }
 
 #display_job .job-description .content ul{
 	list-style: unset !important;
 }
-#display_business, #display_job{
+#display_business, #display_job, #display_updatePicture{
 	padding: 0px;
 	width: 100%;
+	height:  100%;
 	left: 0px !important;
 	top: 0px !important;
+	z-index: 10001;
 }
 #display_business .business-info img, #display_job .business-info img{
 	width: 80px;
@@ -1048,14 +1050,14 @@ a.close{
 	width: 100%;
 }
 
-#display_company{
+/*#display_company{
 	width: 100%;
 	height:  100%;
 	left: 0% !important;
 	top: 0% !important;
 	border-radius:  0px;
 	position:  absolute;
-}
+}*/
 
 .business-info img{
 	width: 100px !important;
@@ -1132,4 +1134,10 @@ a.close{
 	left: 10px;
 	z-index: 1000;
 	/* opacity:  0.1; */
+}
+
+#display_updatePicture .canvas{
+	width:100%;
+	height: 100%;
+	background:#000;
 }
