@@ -296,8 +296,15 @@ account = {
 		popover_picture.open();
     },
 	logout:function(){
-		localStorage.clear();
-		view.router.navigate('/home/');
+		$("a[data-cmd='logout']").on('click',function(){
+			app.preloader.show();
+			setTimeout(function(){
+				localStorage.clear();
+				app.preloader.hide();
+				view.router.navigate('/home/');
+			},500);
+				system.notification("Kareer",`Sign out.`);
+		});
 	}
 }
 
@@ -847,7 +854,7 @@ jobs = {
 			                <div class="navbar no-shadow bg-gradient">
 			                    <div class="navbar-inner">
 			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
-			                        <div class="title">About the Company</div>
+			                        <div class="title">About the Job Post</div>
 			                    </div>
 			                </div>
 							<div class='panel-company'>
@@ -1084,14 +1091,19 @@ bookmark = {
 			jobAbout = app.popover.create({
 				targetEl: '.company',
 				content: `<div class="popover" id='display_job'>
+			                <div class="navbar no-shadow bg-gradient">
+			                    <div class="navbar-inner">
+			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+			                        <div class="title">About the Job Post</div>
+			                    </div>
+			                </div>
 							<div class='panel-company'>
 						        <div style='height:${h}px !important;'>
 						            <div class="row business-info">
 						                <div class="company-background">
-						                    <a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
 						                    <img src="${logo}" width='100%'>                    
 						                </div>
-						                <div class="company popover-close" data-business = '${jobData[10]}'>
+						                <div class="company" data-business='${jobData[10]}'>
 						                    <h3 class="">${jobData[7]}</h3>
 						                </div>
 						            </div>
@@ -1117,17 +1129,23 @@ bookmark = {
             ps_notif = new PerfectScrollbar('#display_job');
             
             $(".company").on('click',function(){
+            	jobAbout.close();
 				business_data = $(this).data('business');
 				business_data = JSON.parse(business.get(business_data))[0];
 				logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
 				companyAbout = app.popover.create({
 					targetEl: '.company',
-					content: `<div class="popover" id='display_company'>
+					content: `<div class="popover" id='display_business'>
+				                <div class="navbar no-shadow bg-gradient">
+				                    <div class="navbar-inner">
+				                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+				                        <div class="title">About the Company</div>
+				                    </div>
+				                </div>
 								<div class='panel-company'>
-							        <div id='display_business' style='height:${h}px !important;'>
+							        <div style='height:${h}px !important;'>
 							            <div class="row business-info">
 							                <div class="company-background">
-				                    			<a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
 							                    <img src="${logo}" width='100%'>                    
 							                </div>
 							                <div class="company">
@@ -1300,20 +1318,24 @@ notifications = {
 			notifications.action($(this).data('node')); /*read function*/
 			let notifInfo = JSON.parse(notification.get(notifNode,notifValue,notifProp))[0], logo = "",random = "", status ="";
 			logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
-			
 			notifAbout = app.popover.create({
 				targetEl: '.company',
-				content: `<div class="popover" id='display_job'>
+				content:`<div class="popover" id='display_job'>
+			                <div class="navbar no-shadow bg-gradient">
+			                    <div class="navbar-inner">
+			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+			                        <div class="title">Notification Details</div>
+			                    </div>
+			                </div>
 							<div class='panel-company'>
 						        <div style='height:${h}px !important;'>
 						            <div class="row business-info">
 						                <div class="company-background">
-						                    <a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
 						                    <img src="${logo}" width='100%'>                    
 						                </div>
-						                <div class="company popover-close" data-business='${notifInfo[7]}'>
+						                <div class="company" data-business='${notifInfo[7]}'>
 						                    <h2 class="">${notifInfo[3]}</h2>
-						                    <h4 class="">${notifInfo[5]}</h4>
+						                    <h3 class="">${notifInfo[5]}</h3>
 						                </div>
 						            </div>
 						            <div class="row job-title">
@@ -1327,17 +1349,23 @@ notifications = {
             ps_job = new PerfectScrollbar('#display_job');
 
             $(".company").on('click',function(){
+            	notifAbout.close();
 				business_data = $(this).data('business');
 				business_data = JSON.parse(business.get(business_data))[0];
 				logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
 				companyAbout = app.popover.create({
 					targetEl: '.company',
-					content: `<div class="popover" id='display_company'>
+					content: `<div class="popover" id='display_business'>
+				                <div class="navbar no-shadow bg-gradient">
+				                    <div class="navbar-inner">
+				                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+				                        <div class="title">About the Company</div>
+				                    </div>
+				                </div>
 								<div class='panel-company'>
-							        <div id='display_business' style='height:${h}px !important;'>
+							        <div style='height:${h}px !important;'>
 							            <div class="row business-info">
 							                <div class="company-background">
-				                    			<a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
 							                    <img src="${logo}" width='100%'>                    
 							                </div>
 							                <div class="company">
