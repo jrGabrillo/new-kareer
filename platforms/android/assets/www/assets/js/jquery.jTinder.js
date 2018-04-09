@@ -7,7 +7,7 @@
  * Licensed under GPL Version 2.
  * https://github.com/do-web/jTinder/blob/master/LICENSE
  */
-;(function ($, window, document, undefined) {
+(function ($, window, document, undefined) {
 	var pluginName = "jTinder",
 		defaults = {
 			onDislike: null,
@@ -15,8 +15,8 @@
 			animationRevertSpeed: 200,
 			animationSpeed: 400,
 			threshold: 1,
-			likeSelector: '.like',
-			dislikeSelector: '.dislike'
+			likeSelector: '.yes',
+			dislikeSelector: '.no'
 		};
 	var container = null;
 	var panes = null;
@@ -64,18 +64,24 @@
 			return this.showPane(current_pane - 1);
 		},
 		dislike: function() {
+			$('.yes').css('opacity',0);
+			$('.no').css('opacity',1);
 			panes.eq(current_pane).animate({"transform": "translate(-" + (pane_width) + "px," + (pane_width*-1.5) + "px) rotate(-60deg)"}, $that.settings.animationSpeed, function () {
 				if($that.settings.onDislike) {
 					$that.settings.onDislike(panes.eq(current_pane));
 				}
+				$('.yes, .no').css('opacity',0);
 				$that.next();
 			});
 		},
 		like: function() {
+			$('.yes').css('opacity',1);
+			$('.no').css('opacity',0);
 			panes.eq(current_pane).animate({"transform": "translate(" + (pane_width) + "px," + (pane_width*-1.5) + "px) rotate(60deg)"}, $that.settings.animationSpeed, function () {
 				if($that.settings.onLike) {
 					$that.settings.onLike(panes.eq(current_pane));
 				}
+				$('.yes, .no').css('opacity',0);
 				$that.next();
 			});
 		},
@@ -104,20 +110,19 @@
 						var percent = ((100 / pane_width) * deltaX) / pane_count;
 						posX = deltaX + lastPosX;
 						posY = deltaY + lastPosY;
-
 						panes.eq(current_pane).css("transform", "translate(" + posX + "px," + posY + "px) rotate(" + (percent / 2) + "deg)");
 
 						var opa = (Math.abs(deltaX) / $that.settings.threshold) / 100 + 0.2;
 						if(opa > 1.0) {
 							opa = 1.0;
 						}
-						if (posX >= 0) {
-							panes.eq(current_pane).find($that.settings.likeSelector).css('opacity', opa);
-							panes.eq(current_pane).find($that.settings.dislikeSelector).css('opacity', 0);
-						} else if (posX < 0) {
-
-							panes.eq(current_pane).find($that.settings.dislikeSelector).css('opacity', opa);
-							panes.eq(current_pane).find($that.settings.likeSelector).css('opacity', 0);
+						if (posX > 10) {
+							$('.yes').css('opacity',opa);
+							$('.no').css('opacity',0);
+						} 
+						else if (posX < -10) {
+							$('.no').css('opacity',opa);
+							$('.yes').css('opacity',0);
 						}
 					}
 					break;
@@ -149,13 +154,15 @@
 								$that.next();
 							});
 						}
-					} else {
+					}
+					else {
 						lastPosX = 0;
 						lastPosY = 0;
 						panes.eq(current_pane).animate({"transform": "translate(0px,0px) rotate(0deg)"}, $that.settings.animationRevertSpeed);
 						panes.eq(current_pane).find($that.settings.likeSelector).animate({"opacity": 0}, $that.settings.animationRevertSpeed);
-						panes.eq(current_pane).find($that.settings.dislikeSelector).animate({"opacity": 0}, $that.settings.animationRevertSpeed);
+						panes.eq(current_pane).find($that.settings.dislikeSelector).animate({"opacity": 0}, $that.settings.animationRevertSpeed);						
 					}
+					$('.yes, .no').css('opacity',0);
 				break;
 			}
 		}

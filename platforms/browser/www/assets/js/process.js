@@ -240,7 +240,7 @@ account = {
     },
     processPicture:function(image){
 		popover_picture = app.popover.create({
-			content: `<div class="popover bg-gradient" id='display_updatePicture'>
+			content: `<div class="popover" id='display_updatePicture'>
 		                <div class="navbar no-shadow bg-gradient">
 		                    <div class="navbar-inner sliding">
 		                        <div class="left"><a class="link close"><i class='material-icons'>close</i></a></div>
@@ -844,11 +844,16 @@ jobs = {
 			jobAbout = app.popover.create({
 				targetEl: '.company',
 				content: `<div class="popover" id='display_job'>
+			                <div class="navbar no-shadow bg-gradient">
+			                    <div class="navbar-inner">
+			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+			                        <div class="title">About the Company</div>
+			                    </div>
+			                </div>
 							<div class='panel-company'>
 						        <div style='height:${h}px !important;'>
 						            <div class="row business-info">
 						                <div class="company-background">
-						                    <a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
 						                    <img src="${logo}" width='100%'>                    
 						                </div>
 						                <div class="company">
@@ -884,11 +889,16 @@ jobs = {
 			companyAbout = app.popover.create({
 				targetEl: '.company',
 				content: `<div class="popover" id='display_business'>
+			                <div class="navbar no-shadow bg-gradient">
+			                    <div class="navbar-inner">
+			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+			                        <div class="title">About the Company</div>
+			                    </div>
+			                </div>
 							<div class='panel-company'>
 						        <div style='height:${h}px !important;'>
 						            <div class="row business-info">
 						                <div class="company-background">
-			                    			<a class="popover-close close button button-large button-fill button-round bg-color-white in-field-btn ripple-color-green"><i class='material-icons text-color-gray'>close</i></a>
 						                    <img src="${logo}" width='100%'>                    
 						                </div>
 						                <div class="company">
@@ -917,6 +927,10 @@ jobs = {
 				logo  = ((typeof v[10] == 'object') || (v[10] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[10]}`;
 				jobArr.push(`<li data-node='${v[0]}' data-business="${v[2]}">
 								<div class='card job'>
+									<div class="respond">
+										<div class='yes'>Yes</div>
+										<div class='no'>No</div>
+									</div>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner'></div>
 										<div class='company'>
@@ -942,7 +956,7 @@ jobs = {
 										</div>
 									</div>
 									<div class='card-footer'>
-										<button class="col button button-round" data-cmd="read_job" data-node="${v[0]}">Read more</button>
+										<button class="col button button-round button-fill" data-cmd="read_job" data-node="${v[0]}">Read more</button>
 									</div>
 								</div>
 							</li>`);
