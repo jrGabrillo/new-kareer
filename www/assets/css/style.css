@@ -142,13 +142,38 @@ overflow:  h;
 }
 .welcome-screen-content .holder{
 	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
+	transform: translateY(-50%) !important;
+    top: 50%;
 }
 .welcome-screen-content .login-screen-title{
 	margin:0px 0px 100px 0px;
 }
-
+/*introduction*/
+.welcome-screen-content .container {
+    transform: translateY(0%);
+    top: 5%;
+    position: absolute;
+}
+a.next {
+    width: 100px;
+    position: absolute;
+    right: 3%;
+    top: 5%;
+}
+a.skip {
+    width: 100px;
+    position: absolute;
+    right: 35%;
+    top: 5%;
+}
+a.add {
+    width: 100px;
+    margin: 0 auto;
+}
+.bottom-margin{
+	margin-bottom: 45px !important;
+}
+/**/
 .block-create-account{
 	/* position:  fixed; */
 	bottom:  0%;
@@ -1177,4 +1202,13 @@ a.close{
 
 .bg-gradient{
     background: linear-gradient(to bottom right, #348e50, #46a094) !important;
+}
+/*intro progress bas*/
+#demo-inline-progressbar{
+	width: 80% !important;
+	margin: 0;
+	height:  8px !important;
+	border-radius: 10px;
+	position: relative;
+	top: 4px;
 }

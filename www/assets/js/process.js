@@ -301,8 +301,8 @@ account = {
 			setTimeout(function(){
 				localStorage.clear();
 				app.preloader.hide();
-				view.router.navigate('/home/');
-			},500);
+				view.router.navigate('/home/',{reloadCurrent:true});
+			},1000);
 				system.notification("Kareer",`Sign out.`);
 		});
 	}
@@ -383,6 +383,49 @@ skills = {
 			});
 		});
 	},
+	add1:function(){
+		$("a#btn_addSkill").on('click',function(){
+			let progress = $(this).attr('data-progress')
+		  	app.progressbar.set('#demo-inline-progressbar', progress);
+			let val = $('#field_skills').val(), level = $('#field_level').val(), id = account.id(), content ="";
+			console.log([val,level]);
+			$('input').val("");
+			$('#display_skill ul').append(`
+					<li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title text-align-left">${val}</div>
+                                <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
+                            </div>
+                        </div>
+                    </li>`);
+			// let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val]);
+			// ajax.done(function(data){
+			// 	console.log(data);
+			// 	if(data != 0){
+			// 		$('#field_skill').val("");
+	  //       		$("#display_skills .block").append(`
+			// 			<div class="chip" id='${data}'>
+			// 				<div class="chip-label">${val}</div>
+			// 				<a data-node='${data}' data-cmd='deleteSkill' class="chip-delete"></a>
+			// 			</div>
+	  //       		`);
+	  //       		$(".skills.block").append(`
+			// 			<div class="chip">
+			// 				<div class="chip-label">${val}</div>
+			// 			</div>
+	  //       		`);
+
+   //                  system.notification("Kareer",`Success. ${val} skill has been added.`);
+   //                  skills.frontdisplay();
+			// 	}
+			// 	else{
+   //                  system.notification("Kareer","Failed. Try again later.");
+			// 	}
+			// });
+		});
+      	// var progress = $$(this).attr('data-progress');
+	},
 	remove:function(){
 		let id = account.id();
 		$("a[data-cmd='deleteSkill']").on('click',function(){
@@ -401,6 +444,30 @@ skills = {
 	}
 }
 
+/**/
+specialties ={
+	add:function(){
+		$('a.next').on('click',function(){
+	        var vals = [];
+	        $.each($("input[type='checkbox']:checked"), function(){  
+	            vals.push($(this).val());  
+	        });
+	        if(vals.length > 0 && vals.length <= 5){
+	            let ajax = system.ajax(system.host('do-addSpecialties'),[vals,account.id()]);
+				ajax.done(function(data){
+					console.log(data);
+					if(data == 1){
+						view.router.navigate('/skills/');
+					}
+				});
+	        }
+	        else{
+                system.notification("Kareer","Please add atleast five.");
+	        }
+	    });
+	},
+}
+/**/
 academic = {
 	ini:function(){
 		let id =  account.id();

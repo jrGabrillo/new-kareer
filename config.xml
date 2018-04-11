@@ -46,4 +46,7 @@
     <plugin name="cordova-plugin-inappbrowser" spec="^2.0.2" />
     <plugin name="cordova-plugin-camera" spec="^2.4.1" />
     <plugin name="cordova-plugin-image-picker" spec="^1.1.3" />
+    <plugin name="cordova-plugin-googleplus" spec="https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git">
+          <variable name="REVERSED_CLIENT_ID" value="apps.googleusercontent.com.960874719503-0dhf2g79fc8dqkoalm7r9apsujtlnblc" />
+    </plugin>
 </widget>

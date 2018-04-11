@@ -48,6 +48,14 @@ module.exports = [
         "clobbers": [
             "plugins.imagePicker"
         ]
+    },
+    {
+        "id": "cordova-plugin-googleplus.GooglePlus",
+        "file": "plugins/cordova-plugin-googleplus/www/GooglePlus.js",
+        "pluginId": "cordova-plugin-googleplus",
+        "clobbers": [
+            "window.plugins.googleplus"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -57,7 +65,8 @@ module.exports.metadata =
     "cordova-plugin-inappbrowser": "2.0.2",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-camera": "2.4.1",
-    "cordova-plugin-image-picker": "1.1.1"
+    "cordova-plugin-image-picker": "1.1.1",
+    "cordova-plugin-googleplus": "5.2.3"
 };
 // BOTTOM OF METADATA
 });

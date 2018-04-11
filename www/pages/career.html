@@ -1,0 +1,210 @@
+<div class="page no-navbar no-swipeback welcome-screen-content">
+	<div class="toolbar toolbar-bottom-md no-shadow bg-color-white" >
+        <div class="toolbar-inner">
+            <a href='/bio/' class="skip button button-fill button-round accent-2">Skip</a>
+            <a href='/bio/' class="next button button-fill button-round">Next</a>
+        </div>
+    </div>
+    <div class="page-content login-screen-content" id='careerForm'>
+        <div class="container">
+            <div class="login-screen-title">
+                <img src="assets/img/logo/kareer_colored_logo.png" width="40%" />
+            </div>
+             <div class="block">
+                <h2 class="text-color-gray">Add your Career</h2>
+            </div>
+            <div class="block">
+                <a class="add button button-small button-fill button-round accent-1 popup-open" data-popup=".popup-newCareer">add</a>
+            </div>
+            <div class="block bottom-margin" id="list_jobs">
+                <div class="content accordion-list bg-color-white">
+                    <div class="list media-list">
+                        <ul>
+                            <li class="swipeout" data-node=''>
+                                <a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupAcad'>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">Janitor</div>
+                                            <div class="item-title">2016 - 2017</div>
+                                       </div>
+                                    </div>
+                                </a>
+                                <div class="swipeout-actions-right">
+                                    <a data-cmd='delete-acad'><i class='material-icons'>close</i></a>
+                                </div>
+                            </li>
+                            <li class="swipeout" data-node=''>
+                                <a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupAcad'>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">Tutor</div>
+                                            <div class="item-title">2016 - 2017</div>
+                                       </div>
+                                    </div>
+                                </a>
+                                <div class="swipeout-actions-right">
+                                    <a data-cmd='delete-acad'><i class='material-icons'>close</i></a>
+                                </div>
+                            </li>
+                            <li class="swipeout" data-node=''>
+                                <a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupAcad'>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">Web Developer</div>
+                                            <div class="item-title">2017 - 2018</div>
+                                       </div>
+                                    </div>
+                                </a>
+                                <div class="swipeout-actions-right">
+                                    <a data-cmd='delete-acad'><i class='material-icons'>close</i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popup popup-career">
+        <div class='card'>
+            <div class="card-header">
+                Career Information
+                <div class="right">
+                    <a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+                </div>
+            </div>
+            <div class='card-content card-content-padding align-self-stretch'>
+                <form id='form_updateCareer'>
+                    <div class="list">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Agency / Company</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_career_agency' name='field_career_agency' data-cmd='field' data-prop='field_career_agency'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Position</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_career_position' name='field_career_position' data-cmd='field' data-prop='field_career_position'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Monthly Salary</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_career_salary' name='field_career_salary' data-cmd='field' data-prop='field_career_salary'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Appointment Status <small>(Permanent, Contractual, Part-time, etc.)</small></div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_career_appointment' name='field_career_appointment' data-cmd='field' data-prop='field_career_appointment'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Started</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_career_yearfrom' name='field_career_yearfrom' data-cmd='field' data-prop='field_career_yearfrom'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Ended</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_career_yearto' name='field_career_yearto' data-cmd='field' data-prop='field_career_yearto'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <button class="col button button-round bg-color-white">Save</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="popup popup-newCareer">
+        <div class='card'>
+            <div class="card-header">
+                Adding Career Information
+                <div class="right">
+                    <a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+                </div>
+            </div>
+            <div class='card-content card-content-padding align-self-stretch'>
+                <form id='form_newCareer'>
+                    <div class="list">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Agency / Company</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_newcareer_agency' name='field_newcareer_agency' data-cmd='field' data-prop='field_newcareer_agency'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Position</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_newcareer_position' name='field_newcareer_position' data-cmd='field' data-prop='field_newcareer_position'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Monthly Salary</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_newcareer_salary' name='field_newcareer_salary' data-cmd='field' data-prop='field_newcareer_salary'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Appointment Status <small>(Permanent, Contractual, Part-time, etc.)</small></div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_newcareer_appointment' name='field_newcareer_appointment' data-cmd='field' data-prop='field_newcareer_appointment'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Started</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_newcareer_yearfrom' name='field_newcareer_yearfrom' data-cmd='field' data-prop='field_newcareer_yearfrom'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Ended</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id='field_newcareer_yearto' name='field_newcareer_yearto' data-cmd='field' data-prop='field_newcareer_yearto'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <button class="col button button-round bg-color-white">Save</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

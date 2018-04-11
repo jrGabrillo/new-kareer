@@ -18,6 +18,9 @@
     },
     "cordova-plugin-image-picker": {
       "PACKAGE_NAME": "rnr.kareer.com"
+    },
+    "cordova-plugin-googleplus": {
+      "PACKAGE_NAME": "rnr.kareer.com"
     }
   },
   "dependent_plugins": {

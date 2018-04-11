@@ -108,6 +108,7 @@ var routes = [
                 let data = account.get()[0];
                 let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
                 $("#display_accountLogin").addClass(auth);
+                account.logout();
             }
         }
     },
@@ -272,7 +273,9 @@ var routes = [
         url: './pages/logout.html',
         on: {
             pageInit: function(e, page){
-                this.logout();
+                // localStorage.clear();
+                // view.router.navigate('/home/');
+                console.log('logout');
             }
         }
     },
