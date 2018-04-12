@@ -305,7 +305,8 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 let ps = new PerfectScrollbar('#skills_display');
-                skills.add1();
+                // skills.add1();
+                skills.frontdisplay1();
             }
         }
     },
@@ -315,7 +316,7 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 let ps = new PerfectScrollbar('#acadForm');
-                // academic.ini();
+                academic.ini();
             }
         }
     },
@@ -325,6 +326,10 @@ var routes = [
         on: {
             pageInit: function(e, page){
                 let ps = new PerfectScrollbar('#careerForm');
+                let ps_list_schools = new PerfectScrollbar('#list_jobs .content');
+                let ps_newAcad = new PerfectScrollbar('.popup-newCareer');
+                let ps_acad = new PerfectScrollbar('.popup-career');
+                career.ini();
             }
         }
     },
@@ -333,6 +338,7 @@ var routes = [
         url: './pages/bio.html',
         on: {
             pageInit: function(e, page){
+                specialties.addBio();
                 // let ps = new PerfectScrollbar('#display_personal_info');
             }
         }

@@ -170,6 +170,10 @@ button.add {
     width: 100px;
     margin: 0 auto;
 }
+a.add {
+    width: 100px;
+    margin: 0 auto;
+}
 .bottom-margin{
 	margin-bottom: 45px !important;
 }

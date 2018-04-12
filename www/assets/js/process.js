@@ -1,7 +1,7 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-let server = `http://system.kareer-ph.com/`;
-// let server = `http://localhost/kareer`;
+// let server = `http://system.kareer-ph.com/`;
+let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 
 account = {
@@ -356,7 +356,6 @@ skills = {
 	add:function(){
 		$("a#btn_addSkill").on('click',function(){
 			let val = $('#field_skill').val(), id = account.id();
-
 			let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val]);
 			ajax.done(function(data){
 				console.log(data);
@@ -383,7 +382,43 @@ skills = {
 			});
 		});
 	},
-	add1:function(){
+	remove:function(){
+		let id = account.id();
+		$("a[data-cmd='deleteSkill']").on('click',function(){
+			let data = $(this).data();
+			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',id, data.node]);
+			ajax.done(function(_data){
+				if(_data == 1){
+					$(`#${data.node}`).remove();
+                    system.notification("Kareer",`Skill has been removed.`);
+				}
+				else{
+                    system.notification("Kareer","Failed. Try again later.");
+				}
+			});
+		});
+	},
+	frontdisplay1:function(){ /**/
+		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
+        	$.each(_skills,function(i,v){
+        		$('#display_skill ul').append(`
+					<li class="swipeout" data-node='${v[0]}'>
+                        <div class="item-content swipeout-content">
+                            <div class="item-inner">
+                                <div class="item-title text-align-left">${v[1]}</div>
+                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${v[2]}%</small></div>
+                            </div>
+                        </div>
+                        <div class="swipeout-actions-right">
+					        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
+					    </div>
+                    </li>`);
+        	})
+
+        this.add1();
+        this.remove1();
+	},
+	add1:function(){ /**/
 		$("#skillForm").validate({
 			rules: {
 				field_skills: {required: true, maxlength: 100},
@@ -401,71 +436,52 @@ skills = {
 			},
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'], id = account.id();
-				console.log(_form);
-				let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val,level]);
-				// ajax.done(function(data){
-					console.log(ajax);
-					// if(data != 0){
-					// 	$('input').val(""); $('textarea').val("");
-					// 	$('#display_skill ul').prepend(`
-					// 		<li>
-		   //                      <div class="item-content">
-		   //                          <div class="item-inner">
-		   //                              <div class="item-title text-align-left">${skill}</div>
-		   //                              <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
-		   //                          </div>
-		   //                      </div>
-		   //                  </li>`);
-					// }
-					// else{
-	    //                 system.notification("Kareer","Failed. Try again later.");
-	    //                 view.router.navigate('/skills/');
-					// }
-				// });
+				let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,skill,level]);
+				ajax.done(function(data){
+					console.log(data);
+					if(data != 0){
+						$('input').val(""); $('textarea').val("");
+						$('#display_skill ul').prepend(`
+							<li class="swipeout" data-node='${data}'>
+		                        <div class="item-content swipeout-content">
+		                            <div class="item-inner">
+		                                <div class="item-title text-align-left">${skill}</div>
+		                                <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
+		                            </div>
+		                        </div>
+		                        <div class="swipeout-actions-right">
+							        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
+							    </div>
+		                    </li>`);
+	                    system.notification("Kareer",`Success. ${skill} skill has been added.`);
+	                    skills.remove1();
+					}
+					else{
+	                    system.notification("Kareer","Failed. Try again later.");
+					}
+				});
 			let progress = $$('#demo-inline-progressbar').attr('data-progress');
   			app.progressbar.set('#demo-inline-progressbar', progress);
 			}
 		});
-		// $("a#btn_addSkill").on('click',function(){
-		// 	let val = $('#field_skills').val(), level = $('#field_level').val(), id = account.id(), content ="";
-		// 	if(val == "" && level == ""){
-  //               system.notification("Kareer","Fields are required");
-		// 	}
-		// 	else{
-		// 	if
-		// 	let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val,level]);
-		// 	ajax.done(function(data){
-		// 		console.log(data);
-		// 		// if(data != 0){
-		// 		// 	$('input').val(""); $('textarea').val("");
-		// 		// 	$('#display_skill ul').prepend(`
-		// 		// 		<li>
-	 //   //                      <div class="item-content">
-	 //   //                          <div class="item-inner">
-	 //   //                              <div class="item-title text-align-left">${val}</div>
-	 //   //                              <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
-	 //   //                          </div>
-	 //   //                      </div>
-	 //   //                  </li>`);
-		// 		// }
-		// 		// else{
-  //   //                 system.notification("Kareer","Failed. Try again later.");
-  //   //                 view.router.navigate('/skills/');
-		// 		// }
-		// 	});
-		// 	}
-		// 	let progress = $$('#demo-inline-progressbar').attr('data-progress');
-  // 			app.progressbar.set('#demo-inline-progressbar', progress);
-		// });
+		$('a.next').on('click',function(){
+	        if(JSON.parse(skills.get(account.id())).length == 0){
+	        	system.notification("Kareer","Please add atleast one skill.");
+	        }
+	        else{
+	        	view.router.navigate('/academic/');
+	        }
+		});
 	},
-	remove:function(){
+	remove1:function(){ /**/
 		let id = account.id();
 		$("a[data-cmd='deleteSkill']").on('click',function(){
-			let data = $(this).data();
-			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',id, data.node]);
+			console.log('delete');
+			let data = $(this).parents().find('li.swipeout.swipeout-opened').data('node');
+			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',id, data]);
 			ajax.done(function(_data){
 				if(_data == 1){
-					$(`#${data.node}`).remove();
+					$(`li.swipeout.swipeout-opened`).remove();
                     system.notification("Kareer",`Skill has been removed.`);
 				}
 				else{
@@ -498,6 +514,33 @@ specialties ={
 	        }
 	    });
 	},
+	bio:function(){
+		let data = account.get()[0][1];
+		console.log(data);
+		$("p.about").html(data);
+		specialties.addBio();
+	},
+	addBio:function(){
+		$('a.add').on('click', function(){
+			let bio = $('#field_bio').val();
+			if(bio.length != 0){
+				let ajax = system.ajax(system.host('do-bio'),[bio,account.id()]);
+				ajax.done(function(data){
+					console.log(data);
+					if(data == 1){
+						$("p.about").html(bio);
+                		system.notification("Kareer","Description added.");
+					}
+					else{
+                		system.notification("Kareer","Failed to add bio.");
+					}
+				});
+			}
+			else{
+				console.log(bio.length);				
+			}
+		});
+	}
 }
 /**/
 academic = {
@@ -505,8 +548,8 @@ academic = {
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
 
-		this.display(data);
-		this.add(id);
+		this.display1(data);
+		this.add1(id);
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-academic'),id);
@@ -688,7 +731,131 @@ academic = {
                 system.notification("Kareer","Failed to delete.tttt");
             }
         });
-	}
+	},
+	display1:function(data){ /**/
+		let degree = "";
+		if(data.length>0){
+			$.each(data,function(i,v){
+				console.log(v);
+				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
+				$("#list_schools .media-list ul").append(`
+					<li class="swipeout" data-node='${v[0]}'>
+						<a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupAcad'>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title text-align-left">${v[2]}</div>
+									<div class="item-title">${v[6]} - ${v[7]}</div>
+								</div>
+							</div>
+						</a>
+					    <div class="swipeout-actions-right">
+					        <a data-cmd='delete-acad'><i class='material-icons'>close</i></a>
+					    </div>
+					</li>
+				`);
+			});			
+        	// $("#list_schools .media-list ul li:nth-child(1)").remove();        	
+        	$("#list_schools a.btn-nav").removeClass('hidden');
+
+			$(`a[data-cmd='open-popupAcad']`).on('click', function(){
+				let _data = $(this).data(), acad = [];
+				$.each(data,function(i,v){
+					if(v[0] == _data.node){ acad = v; return false;}
+				})
+
+				console.log(acad);
+				$("#display_acad_fielddegree").attr({"style":"display:none;"});
+				$("#display_acad_fieldunit").attr({"style":"display:none;"});
+
+				if((new RegExp('Elementary|High School','i')).test(acad[2])){
+					$("#display_acad_fielddegree").attr({"style":"display:none;"});
+					$("#display_acad_fieldunit").attr({"style":"display:none;"});
+					$("#field_acad_degree").val("null");
+					$("#field_acad_units").val("null");
+				}
+				else{
+					$("#display_acad_fielddegree").attr({"style":"display:block;"});
+					$("#display_acad_fieldunit").attr({"style":"display:block;"});
+					$("#field_acad_degree").val("");
+					$("#field_acad_units").val("");
+				}
+
+				$("#field_acad_level").val(acad[2]);
+				$("#field_acad_school").html(acad[3]);
+				$("#field_acad_degree").val(acad[4]);
+				$("#field_acad_units").val(acad[5]);
+				$("#field_acad_yearfrom").val(acad[6]);
+				$("#field_acad_yearto").val(acad[7]);
+				app.popup.open('.popup-acad');
+				academic.update([acad[0],acad[1]]);
+			});
+
+			$(`a[data-cmd='delete-acad']`).on('click', function(){
+				let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
+				academic.delete(__data);
+			});
+        }
+		else{
+        	$("#list_schools a.btn-nav").addClass('hidden');        	
+		}
+	},
+	add1:function(id){ /**/
+		$("#display_newacad_fielddegree").attr({"style":"display:none;"});
+		$("#display_newacad_fieldunit").attr({"style":"display:none;"});
+		$("#field_newacad_level").on('change',function(){
+			let val = $(this).val();
+			if((new RegExp('Elementary|High School','i')).test(val)){
+				$("#display_newacad_fielddegree").attr({"style":"display:none;"});
+				$("#display_newacad_fieldunit").attr({"style":"display:none;"});
+				$("#field_newacad_degree").val("null");
+				$("#field_newacad_units").val("null");
+			}
+			else{
+				$("#display_newacad_fielddegree").attr({"style":"display:block;"});
+				$("#display_newacad_fieldunit").attr({"style":"display:block;"});
+				$("#field_newacad_degree").val("");
+				$("#field_newacad_units").val("");
+			}
+		})
+
+		$("#form_newAcad").validate({
+			rules: {
+				field_newacad_level: {required: true, maxlength: 50},
+				field_newacad_newschool: {required: true, maxlength: 50},
+				field_newacad_degree: {required: true, maxlength: 50},
+				field_newacad_units: {required: true, maxlength: 50},
+				field_newacad_newyearfrom: {required: true, maxlength: 50, year: true},
+				field_newacad_newyearto: {required: true, maxlength: 50, year: true, yearTo: 'field_newyearfrom'},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray(),data = 0;
+				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
+                var data = system.ajax(system.host('do-addAcademic'),_form);
+                data.done(function(data){
+                	_form[0] = data;
+                    if(data != 0){
+
+                        system.notification("Kareer","New Academic information has been added.");
+						app.popup.close('.popup-newAcad',true);
+						academic.display1([_form]);
+                    }
+                    else{
+                        system.notification("Kareer","Failed to add.");
+                    }
+                });
+		    }
+		});
+	},
 }
 
 career = {
@@ -696,8 +863,8 @@ career = {
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
 
-		this.display(data);
-		this.add(id);
+		this.display1(data);
+		this.add1(id);
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-career'),id);
@@ -858,7 +1025,108 @@ career = {
                 system.notification("Kareer","Failed to delete.");
             }
         });
-	}
+	},
+	display1:function(data){ /**/
+		let degree = "";
+		if(data.length>0){
+			$.each(data,function(i,v){
+				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
+				$("#list_jobs .list ul").append(`
+					<li class="swipeout" data-node='${v[0]}'>
+						<a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupCareer'>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title text-align-left">${v[3]}</div>
+									<div class="item-title">${v[6]} - ${v[7]}</div>
+								</div>
+							</div>
+						</a>
+					    <div class="swipeout-actions-right">
+					        <a data-cmd='delete-career'><i class='material-icons'>close</i></a>
+					    </div>
+					</li>
+				`);
+			});			
+        	// $("#list_jobs .list ul li:nth-child(1)").remove();        	
+        	$("#list_jobs a.btn-nav").removeClass('hidden');        	
+
+			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
+				let _data = $(this).data(), _career = [];
+				$.each(data,function(i,v){
+					if(v[0] == _data.node){ _career = v; return false;}
+				})
+
+				$("#field_career_agency").val(_career[2]);
+				$("#field_career_position").val(_career[3]);
+				$("#field_career_salary").val(_career[4]);
+				$("#field_career_appointment").val(_career[5]);
+				$("#field_career_yearfrom").val(_career[6]);
+				$("#field_career_yearto").val(_career[7]);
+				app.popup.open('.popup-career');
+				career.update([_career[0],_career[1]]);
+			});
+
+			$(`a[data-cmd='delete-career']`).on('click', function(){
+				let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
+				career.delete(__data);
+			});
+		}
+		else{
+        	$("#list_jobs a.btn-nav").addClass('hidden');        	
+		}
+	},
+	add1:function(id){ /**/
+		let calendarFromModal = app.calendar.create({
+			inputEl: '#field_career_yearfrom',
+			openIn: 'customModal',
+			footer: true,
+			firstDay:0,
+		});
+
+		let calendarToModal = app.calendar.create({
+			inputEl: '#field_career_yearto',
+			openIn: 'customModal',
+			footer: true,
+			firstDay:0,
+		});
+
+		$("#form_newCareer").validate({
+			rules: {
+				field_newcareer_agency: {required: true, maxlength: 300},
+				field_newcareer_position: {required: true, maxlength: 300},
+				field_newcareer_salary: {required: true, maxlength: 50, currency: true},
+				field_newcareer_appointment: {required: true, maxlength: 300},
+				field_newcareer_yearfrom: {required: true, maxlength: 50, year: true},
+				field_newcareer_yearto: {required: true, maxlength: 50, year: true, yearTo: 'field_career_yearfrom'},
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray(),data = 0;
+				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
+                var data = system.ajax(system.host('do-addCareer'),_form);
+                data.done(function(data){
+                	_form[0] = data;
+                    if(data != 0){
+                        system.notification("Kareer","New career information has been added.");
+						app.popup.close('.popup-newCareer',true);
+						career.display1([_form]);
+                    }
+                    else{
+                        system.notification("Kareer","Failed to add.");
+                    }
+                });
+		    }
+		});
+	},
 }
 
 jobs = {
@@ -1654,7 +1922,7 @@ signup = {
 						localStorage.setItem('callback','kareer-oauth');
 						localStorage.setItem('account',data);
 						system.notification("Kareer","Success. You are now officially registered.");
-						view.router.navigate('/signin/');
+						view.router.navigate('/welcome/');
 					}
 					else{
 						system.notification("Kareer","Sign up failed.");
