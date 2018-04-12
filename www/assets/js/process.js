@@ -1,7 +1,7 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-let server = `http://system.kareer-ph.com/`;
-// let server = `http://localhost/kareer`;
+// let server = `http://system.kareer-ph.com/`;
+let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 
 account = {
@@ -384,47 +384,79 @@ skills = {
 		});
 	},
 	add1:function(){
-		$("a#btn_addSkill").on('click',function(){
-			let progress = $(this).attr('data-progress')
-		  	app.progressbar.set('#demo-inline-progressbar', progress);
-			let val = $('#field_skills').val(), level = $('#field_level').val(), id = account.id(), content ="";
-			console.log([val,level]);
-			$('input').val("");
-			$('#display_skill ul').append(`
-					<li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title text-align-left">${val}</div>
-                                <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
-                            </div>
-                        </div>
-                    </li>`);
-			// let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val]);
-			// ajax.done(function(data){
-			// 	console.log(data);
-			// 	if(data != 0){
-			// 		$('#field_skill').val("");
-	  //       		$("#display_skills .block").append(`
-			// 			<div class="chip" id='${data}'>
-			// 				<div class="chip-label">${val}</div>
-			// 				<a data-node='${data}' data-cmd='deleteSkill' class="chip-delete"></a>
-			// 			</div>
-	  //       		`);
-	  //       		$(".skills.block").append(`
-			// 			<div class="chip">
-			// 				<div class="chip-label">${val}</div>
-			// 			</div>
-	  //       		`);
-
-   //                  system.notification("Kareer",`Success. ${val} skill has been added.`);
-   //                  skills.frontdisplay();
-			// 	}
-			// 	else{
-   //                  system.notification("Kareer","Failed. Try again later.");
-			// 	}
-			// });
+		$("#skillForm").validate({
+			rules: {
+				field_skills: {required: true, maxlength: 100},
+				field_level: {required: true, max: 100, min:1}
+			},
+			errorElement : 'div',
+			errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if(placement){
+					$(placement).append(error)
+				} 
+				else{
+					error.insertAfter(element);
+				}
+			},
+			submitHandler: function (form) {
+				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'], id = account.id();
+				console.log(_form);
+				let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val,level]);
+				// ajax.done(function(data){
+					console.log(ajax);
+					// if(data != 0){
+					// 	$('input').val(""); $('textarea').val("");
+					// 	$('#display_skill ul').prepend(`
+					// 		<li>
+		   //                      <div class="item-content">
+		   //                          <div class="item-inner">
+		   //                              <div class="item-title text-align-left">${skill}</div>
+		   //                              <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
+		   //                          </div>
+		   //                      </div>
+		   //                  </li>`);
+					// }
+					// else{
+	    //                 system.notification("Kareer","Failed. Try again later.");
+	    //                 view.router.navigate('/skills/');
+					// }
+				// });
+			let progress = $$('#demo-inline-progressbar').attr('data-progress');
+  			app.progressbar.set('#demo-inline-progressbar', progress);
+			}
 		});
-      	// var progress = $$(this).attr('data-progress');
+		// $("a#btn_addSkill").on('click',function(){
+		// 	let val = $('#field_skills').val(), level = $('#field_level').val(), id = account.id(), content ="";
+		// 	if(val == "" && level == ""){
+  //               system.notification("Kareer","Fields are required");
+		// 	}
+		// 	else{
+		// 	if
+		// 	let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,val,level]);
+		// 	ajax.done(function(data){
+		// 		console.log(data);
+		// 		// if(data != 0){
+		// 		// 	$('input').val(""); $('textarea').val("");
+		// 		// 	$('#display_skill ul').prepend(`
+		// 		// 		<li>
+	 //   //                      <div class="item-content">
+	 //   //                          <div class="item-inner">
+	 //   //                              <div class="item-title text-align-left">${val}</div>
+	 //   //                              <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
+	 //   //                          </div>
+	 //   //                      </div>
+	 //   //                  </li>`);
+		// 		// }
+		// 		// else{
+  //   //                 system.notification("Kareer","Failed. Try again later.");
+  //   //                 view.router.navigate('/skills/');
+		// 		// }
+		// 	});
+		// 	}
+		// 	let progress = $$('#demo-inline-progressbar').attr('data-progress');
+  // 			app.progressbar.set('#demo-inline-progressbar', progress);
+		// });
 	},
 	remove:function(){
 		let id = account.id();

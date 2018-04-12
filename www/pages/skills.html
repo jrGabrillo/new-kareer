@@ -12,43 +12,37 @@
              <div class="block">
                 <h2 class="text-color-gray">Add your Skills</h2>
             </div>
-            <div class="list">
-                <ul class='row'>
-                    <li class="item-content item-input" style="width: 65%">
-                        <div class="item-inner">
-                            <div class="item-title item-floating-label">Add new skill</div>
-                            <div class="item-input-wrap">
-                                <textarea style = 'height: 36px' type="text" id='field_skills' name='field_skills' class='_gname'></textarea> 
+            <form id="skillForm">
+                <div class="list">
+                    <ul class='row'>
+                        <li class="item-content item-input" style="width: 65%">
+                            <div class="item-inner">
+                                <div class="item-title item-floating-label">Add new skill</div>
+                                <div class="item-input-wrap">
+                                    <textarea style = 'height: 36px' type="text" id='field_skills' name='field_skills' class='_gname'></textarea> 
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input" style="width: 35%">
-                        <div class="item-inner">
-                            <div class="item-title item-floating-label">Percentage</div>
-                            <div class="item-input-wrap">
-                                <input type="number" id='field_level' name='field_level' class='_gname'>
+                        </li>
+                        <li class="item-content item-input" style="width: 35%">
+                            <div class="item-inner">
+                                <div class="item-title item-floating-label">Percentage</div>
+                                <div class="item-input-wrap">
+                                    <input type="number" id='field_level' name='field_level' class='_gname'>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input" style="width: 100%">
-                        <div class="item-inner">
-                            <div class="item-title">
-                                <a class="add button button-small button-fill button-round accent-1" id='btn_addSkill'>add</a>
+                        </li>
+                        <li class="item-content item-input" style="width: 100%">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <button class="add button button-small button-fill button-round accent-1">add</button>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
             <div class="block list media-list bottom-margin" id="display_skill">
                 <ul>
-                    <!-- <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title text-align-left">PHP</div>
-                                <div class="item-after row"><span data-progress="75" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">75%</small></div>
-                            </div>
-                        </div>
-                    </li> -->
                     <!-- <li>
                         <div class="item-content">
                             <div class="item-inner">

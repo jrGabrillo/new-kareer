@@ -166,7 +166,7 @@ a.skip {
     right: 35%;
     top: 5%;
 }
-a.add {
+button.add {
     width: 100px;
     margin: 0 auto;
 }
