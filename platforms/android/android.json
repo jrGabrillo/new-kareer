@@ -23,14 +23,6 @@
                         {
                             "xml": "<feature name=\"ImagePicker\"><param name=\"android-package\" value=\"com.synconset.ImagePicker\" /></feature>",
                             "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"GooglePlus\"><param name=\"android-package\" value=\"nl.xservices.plugins.GooglePlus\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<access origin=\"https://accounts.google.com/*\" />",
-                            "count": 1
                         }
                     ]
                 }
@@ -51,14 +43,6 @@
                     "/manifest": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.USE_CREDENTIALS\" />",
                             "count": 1
                         }
                     ],
@@ -92,9 +76,6 @@
             "PACKAGE_NAME": "rnr.Kareer.com"
         },
         "cordova-plugin-image-picker": {
-            "PACKAGE_NAME": "rnr.kareer.com"
-        },
-        "cordova-plugin-googleplus": {
             "PACKAGE_NAME": "rnr.kareer.com"
         }
     },
@@ -148,14 +129,6 @@
             "clobbers": [
                 "plugins.imagePicker"
             ]
-        },
-        {
-            "id": "cordova-plugin-googleplus.GooglePlus",
-            "file": "plugins/cordova-plugin-googleplus/www/GooglePlus.js",
-            "pluginId": "cordova-plugin-googleplus",
-            "clobbers": [
-                "window.plugins.googleplus"
-            ]
         }
     ],
     "plugin_metadata": {
@@ -163,7 +136,6 @@
         "cordova-plugin-inappbrowser": "2.0.2",
         "cordova-plugin-compat": "1.2.0",
         "cordova-plugin-camera": "2.4.1",
-        "cordova-plugin-image-picker": "1.1.1",
-        "cordova-plugin-googleplus": "5.2.3"
+        "cordova-plugin-image-picker": "1.1.1"
     }
 }
