@@ -1,7 +1,7 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-// let server = `http://system.kareer-ph.com/`;
-let server = `http://localhost/kareer`;
+let server = `http://system.kareer-ph.com/`;
+// let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 
 account = {
