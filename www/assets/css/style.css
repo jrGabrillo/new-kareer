@@ -241,18 +241,19 @@ a.add {
 	height: 100px;
 	border-radius: 50%;
 	background: #fff;
-	border: 1px solid #fff;
+	border: 1px solid #fff; 
 	transition: 0.5s;
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50px);
 	margin:  0px;
+	box-shadow: 0px 0px 20px 0px #00000042;
 }
 #profile h3.fullname{
 	font-size: 25px;
 	color: #fff;
 	width: 100%;
-	transition: 0.5s;
+	transition: text-align 0.5s;
 	position: absolute;
 	top: 70%;
 	left: 50%;
@@ -263,8 +264,8 @@ a.add {
 #profile p.about{
 	font-weight: normal;
 	margin: 0;
-	color: #000000;
-	min-height: 150px;
+	color: #c0c0c0;
+	min-height: 500px;
 }
 #profile h4{
 	font-weight: bold;
@@ -291,15 +292,15 @@ a.add {
 	background:  #fff;
 }
 #profile.active h3.fullname{
-	margin: 0;
+	padding: 0px 0px 0px 70px;
 	width: 100%;
-	left: 20px;
+	left:  0px;
 	position: absolute;
 	top: 40%;
 	transform: translate(0px);
-	transition: 0.5s;
+	transition: text-align 0.5s;
 	color: #fff;
-	text-align: center;
+	text-align: left;
 	font-size: 15px;
 }
 

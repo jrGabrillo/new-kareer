@@ -1002,7 +1002,11 @@ jobs = {
 			                <div class="navbar no-shadow bg-gradient">
 			                    <div class="navbar-inner">
 			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+<<<<<<< HEAD
+			                        <div class="title">About the Company</div>
+=======
 			                        <div class="title">About the Job Post</div>
+>>>>>>> 4bf58527c9d8e3dce7fa72ab5792e0eb2302906b
 			                    </div>
 			                </div>
 							<div class='panel-company'>
