@@ -507,7 +507,7 @@ specialties ={
 	    	});
 	    }
 	    else{
-	    	$(".specialties ul").html("No specialties");
+	    	// $(".specialties ul").html("No specialties");
 	    }
 	},
 	bio:function(){
@@ -1700,6 +1700,7 @@ signup = {
 				form = [form[0].value, form[1].value,form[3].value, form[4].value, form[2].value, "", "", ""];
 				data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
+					console.log(data);
 					if(data != 0){
 						data = JSON.parse(data);
 				        localStorage.setItem('account_id',data['id']);

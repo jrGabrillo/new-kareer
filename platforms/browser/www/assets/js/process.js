@@ -167,7 +167,7 @@ account = {
 	},
 	updatePassword:function(id){
 		$(".item-input-password-preview").on('click',function(){
-			let preview = $(this).data('show');
+            let preview = $(this).data('show');
 			if($(`input[name='${preview}']`)[0].type=="text"){
 				$(`.${preview}`).html('visibility_off');
 				$(`input[name='${preview}']`).attr({'type':'password'});
@@ -328,10 +328,11 @@ skills = {
 	display1:function(){
 		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));	
         if(_skills.length>0){
+        	$('#display_skill ul').html("");
         	$.each(_skills,function(i,v){
         		$('#display_skill ul').append(`
 					<li class="swipeout" data-node='${v[0]}'>
-                        <div class="item-content swipeout-content">
+                        <div class="item-content swipeout-content item-input">
                             <div class="item-inner">
                                 <div class="item-title text-align-left">${v[1]}</div>
                                 <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${v[2]}%</small></div>
@@ -353,10 +354,12 @@ skills = {
 	},
 	frontdisplay1:function(){ /**/
 		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
+        if(_skills.length>0){	
+        	$('#display_skill ul').html("");
         	$.each(_skills,function(i,v){
         		$('#display_skill ul').append(`
 					<li class="swipeout" data-node='${v[0]}'>
-                        <div class="item-content swipeout-content">
+                        <div class="item-content swipeout-content item-input">
                             <div class="item-inner">
                                 <div class="item-title text-align-left">${v[1]}</div>
                                 <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
@@ -369,6 +372,10 @@ skills = {
 		    	let progress = $$(`#${v[0]}`).attr('data-progress');
 				app.progressbar.set(`#${v[0]}`, progress);
     		});
+    	}
+    	else{
+        	// $("#display_skill ul").html("");        	
+        }
         this.add1();
         this.remove1();
 	},
@@ -488,6 +495,7 @@ specialties ={
 	display:function(){
 		let id = account.id(), specialty = JSON.parse(specialties.get(id));
 		if(specialty.length > 0){
+			$(".specialties ul").html("");
 			$.each(specialty,function(i,v){
 	    		$(".specialties ul").append(`
 	    			<li class="item-content item-input">
@@ -499,8 +507,7 @@ specialties ={
 	    	});
 	    }
 	    else{
-	    	$(".specialties ul").html("No specialties");
-
+	    	// $(".specialties ul").html("No specialties");
 	    }
 	},
 	bio:function(){
@@ -604,13 +611,13 @@ academic = {
 	},
 	display1:function(data){ /**/
 		let degree = "";
-		$("#list_schools .media-list ul").html("");
 		if(data.length>0){
+			$("#list_schools .media-list ul").html("");
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_schools .media-list ul").append(`
 					<li class="swipeout" data-node='${v[0]}'>
-						<a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupAcad'>
+						<a class="item-link item-content swipeout-content item-input" data-node='${v[0]}' data-cmd='open-popupAcad'>
 							<div class="item-inner">
 								<div class="item-title-row">
 									<div class="item-title text-align-left">${v[2]}</div>
@@ -803,13 +810,13 @@ career = {
 	},
 	display1:function(data){ /**/
 		let degree = "";
-		$("#list_jobs .list ul").html("");
 		if(data.length>0){
+			$("#list_jobs .list ul").html("");
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
 				$("#list_jobs .list ul").append(`
 					<li class="swipeout" data-node='${v[0]}'>
-						<a class="item-link item-content swipeout-content" data-node='${v[0]}' data-cmd='open-popupCareer'>
+						<a class="item-link item-content swipeout-content item-input" data-node='${v[0]}' data-cmd='open-popupCareer'>
 							<div class="item-inner">
 								<div class="item-title-row">
 									<div class="item-title text-align-left">${v[3]}</div>
@@ -1002,11 +1009,7 @@ jobs = {
 			                <div class="navbar no-shadow bg-gradient">
 			                    <div class="navbar-inner">
 			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
-<<<<<<< HEAD
-			                        <div class="title">About the Company</div>
-=======
 			                        <div class="title">About the Job Post</div>
->>>>>>> 4bf58527c9d8e3dce7fa72ab5792e0eb2302906b
 			                    </div>
 			                </div>
 							<div class='panel-company'>
@@ -1604,10 +1607,8 @@ business = {
 
 signin = {
 	form:function(){
-		let c = 0;
 		$(".item-input-password-preview").on('click',function(){
-			c++;
-			if((c%2)==0){
+			if($(`#form_signin input[name='field_password']`)[0].type=="text"){
 				$(this).children('i').html('visibility_off');
 				$("#form_signin input[name='field_password']").attr({'type':'password'});
 			}
@@ -1655,10 +1656,8 @@ signin = {
 
 signup = {
 	form:function(){
-		let c = 0;
 		$(".item-input-password-preview").on('click',function(){
-			c++;
-			if((c%2)==0){
+			if($(`#display_form input[name='field_password']`)[0].type=="text"){
 				$(this).children('i').html('visibility_off');
 				$("#display_form input[name='field_password']").attr({'type':'password'});
 			}
@@ -1701,6 +1700,7 @@ signup = {
 				form = [form[0].value, form[1].value,form[3].value, form[4].value, form[2].value, "", "", ""];
 				data = system.ajax(system.host('do-signUp'),form);
 				data.done(function(data){
+					console.log(data);
 					if(data != 0){
 						data = JSON.parse(data);
 				        localStorage.setItem('account_id',data['id']);
