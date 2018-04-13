@@ -32,14 +32,138 @@
                                 <img src="" width='100%'>
                                 <h3 class='fullname'></h3>
                             </div>
-                            <div class='bg-color-white align-self-stretch other-info'>
+                            <div class='bg-color-mildwhite align-self-stretch other-info'>
+                                <div class="row">
+                                    <h4>Specialties</h4>
+                                    <div class="specialties list media-list bottom-margin bg-color-white">
+                                        <ul>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title">
+                                                        No information to show
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> 
                                 <div class="row">
                                     <h4>Skills</h4>
-                                    <div class="row"><div class="skills block"></div></div>
+                                    <div class="list media-list bottom-margin bg-color-white" id="display_skill">
+                                        <ul>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title">
+                                                        No information to show
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <h4>About me</h4>
-                                    <p class="about"></p>
+                                    <div class="list media-list bottom-margin bg-color-white">
+                                        <ul>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title"><p class="about"></p></div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <h4>Personal Information</h4>
+                                    <div class="list media-list bottom-margin bg-color-white">
+                                        <ul>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">First Name</div>
+                                                    <div class="item-title" id='field_fname'>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Middle Name</div>
+                                                    <div class="item-title" id='field_mname'></div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Last Name</div>
+                                                    <div class="item-title" id='field_lname'></div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Date of Birth</div>
+                                                    <div class="item-title" id='field_dob'></div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Address</div>
+                                                    <div class="item-title" id='field_address'></div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Gender</div>
+                                                    <div class="item-title" id='field_gender'></div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Phone Number</div>
+                                                    <div class="item-title" id='field_number'></div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Email</div>
+                                                    <div class="item-title" id='field_email'></div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <h4>Academic Information</h4>
+                                    <div class="list bottom-margin bg-color-white" id="list_schools">
+                                        <div class="content bg-color-white">
+                                            <div class="list media-list">
+                                                <ul>
+                                                    <li class="item-content item-input">
+                                                        <div class="item-inner">
+                                                            <div class="item-title">
+                                                                No information to show
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <h4>Career Information</h4>
+                                    <div class="list bottom-margin bg-color-white" id="list_jobs">
+                                        <div class="content bg-color-white">
+                                            <div class="list media-list">
+                                                <ul>
+                                                    <li class="item-content item-input">
+                                                        <div class="item-inner">
+                                                            <div class="item-title">
+                                                                No information to show
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -48,6 +172,145 @@
             </div>
             <div class='page-content tab list' id='tab_jobs'>
                 <ul></ul>
+            </div>
+        </div>
+    </div>
+    <div class="popup popup-acad">
+        <div class='card'>
+            <div class="card-header">
+                Academic Information
+                <div class="right">
+                    <a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+                </div>
+            </div>
+            <div class='card-content card-content-padding align-self-stretch'>
+                <form id="form_updateAcad">
+                    <div class="list">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Level</div>
+                                    <div class="item-title">
+                                        <select disabled id='field_acad_level' name='field_acad_level' data-cmd='field' data-prop='field_acad_level' disabled="">
+                                            <option>Elementary</option>
+                                            <option>High School</option>
+                                            <option>Vocational</option>
+                                            <option>College</option>
+                                            <option>Masters</option>
+                                            <option>Doctorate</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">School</div>
+                                    <div class="item-title">
+                                        <textarea disabled class="resizable" id='field_acad_school' name='field_acad_school' data-cmd='field' data-prop='field_acad_school'></textarea>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input" id='display_acad_fielddegree'>
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Degree</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" value="null" id='field_acad_degree' name='field_acad_degree' data-cmd='field' data-prop='field_acad_degree'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input" id='display_acad_fieldunit'>
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Units</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" value="null" id='field_acad_units' name='field_acad_units' data-cmd='field' data-prop='field_acad_units'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Started</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_acad_yearfrom' name='field_acad_yearfrom' data-cmd='field' data-prop='field_acad_yearfrom'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Ended</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_acad_yearto' name='field_acad_yearto' data-cmd='field' data-prop='field_acad_yearto'>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="popup popup-career">
+        <div class='card'>
+            <div class="card-header">
+                Career Information
+                <div class="right">
+                    <a class="link popup-close in-field-btn" href="#"><i class='material-icons'>close</i></a>
+                </div>
+            </div>
+            <div class='card-content card-content-padding align-self-stretch'>
+                <form id='form_updateCareer'>
+                    <div class="list">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Agency / Company</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_career_agency' name='field_career_agency' data-cmd='field' data-prop='field_career_agency'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Position</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_career_position' name='field_career_position' data-cmd='field' data-prop='field_career_position'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Monthly Salary</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_career_salary' name='field_career_salary' data-cmd='field' data-prop='field_career_salary'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Appointment Status <small>(Permanent, Contractual, Part-time, etc.)</small></div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_career_appointment' name='field_career_appointment' data-cmd='field' data-prop='field_career_appointment'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Started</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_career_yearfrom' name='field_career_yearfrom' data-cmd='field' data-prop='field_career_yearfrom'>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Year Ended</div>
+                                    <div class="item-title">
+                                        <input disabled type="text" id='field_career_yearto' name='field_career_yearto' data-cmd='field' data-prop='field_career_yearto'>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

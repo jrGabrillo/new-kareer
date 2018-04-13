@@ -35,6 +35,8 @@ var routes = [
         url: './pages/signup.html',
         on: {
             pageInit: function(e,page){
+                let ps = new PerfectScrollbar('#signup');
+
                 signup.form();
                 $("#signin_facebook").on('click', function() {
                     fb.login(function(){
@@ -168,7 +170,7 @@ var routes = [
         url: './pages/settings_skills.html',
         on: {
             pageInit: function(e, page){
-                skills.display();
+                skills.display1();
             }
         }
     },
@@ -276,6 +278,68 @@ var routes = [
                 // localStorage.clear();
                 // view.router.navigate('/home/');
                 console.log('logout');
+            }
+        }
+    },
+    {
+        path: '/welcome/',
+        url: './pages/welcome.html',
+        on: {
+            pageInit: function(e, page){
+            }
+        }
+    },
+    {
+        path: '/industry/',
+        url: './pages/industry.html',
+        on: {
+            pageInit: function(e, page){
+                let ps = new PerfectScrollbar('#industries');
+                specialties.add();
+            }
+        }
+    },
+    {
+        path: '/skills/',
+        url: './pages/skills.html',
+        on: {
+            pageInit: function(e, page){
+                let ps = new PerfectScrollbar('#skills_display');
+                // skills.add1();
+                skills.frontdisplay1();
+            }
+        }
+    },
+    {
+        path: '/academic/',
+        url: './pages/academic.html',
+        on: {
+            pageInit: function(e, page){
+                let ps = new PerfectScrollbar('#acadForm');
+                academic.ini();
+            }
+        }
+    },
+    {
+        path: '/career/',
+        url: './pages/career.html',
+        on: {
+            pageInit: function(e, page){
+                let ps = new PerfectScrollbar('#careerForm');
+                let ps_list_schools = new PerfectScrollbar('#list_jobs .content');
+                let ps_newAcad = new PerfectScrollbar('.popup-newCareer');
+                let ps_acad = new PerfectScrollbar('.popup-career');
+                career.ini();
+            }
+        }
+    },
+    {
+        path: '/bio/',
+        url: './pages/bio.html',
+        on: {
+            pageInit: function(e, page){
+                specialties.addBio();
+                // let ps = new PerfectScrollbar('#display_personal_info');
             }
         }
     },

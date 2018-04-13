@@ -170,7 +170,7 @@ var routes = [
         url: './pages/settings_skills.html',
         on: {
             pageInit: function(e, page){
-                skills.display();
+                skills.display1();
             }
         }
     },
