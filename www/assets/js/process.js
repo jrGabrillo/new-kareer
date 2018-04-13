@@ -156,7 +156,7 @@ account = {
 	},
 	updatePassword:function(id){
 		$(".item-input-password-preview").on('click',function(){
-			let preview = $(this).data('show');
+            let preview = $(this).data('show');
 			if($(`input[name='${preview}']`)[0].type=="text"){
 				$(`.${preview}`).html('visibility_off');
 				$(`input[name='${preview}']`).attr({'type':'password'});
@@ -1452,10 +1452,8 @@ business = {
 
 signin = {
 	form:function(){
-		let c = 0;
 		$(".item-input-password-preview").on('click',function(){
-			c++;
-			if((c%2)==0){
+			if($(`#form_signin input[name='field_password']`)[0].type=="text"){
 				$(this).children('i').html('visibility_off');
 				$("#form_signin input[name='field_password']").attr({'type':'password'});
 			}
@@ -1503,10 +1501,8 @@ signin = {
 
 signup = {
 	form:function(){
-		let c = 0;
 		$(".item-input-password-preview").on('click',function(){
-			c++;
-			if((c%2)==0){
+			if($(`#display_form input[name='field_password']`)[0].type=="text"){
 				$(this).children('i').html('visibility_off');
 				$("#display_form input[name='field_password']").attr({'type':'password'});
 			}
