@@ -265,7 +265,7 @@ a.add {
 	font-weight: normal;
 	margin: 0;
 	color: #000000;
-	min-height: 500px;
+	/* min-height: 500px; */
 }
 #profile h4{
 	font-weight: bold;
