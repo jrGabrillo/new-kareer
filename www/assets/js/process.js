@@ -967,7 +967,19 @@ jobs = {
 	    				job_id = $("#tab_jobs ul li.active").data('node');
 						job.apply([job_id,account.id()]);
 
-				        jobs.loadMore(($("#tab_jobs ul li").length - 1) == 0);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 0);
+				    },
+				    onBookmark: function (item){
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
+					    	$("#tab_jobs ul li.previous").remove();
+						},2000);
+
+	    				job_id = $("#tab_jobs ul li.active").data('node');
+						job.bookmark([job_id,account.id()]);
+
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 0);
 				    },
 					animationRevertSpeed: 200,
 					animationSpeed: 400,
@@ -984,11 +996,6 @@ jobs = {
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
-			$("#tab_jobs").jTinder('dislike');
-		});
-		$("#menu_job .job_bookmark").on('click',function(){
-			job_id = $("#tab_jobs ul li.active").data('node');
-			job.bookmark([job_id,id]);
 			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_apply").on('click',function(){
@@ -1092,6 +1099,7 @@ jobs = {
 									<div class="respond">
 										<div class='yes'>Yes</div>
 										<div class='no'>No</div>
+										<div class='bookmark'>Bookmark</div>
 									</div>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner'></div>
