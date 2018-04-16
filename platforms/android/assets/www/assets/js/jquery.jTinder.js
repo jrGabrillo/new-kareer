@@ -24,7 +24,7 @@
 	var xStart = 0;
 	var yStart = 0;
 	var touchStart = false;
-	var posX = 0, posY = 0, lastPosX = 0, lastPosY = 0, pane_width = 0, pane_count = 0, current_pane = 0;
+	var posX = 0, posY = 0, lastPosX = 0, lastPosY = 0, pane_width = 0, pane_width = 0, pane_count = 0, current_pane = 0;
 
 	function Plugin(element, options) {
 		this.element = element;
@@ -38,6 +38,7 @@
 			container = $(">ul", element);
 			panes = $(">ul>li", element);
 			pane_width = container.width()*1.5;
+			pane_height = 500;
 			pane_count = panes.length;
 			current_pane = panes.length - 1;
 			$that = this;
@@ -64,6 +65,7 @@
 			return this.showPane(current_pane - 1);
 		},
 		dislike: function() {
+			$('.bookmark').css('opacity',0);
 			$('.yes').css('opacity',0);
 			$('.no').css('opacity',1);
 			panes.eq(current_pane).animate({"transform": "translate(-" + (pane_width) + "px," + (pane_width*-1.5) + "px) rotate(-60deg)"}, $that.settings.animationSpeed, function () {
@@ -75,6 +77,7 @@
 			});
 		},
 		like: function() {
+			$('.bookmark').css('opacity',0);
 			$('.yes').css('opacity',1);
 			$('.no').css('opacity',0);
 			panes.eq(current_pane).animate({"transform": "translate(" + (pane_width) + "px," + (pane_width*-1.5) + "px) rotate(60deg)"}, $that.settings.animationSpeed, function () {
@@ -84,6 +87,13 @@
 				$('.yes, .no').css('opacity',0);
 				$that.next();
 			});
+		},
+		bookmark: function() {
+			$('.bookmark').css('opacity',1);
+			$('.yes').css('opacity',0);
+			$('.no').css('opacity',0);
+
+			console.log('bookmark');
 		},
 		handler: function (ev) {
 			ev.preventDefault();
@@ -111,18 +121,30 @@
 						posX = deltaX + lastPosX;
 						posY = deltaY + lastPosY;
 						panes.eq(current_pane).css("transform", "translate(" + posX + "px," + posY + "px) rotate(" + (percent / 2) + "deg)");
+						var opaX = (Math.abs(deltaX) / $that.settings.threshold) / 100 + 0.2;
+						var opaY = (Math.abs(deltaY) / $that.settings.threshold) / 100 + 0.2;
 
-						var opa = (Math.abs(deltaX) / $that.settings.threshold) / 100 + 0.2;
-						if(opa > 1.0) {
-							opa = 1.0;
-						}
-						if (posX > 10) {
-							$('.yes').css('opacity',opa);
+						opaX = (opaX > 1.0)?1.0:opaX;
+						opaY = (opaY > 1.0)?1.0:opaY;
+
+						if (posX > 50) {
+							$('.bookmark').css('opacity',0);
+							$('.yes').css('opacity',opaX);
 							$('.no').css('opacity',0);
-						} 
-						else if (posX < -10) {
-							$('.no').css('opacity',opa);
+						}
+						else if (posX < -50) {
+							$('.bookmark').css('opacity',0);
+							$('.no').css('opacity',opaX);
 							$('.yes').css('opacity',0);
+						}
+
+						// console.log(opaY);
+
+						if(posY < -50){
+							$('.bookmark').css('opacity',opaY);
+							$('.no').css('opacity',0);
+							$('.yes').css('opacity',0);
+							// console.log('bookmark');							
 						}
 					}
 					break;
@@ -136,9 +158,9 @@
 
 					posX = deltaX + lastPosX;
 					posY = deltaY + lastPosY;
-					var opa = Math.abs((Math.abs(deltaX) / $that.settings.threshold) / 100 + 0.2);
-
-					if (opa >= 1) {
+					var opaX = Math.abs((Math.abs(deltaX) / $that.settings.threshold) / 100 + 0.2);
+					var opaY = Math.abs((Math.abs(deltaY) / $that.settings.threshold) / 100 + 0.2);
+					if (opaX >= 1) {
 						if (posX > 0) {
 							panes.eq(current_pane).animate({"transform": "translate(" + (pane_width) + "px," + (posY + pane_width) + "px) rotate(60deg)"}, $that.settings.animationSpeed, function () {
 								if($that.settings.onLike) {
@@ -146,10 +168,22 @@
 								}
 								$that.next();
 							});
-						} else {
+						} 
+						else {
 							panes.eq(current_pane).animate({"transform": "translate(-" + (pane_width) + "px," + (posY + pane_width) + "px) rotate(-60deg)"}, $that.settings.animationSpeed, function () {
 								if($that.settings.onDislike) {
 									$that.settings.onDislike(panes.eq(current_pane));
+								}
+								$that.next();
+							});
+						}
+
+					}
+					else if(opaY >= 1){ // for bookmarking here
+						if(posY <= 0){
+							panes.eq(current_pane).animate({"transform": "translate(0px,-1000px) rotate(0deg)"}, $that.settings.animationSpeed, function () {
+								if($that.settings.onBookmark) {
+									$that.settings.onBookmark(panes.eq(current_pane));
 								}
 								$that.next();
 							});
@@ -162,7 +196,7 @@
 						panes.eq(current_pane).find($that.settings.likeSelector).animate({"opacity": 0}, $that.settings.animationRevertSpeed);
 						panes.eq(current_pane).find($that.settings.dislikeSelector).animate({"opacity": 0}, $that.settings.animationRevertSpeed);						
 					}
-					$('.yes, .no').css('opacity',0);
+					$('.yes, .no, .bookmark').css('opacity',0);
 				break;
 			}
 		}

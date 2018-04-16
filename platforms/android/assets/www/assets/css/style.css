@@ -174,8 +174,8 @@ a.add {
     width: 100px;
     margin: 0 auto;
 }
-.bottom-margin{
-	margin-bottom: 45px !important;
+#profile .other-info .specialties{
+	margin-bottom: 20px !important;
 }
 #tab_account .list{
 	width: 100%;
@@ -265,7 +265,7 @@ a.add {
 	font-weight: normal;
 	margin: 0;
 	color: #000000;
-	min-height: 500px;
+	/* min-height: 500px; */
 }
 #profile h4{
 	font-weight: bold;
@@ -510,25 +510,26 @@ margin: 0px;
 	transition: 0.2s;
 }
 #tab_jobs li .respond{display: none;}
-#tab_jobs li.active .respond{display:block; position:  absolute;z-index: 10000;width: 100%;top: 100px;font-size: 50px;text-align:  center;}
+#tab_jobs li.active .respond{display:block;position:  absolute;z-index: 10000;width: 100%;top: 100px;font-size: 40px;font-weight: bold;text-align:  center;}
 #tab_jobs li.active .respond .yes{
 	width: 30%;
 	display: inline;
 	float: left;
-	border: 5px solid green;
+	border: 5px solid blue;
 	box-sizing: content-box;
 	border-radius: 10px;
-	color: green;
+	color: blue;
 	padding: 0px 10px;
 	margin: 0px 0px 0px 30px;
 	-ms-transform: rotate(-20deg);
 	-webkit-transform: rotate(-20deg);
 	transform: rotate(-20deg);
-    background-color: rgba(255,255,255,0.8);
-    box-shadow: 0px 0px 10px #ccc;
-    opacity: 0;
+	background-color: rgba(255,255,255,0.8);
+	box-shadow: 0px 0px 10px #ccc;
+	opacity: 0;
 }
-#tab_jobs li.active .respond .no{width: 30%;
+#tab_jobs li.active .respond .no{
+	width: 30%;
 	display:  inline;
 	float: right;
 	border: 5px solid red;
@@ -540,9 +541,23 @@ margin: 0px;
 	-webkit-transform: rotate(20deg);
 	transform: rotate(20deg) !important;
 	transform: rotate(-20deg);
-    background-color: rgba(255,255,255,0.8);
-    box-shadow: 0px 0px 10px #ccc;
-    opacity: 0;
+	background-color: rgba(255,255,255,0.8);
+	box-shadow: 0px 0px 10px #ccc;
+	opacity: 0;
+}
+#tab_jobs li.active .respond .bookmark{
+	width: 50%;
+	display: block;
+	border: 5px solid green;
+	box-sizing: content-box;
+	border-radius: 10px;
+	color: green;
+	margin: 65px auto;
+	background-color: rgba(255,255,255,0.8);
+	box-shadow: 0px 0px 10px #ccc;
+	font-size: 30px;
+	opacity: 0;
+	transform: translateY(-100px);
 }
 #tab_jobs li.next .job, #tab_jobs li.go-big .job{
 	transform: translateY(-15px) scale(0.9);
@@ -861,7 +876,7 @@ span.badge {
 #profile .other-info{
 	padding: 0px 10px 10px 10px;
 	text-align:  left;
-	height: 500px;
+	height: 476px;
 	width: 100%;
 	overflow: hidden!important;
 	position: absolute;

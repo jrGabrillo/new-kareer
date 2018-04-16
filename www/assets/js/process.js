@@ -347,7 +347,7 @@ skills = {
         	})
         } 
         else{
-        	$("#display_skill ul").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
+        	// $("#display_skill ul").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
         }
   //   	let progress = $('.progressbar').attr('data-progress');
 		// app.progressbar.set('#demo-inline-progressbar', progress);
@@ -497,8 +497,8 @@ specialties ={
 	},
 	display:function(){
 		let id = account.id(), specialty = JSON.parse(specialties.get(id))[0];
-		console.log(specialty);
-		// if(specialty.length > 0){
+		// console.log(specialty);
+		if(specialty != 'undefined'){
 			$(".specialties ul").html("");
 			// $.each(specialty,function(i,v){
     		$(".specialties ul").append(`
@@ -509,10 +509,10 @@ specialties ={
                 </li>
     		`);
 	    	// });
-	    // }
-	    // else{
-	    	// $(".specialties ul").html("No specialties");
-	    // }
+	    }
+	    else{
+	    	$(".specialties ul").html("No specialties");
+	    }
 	},
 	bio:function(){
 		let data = account.get()[0][1];
