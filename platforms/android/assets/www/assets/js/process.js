@@ -335,20 +335,22 @@ skills = {
                         <div class="item-content swipeout-content item-input">
                             <div class="item-inner">
                                 <div class="item-title text-align-left">${v[1]}</div>
-                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${v[2]}%</small></div>
+                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
                             </div>
                         </div>
                         <div class="swipeout-actions-right">
 					        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
 					    </div>
                     </li>`);
+        		let progress = $$(`#${v[0]}`).attr('data-progress');
+				app.progressbar.set(`#${v[0]}`, progress);
         	})
         } 
         else{
-        	$("#display_skill ul").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
+        	// $("#display_skill ul").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
         }
-    	let progress = $('.progressbar').attr('data-progress');
-		app.progressbar.set('#demo-inline-progressbar', progress);
+  //   	let progress = $('.progressbar').attr('data-progress');
+		// app.progressbar.set('#demo-inline-progressbar', progress);
         this.add1();
         this.remove1();
 	},
@@ -469,8 +471,9 @@ specialties ={
 	        $.each($("input[type='checkbox']:checked"), function(){  
 	            vals.push($(this).val());  
 	        });
-	        if(vals.length > 0 && vals.length <= 5){
-	            let ajax = system.ajax(system.host('do-addSpecialties'),[vals,account.id()]);
+	        let val = $("input[type='checkbox']:checked").val();
+	        if(vals.length == 1){
+	            let ajax = system.ajax(system.host('do-addSpecialties'),[val,account.id()]);
 				ajax.done(function(data){
 					console.log(data);
 					app.preloader.show();
@@ -483,7 +486,7 @@ specialties ={
 				});
 	        }
 	        else{
-                system.notification("Kareer","Please add atleast five.");
+                system.notification("Kareer","Please add only one industry.");
 	        }
 	    });
 	},
@@ -493,21 +496,22 @@ specialties ={
 		return ajax.responseText;
 	},
 	display:function(){
-		let id = account.id(), specialty = JSON.parse(specialties.get(id));
-		if(specialty.length > 0){
+		let id = account.id(), specialty = JSON.parse(specialties.get(id))[0];
+		// console.log(specialty);
+		if(specialty != 'undefined'){
 			$(".specialties ul").html("");
-			$.each(specialty,function(i,v){
-	    		$(".specialties ul").append(`
-	    			<li class="item-content item-input">
-	                    <div class="item-inner">
-	                        <div class="item-title">${v[1]}</div>
-	                    </div>
-	                </li>
-	    		`);
-	    	});
+			// $.each(specialty,function(i,v){
+    		$(".specialties ul").append(`
+    			<li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title">${specialty[1]}</div>
+                    </div>
+                </li>
+    		`);
+	    	// });
 	    }
 	    else{
-	    	// $(".specialties ul").html("No specialties");
+	    	$(".specialties ul").html("No specialties");
 	    }
 	},
 	bio:function(){
@@ -967,7 +971,19 @@ jobs = {
 	    				job_id = $("#tab_jobs ul li.active").data('node');
 						job.apply([job_id,account.id()]);
 
-				        jobs.loadMore(($("#tab_jobs ul li").length - 1) == 0);
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 0);
+				    },
+				    onBookmark: function (item){
+				    	app.preloader.show();
+						setTimeout(function () {
+							app.preloader.hide();
+					    	$("#tab_jobs ul li.previous").remove();
+						},2000);
+
+	    				job_id = $("#tab_jobs ul li.active").data('node');
+						job.bookmark([job_id,account.id()]);
+
+				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 0);
 				    },
 					animationRevertSpeed: 200,
 					animationSpeed: 400,
@@ -984,11 +1000,6 @@ jobs = {
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
-			$("#tab_jobs").jTinder('dislike');
-		});
-		$("#menu_job .job_bookmark").on('click',function(){
-			job_id = $("#tab_jobs ul li.active").data('node');
-			job.bookmark([job_id,id]);
 			$("#tab_jobs").jTinder('dislike');
 		});
 		$("#menu_job .job_apply").on('click',function(){
@@ -1092,6 +1103,7 @@ jobs = {
 									<div class="respond">
 										<div class='yes'>Yes</div>
 										<div class='no'>No</div>
+										<div class='bookmark'>Bookmark</div>
 									</div>
 									<div class='card-header align-items-flex-end'>
 										<div class='job_banner'></div>
@@ -1418,6 +1430,7 @@ convo = {
 			convo.display(id);
 		},50000);
 		$.each(data,function(i,v){
+			console.log(v);
 			sender = (v[4] == account.id())?'sent':'received';
             business = ((typeof v[0] == 'object') || v[0] == "") ? 'icon.png' : v[0];
             $('#messageBox .messages').prepend(`
