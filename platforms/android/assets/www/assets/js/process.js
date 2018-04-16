@@ -8,8 +8,8 @@ account = {
 	ini:function(){
 		let data = this.get()[0], scroll = 0, badge ="";   
 		this.display(data);
-		app.toolbar.hide('#menu_account');
-		app.tab.show('#tab_jobs');
+		// app.toolbar.hide('#menu_account');
+		app.toolbar.hide('#menu_job');
 
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
@@ -326,7 +326,7 @@ skills = {
 		return ajax.responseText;
 	},
 	display1:function(){
-		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));	
+		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
         if(_skills.length>0){
         	$('#display_skill ul').html("");
         	$.each(_skills,function(i,v){
@@ -855,7 +855,7 @@ career = {
 			});
 		}
 		else{
-        	$("#settings-career-info a.btn-nav").addClass('hidden');        	
+        	// $("#settings-career-info a.btn-nav").addClass('hidden');        	
 		}
 	},
 	add1:function(id){ /**/
