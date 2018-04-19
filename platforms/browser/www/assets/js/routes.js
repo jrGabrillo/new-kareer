@@ -110,14 +110,14 @@ var routes = [
         url: './pages/account_info.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     let data = account.get()[0];
                     let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
                     $("#display_accountLogin").addClass(auth);
                     account.logout();    
-                },200);
+                // },200);
             }
         }
     },
@@ -126,14 +126,14 @@ var routes = [
         url: './pages/settings_career_info.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     let ps_list_schools = new PerfectScrollbar('#list_jobs .content');
                     let ps_newAcad = new PerfectScrollbar('.popup-newCareer');
                     let ps_acad = new PerfectScrollbar('.popup-career');
                     career.ini();
-                },200);
+                // },200);
             }
         }
     },
@@ -142,14 +142,14 @@ var routes = [
         url: './pages/settings_academic_info.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     let ps_list_career = new PerfectScrollbar('#list_schools .content');
                     let ps_newCareer = new PerfectScrollbar('.popup-newAcad');
                     let ps_career = new PerfectScrollbar('.popup-acad');
                     academic.ini();
-                },200);
+                // },200);
             }
         }
     },
@@ -158,12 +158,12 @@ var routes = [
         url: './pages/settings_personal_info.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     let ps_personal = new PerfectScrollbar('#form_personalInfo .list');
                     account.settingsDisplay();
-                },200);
+                // },200);
             }
         }
     },
@@ -180,11 +180,11 @@ var routes = [
         url: './pages/settings_account.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     account.settingsDisplay();
-                },200);
+                // },200);
             }
         }
     },
@@ -193,11 +193,11 @@ var routes = [
         url: './pages/settings_skills.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     skills.display1();
-                },200);
+                // },200);
             }
         }
     },
@@ -206,13 +206,13 @@ var routes = [
         url: './pages/bookmarks.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     bookmark.ini();
                     new PerfectScrollbar('#list_bookmarks .list');
                     console.log('bookmark');
-                },200);    
+                // },200);    
             }
         }
     },
@@ -230,12 +230,12 @@ var routes = [
         url: './pages/notifications.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     notifications.ini();
                     let ps = new PerfectScrollbar('#list_notifications .list');
-                },200);
+                // },200);
           }
         }
     },
@@ -244,12 +244,12 @@ var routes = [
         url: './pages/notification-info.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     notification.ini();
                     let ps = new PerfectScrollbar('#display_job');
-                },200);
+                // },200);
             }
         }
     },
@@ -276,13 +276,13 @@ var routes = [
         url: './pages/messages.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     messages.ini();
                     let ps = new PerfectScrollbar('.list.media-list');
                     console.log('messages');
-                },200);
+                // },200);
             }
         }
     },
@@ -291,13 +291,13 @@ var routes = [
         url: './pages/message.html',
         on: {
             pageInit: function(e, page){
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                    // app.preloader.hide();
                     convo.ini();
                     // console.log('convo');
                     let ps = new PerfectScrollbar('.messages-content');
-                },200);
+                // },200);
             }
         }
     },

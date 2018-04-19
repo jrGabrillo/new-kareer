@@ -1,7 +1,7 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-// let server = `http://system.kareer-ph.com/`;
-let server = `http://localhost/kareer`;
+let server = `http://system.kareer-ph.com/`;
+// let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 let db = new PouchDB('kareer');
 let info = db.info().then(function (info) {
@@ -59,36 +59,40 @@ account = {
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
-		let data = this.get()[0], ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
+		let data = this.get()[0], ps = new PerfectScrollbar('#display_info .content');
+		db.get('account', function(err, doc) {
+		  if (err) { return console.log(err); }
+		  console.log(doc);
+			let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(doc.info[9]))? doc.info[9] : ((typeof doc.info[9] == 'object') || (doc.info[9] == ""))? tempPicture : `${server}/assets/images/logo/${doc.info[9]}`;
 
-		$('#display_accountPicture img').attr({'src':`${picture}`});
-        $("._gname").val(data[8]);
-        $("._mname").val(data[10]);
-        $("._lname").val(data[9]);
-        $("._address").html(data[13]);
-        $("._number").val(data[15]);
-        $("._bio").html(data[1]);
-        $("._email").val(data[2]);
-        $(`._gender option[value='${data[11]}']`).attr({'selected':true});
+			$('#display_accountPicture img').attr({'src':`${picture}`});
+	        $("._gname").val(doc.info[0]);
+	        $("._mname").val(doc.info[1]);
+	        $("._lname").val(doc.info[2]);
+	        $("._address").html(doc.info[4]);
+	        $("._number").val(doc.info[6]);
+	        $("._bio").html(doc.info[8]);
+	        $("._email").val(doc.info[7]);
+	        $(`._gender option[value='${doc.info[5]}']`).attr({'selected':true});
 
-        let dob = (data[12] == "")?"January 26, 1993":data[12];
-		let from = new Date((new Date()).getFullYear()-18, 1, 1);
-		app.calendar.create({
-			inputEl: '#field_dob',
-			openIn: 'customModal',
-			dateFormat: 'MM dd, yyyy',
-			footer: true,
-			firstDay:0,
-			value:[dob],
-		    disabled: {from: from}
-		});
-        this.update(data[0]);
-		this.updatePassword(data[0]);
-		this.updatePicture(data[0]);
-		$(`#display_accountPicture img`).on('error',function(){
-			$(this).attr({'src':tempPicture});
-		});
+	        let dob = (doc.info[3] == "")?"January 26, 1993":doc.info[3];
+			let from = new Date((new Date()).getFullYear()-18, 1, 1);
+			app.calendar.create({
+				inputEl: '#field_dob',
+				openIn: 'customModal',
+				dateFormat: 'MM dd, yyyy',
+				footer: true,
+				firstDay:0,
+				value:[dob],
+			    disabled: {from: from}
+			});
+	        account.update(data[0]);
+			account.updatePassword(data[0]);
+			account.updatePicture(data[0]);
+			$(`#display_accountPicture img`).on('error',function(){
+				$(this).attr({'src':tempPicture});
+			});
+		});	
 	},
 	display:function(){
 		// let tempPicture = `${server}/assets/images/logo/icon.png`, 
@@ -509,7 +513,7 @@ specialties ={
 		let id = account.id(), specialty = JSON.parse(specialties.get(id))[0];
 		// console.log(specialty);
 		// $(".specialties ul").html("");
-		if(typeof specialty != undefined || specialty.length != 0){
+		if((typeof specialty != undefined) || (specialty.length != 0)){
 			// $.each(specialty,function(i,v){
     		$(".specialties ul").append(`
     			<li class="item-content item-input">
