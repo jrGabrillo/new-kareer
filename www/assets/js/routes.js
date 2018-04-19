@@ -91,10 +91,13 @@ var routes = [
         url: './pages/account.html',
         on: {
             pageInit: function(e, page){
-                if(localStorage.getItem('load')){
-                    system.loading();
-                }
+                // if(localStorage.getItem('load')){
+                //     system.loading();
+                // }
+                app.toolbar.hide('#menu_job');
+                app.preloader.show();
                 setTimeout(function(){
+                    app.preloader.hide();
                     account.ini();
                     jobs.ini();
                     let ps = new PerfectScrollbar('#tab_account .other-info');
@@ -158,7 +161,7 @@ var routes = [
                 app.preloader.show();
                 setTimeout(function(){
                     app.preloader.hide();
-                    let ps = new PerfectScrollbar('#display_personal_info');
+                    let ps_personal = new PerfectScrollbar('#form_personalInfo .list');
                     account.settingsDisplay();
                 },200);
             }
@@ -207,7 +210,7 @@ var routes = [
                 setTimeout(function(){
                     app.preloader.hide();
                     bookmark.ini();
-                    new PerfectScrollbar('#list_bookmarks');
+                    new PerfectScrollbar('#list_bookmarks .list');
                     console.log('bookmark');
                 },200);    
             }
@@ -231,7 +234,7 @@ var routes = [
                 setTimeout(function(){
                     app.preloader.hide();
                     notifications.ini();
-                    let ps = new PerfectScrollbar('#list_notifications');
+                    let ps = new PerfectScrollbar('#list_notifications .list');
                 },200);
           }
         }

@@ -5,6 +5,9 @@ var app = new Framework7({
     theme: 'md',
     routes: routes,
     animatePages:false,
+    touch: {
+    	fastclick:false,
+    }
 });
 var view = app.views.create('.view-main');
 

@@ -23,6 +23,34 @@
                         {
                             "xml": "<feature name=\"ImagePicker\"><param name=\"android-package\" value=\"com.synconset.ImagePicker\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"webView\" value=\"org.crosswalk.engine.XWalkWebViewEngine\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"xwalkVersion\" value=\"23+\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"xwalkLiteVersion\" value=\"xwalk_core_library_canary:17+\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"xwalkCommandLine\" value=\"--disable-pull-to-refresh-effect\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"xwalkMode\" value=\"lite\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"xwalkMultipleApk\" value=\"true\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"android-minSdkVersion\" value=\"16\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -50,6 +78,14 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+                            "count": 1
                         }
                     ],
                     "/manifest/application": [
@@ -76,6 +112,14 @@
             "PACKAGE_NAME": "rnr.Kareer.com"
         },
         "cordova-plugin-image-picker": {
+            "PACKAGE_NAME": "rnr.kareer.com"
+        },
+        "cordova-plugin-crosswalk-webview": {
+            "XWALK_VERSION": "23+",
+            "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+            "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+            "XWALK_MODE": "lite",
+            "XWALK_MULTIPLEAPK": "true",
             "PACKAGE_NAME": "rnr.kareer.com"
         }
     },
@@ -136,6 +180,7 @@
         "cordova-plugin-inappbrowser": "2.0.2",
         "cordova-plugin-compat": "1.2.0",
         "cordova-plugin-camera": "2.4.1",
-        "cordova-plugin-image-picker": "1.1.1"
+        "cordova-plugin-image-picker": "1.1.1",
+        "cordova-plugin-crosswalk-webview": "2.4.0"
     }
 }
