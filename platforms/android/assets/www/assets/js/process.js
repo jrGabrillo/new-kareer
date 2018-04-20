@@ -1,7 +1,7 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-// let server = `http://system.kareer-ph.com/`;
-let server = `http://localhost/kareer`;
+let server = `http://system.kareer-ph.com/`;
+// let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 let db = new PouchDB('kareer');
 let info = db.info().then(function (info) {
@@ -103,7 +103,7 @@ account = {
 		});	
 	},
 	display:function(){
-        // academic.ini();
+        academic.ini();
         // career.ini();
         // specialties.display();
         // skills.frontdisplay1();
@@ -675,7 +675,7 @@ academic = {
             }
         });
 	},
-	display1:function(data){ /**/
+	display:function(data){ /**/
 		db.get('academic', function(err, doc) {
   			if (err) { return console.log(err); }
   			console.log(doc.info[0]);
@@ -746,6 +746,77 @@ academic = {
         	// $("#settings-acad-info a.btn-nav").addClass('hidden');        	
 		}
 	},
+	display1:function(data){ /**/
+		// academic.pouchDelete();
+		db.get('academic', function(err, doc) {
+  			if (err) { return console.log(err); }
+  			console.log(doc.info[0].length);
+			if(doc.info[0].length>0){
+				$("#list_schools .media-list ul").html("");
+				$.each(doc.info[0],function(i,v){
+					console.log(v);
+					$("#list_schools .media-list ul").append(`
+						<li class="swipeout" data-node='${v[0]}'>
+							<a class="item-link item-content swipeout-content item-input" data-node='${v[0]}' data-cmd='open-popupAcad'>
+								<div class="item-inner">
+									<div class="item-title-row">
+										<div class="item-title text-align-left">${v[2]}</div>
+										<div class="item-title text-align-right">${v[6]} - ${v[7]}</div>
+									</div>
+								</div>
+							</a>
+						    <div class="swipeout-actions-right">
+						        <a data-cmd='delete-acad'><i class='material-icons'>close</i></a>
+						    </div>
+						</li>
+					`);
+				});			
+	        	$("#list_schools .media-list ul li a.in-field-btn").remove();        	
+	        	$("#settings-acad-info a.btn-nav").removeClass('hidden');
+
+				$(`a[data-cmd='open-popupAcad']`).on('click', function(){
+					let _data = $(this).data(), acad = [];
+					$.each(doc.info[0],function(i,v){
+						if(v[0] == _data.node){ acad = v; return false;}
+					})
+
+					console.log(acad);
+					$("#display_acad_fielddegree").attr({"style":"display:none;"});
+					$("#display_acad_fieldunit").attr({"style":"display:none;"});
+
+					if((new RegExp('Elementary|High School','i')).test(acad[2])){
+						$("#display_acad_fielddegree").attr({"style":"display:none;"});
+						$("#display_acad_fieldunit").attr({"style":"display:none;"});
+						$("#field_acad_degree").val("null");
+						$("#field_acad_units").val("null");
+					}
+					else{
+						$("#display_acad_fielddegree").attr({"style":"display:block;"});
+						$("#display_acad_fieldunit").attr({"style":"display:block;"});
+						$("#field_acad_degree").val("");
+						$("#field_acad_units").val("");
+					}
+
+					$("#field_acad_level").val(acad[2]);
+					$("#field_acad_school").html(acad[3]);
+					$("#field_acad_degree").val(acad[4]);
+					$("#field_acad_units").val(acad[5]);
+					$("#field_acad_yearfrom").val(acad[6]);
+					$("#field_acad_yearto").val(acad[7]);
+					app.popup.open('.popup-acad');
+					academic.update([acad[0],acad[1]]);
+				});
+
+				$(`a[data-cmd='delete-acad']`).on('click', function(){
+					let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
+					academic.delete(__data);
+				});
+	        }
+			else{
+	        	// $("#settings-acad-info a.btn-nav").addClass('hidden');        	
+			}
+  		});
+	},
 	add1:function(id){ /**/
 		$("#display_newacad_fielddegree").attr({"style":"display:none;"});
 		$("#display_newacad_fieldunit").attr({"style":"display:none;"});
@@ -797,8 +868,8 @@ academic = {
 							app.preloader.hide();
 	                        system.notification("Kareer","New Academic information has been added.");
 							app.popup.close('.popup-newAcad',true);
+	                    	academic.pouch(_form);
 	                    	academic.display1(JSON.parse(academic.get(id)));
-	                    	academic.pouch(_form[0],_form[2],_form[6],_form[7]);
 	                    },1000);
                     }
                     else{
@@ -808,9 +879,9 @@ academic = {
 		    }
 		});
 	},
-	pouch:function(level,from,to){
+	pouch:function(_form){
 		let data = [];
-		data = [level,from,to];
+		data = _form;
 		let academic =[];
 		db.get('academic', function(err, doc) {
   			if (err) { 
