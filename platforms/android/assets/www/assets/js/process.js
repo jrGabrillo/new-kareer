@@ -1,9 +1,12 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-let server = `http://system.kareer-ph.com/`;
-// let server = `http://localhost/kareer`;
+// let server = `http://system.kareer-ph.com/`;
+let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
-
+let db = new PouchDB('kareer');
+let info = db.info().then(function (info) {
+	console.log(info);
+});
 account = {
 	ini:function(){
 		let data = this.get()[0], scroll = 0, badge ="";   
@@ -38,13 +41,13 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
-		$.each(JSON.parse(notifications.get(account.id())),function(i,v){
-			if(v[6] == 1){
-				badge+=v[6];
-			}
-		});
-		$('span.badge.notif').html((badge.length > 0)?badge.length:'0');
-		$('span.badge.chat').html('0');
+		// $.each(JSON.parse(notifications.get(account.id())),function(i,v){
+		// 	if(v[6] == 1){
+		// 		badge+=v[6];
+		// 	}
+		// });
+		// $('span.badge.notif').html((badge.length > 0)?badge.length:'0');
+		// $('span.badge.chat').html('0');
 	},
 	id:function(){
 		return localStorage.getItem('account_id');
@@ -57,7 +60,7 @@ account = {
 	},
 	settingsDisplay:function(){
 		let data = this.get()[0], ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
 
 		$('#display_accountPicture img').attr({'src':`${picture}`});
         $("._gname").val(data[8]);
@@ -87,30 +90,31 @@ account = {
 			$(this).attr({'src':tempPicture});
 		});
 	},
-	display:function(data){
-		let tempPicture = `${server}/assets/images/logo/icon.png`, 
-		picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
-		let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
-		let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
-		$('#profile img').attr({'src':picture});
-		$('#profile h3.fullname').html(name);
-		$('p.about').html(about);
+	display:function(){
+		// let tempPicture = `${server}/assets/images/logo/icon.png`, 
+		// picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		// let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
+		// let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
+		// $('#profile img').attr({'src':picture});
+		// $('#profile h3.fullname').html(name);
+		// $('p.about').html(about);
 
-		$(`#profile img`).on('error',function(){
-			$(this).attr({'src':tempPicture});
-		});
+		// $(`#profile img`).on('error',function(){
+		// 	$(this).attr({'src':tempPicture});
+		// });
         academic.ini();
         career.ini();
         specialties.display();
         skills.frontdisplay1();
-		$("#field_fname").html(data[8]);
-        $("#field_mname").html(data[10]);
-        $("#field_lname").html(data[9]);
-        $("#field_dob").html(data[12]);
-        $("#field_address").html(data[13]);
-        $("#field_number").html(data[15]);
-        $("#field_email").html(data[2]);
-        $("#field_gender").html(data[11]);
+        pouch.account();
+		// $("#field_fname").html(data[8]);
+  //       $("#field_mname").html(data[10]);
+  //       $("#field_lname").html(data[9]);
+  //       $("#field_dob").html(data[12]);
+  //       $("#field_address").html(data[13]);
+  //       $("#field_number").html(data[15]);
+  //       $("#field_email").html(data[2]);
+  //       $("#field_gender").html(data[11]);
 	},
 	update:function(id){
 		$("#form_personalInfo").validate({
@@ -142,7 +146,6 @@ account = {
 				let _form = $("#form_personalInfo").serializeArray();
 		    	app.preloader.show();
 		    	_form = [id,_form[0]['value'],_form[1]['value'],_form[2]['value'],_form[3]['value'],_form[4]['value'],_form[5]['value'],_form[6]['value'],_form[7]['value'],_form[8]['value']];
-				
 				console.log(_form);
 				let ajax = system.ajax(system.host('do-updateInfo'),_form);
 				ajax.done(function(data){
@@ -156,6 +159,7 @@ account = {
 				        $("._number").html(_form[7]);
 				        $("._bio").html(_form[9]);
 				        $("._email").html(_form[8]);
+				        pouch.update(_form);
 	                    system.notification("Kareer",`Updated`);
 					}
 					else{
@@ -248,6 +252,7 @@ account = {
         else {
             $inputImage.addClass("hidden");
         }
+
     },
     processPicture:function(image){
 		popover_picture = app.popover.create({
@@ -278,13 +283,17 @@ account = {
 								setTimeout(function(){
 			                        let data = system.ajax(system.host('do-updateImage'),[account.id(), 'picture', image]);
 			                        data.done(function(data) {
-			                            if (data == 1) {
+			                        	console.log(data);
+			                            if (data != 0) {
 			                            	$("#display_accountPicture img, #profile img").attr({'src':image});
+			                            	$('#profile img').attr({'src':image});
+				                            pouch.updatePicture(JSON.parse(data));
 											setTimeout(function(){
 												app.preloader.hide();
 												popover_picture.close();
 												cropper.destroy();
 				                                system.notification("Kareer",`Picture Uploaded.`);
+        										account.ini();
 											},2000);
 			                            }
 			                            else {
@@ -312,6 +321,7 @@ account = {
 			setTimeout(function(){
 				localStorage.clear();
 				app.preloader.hide();
+				pouch.delete();
 				view.router.navigate('/home/',{reloadCurrent:true});
 			},1000);
 				system.notification("Kareer",`Sign out.`);
@@ -498,8 +508,8 @@ specialties ={
 	display:function(){
 		let id = account.id(), specialty = JSON.parse(specialties.get(id))[0];
 		// console.log(specialty);
-		if(specialty != 'undefined'){
-			$(".specialties ul").html("");
+		// $(".specialties ul").html("");
+		if(typeof specialty != undefined || specialty.length != 0){
 			// $.each(specialty,function(i,v){
     		$(".specialties ul").append(`
     			<li class="item-content item-input">
@@ -511,7 +521,13 @@ specialties ={
 	    	// });
 	    }
 	    else{
-	    	$(".specialties ul").html("No specialties");
+	    	$(".specialties ul").html(`<li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title">
+                            No information to show
+                        </div>
+                    </div>
+                </li>`);
 	    }
 	},
 	bio:function(){
@@ -1233,80 +1249,36 @@ bookmark = {
 	},
 	display:function(data){
 		let	picture = "", id="",ps_notif="";
-		$.each(data,function(i,v){
-			picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
-			$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="read_job" data-node="${v[0]}">
-				<div class="item-media"><img src="${picture}" width="44"/></div>
-				<div class="item-inner">
-					<div class="item-title-row"><div class="item-title">${v[1]}</div></div>
-					<div class="item-subtitle">${v[3]} | <small>${v[4]}</small></div>
-				</div>
-			</a>`);
-		});		
+		if(data.length != 0){
+			$.each(data,function(i,v){
+				picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
+				$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="read_job" data-node="${v[0]}">
+					<div class="item-media"><img src="${picture}" width="44"/></div>
+					<div class="item-inner">
+						<div class="item-title-row"><div class="item-title">${v[1]}</div></div>
+						<div class="item-subtitle">${v[3]} | <small>${v[4]}</small></div>
+					</div>
+				</a>`);
+			});		
 
 
-		$(`#list_bookmarks .item-media img`).on('error',function(){
-			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
-		});
-
-		$('a[data-cmd="read_job"]').on('click',function(){
-			job_id = $(this).data('node');
-			jobData = JSON.parse(job.get(job_id))[0];
-			skills = "";
-			$.each(JSON.parse(jobData[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
-			logo  = ((typeof jobData[9] == 'object') || (jobData[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${jobData[9]}`;
-			jobAbout = app.popover.create({
-				targetEl: '.company',
-				content: `<div class="popover" id='display_job'>
-			                <div class="navbar no-shadow bg-gradient">
-			                    <div class="navbar-inner">
-			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
-			                        <div class="title">About the Job Post</div>
-			                    </div>
-			                </div>
-							<div class='panel-company'>
-						        <div style='height:${h}px !important;'>
-						            <div class="row business-info">
-						                <div class="company-background">
-						                    <img src="${logo}" width='100%'>                    
-						                </div>
-						                <div class="company" data-business='${jobData[10]}'>
-						                    <h3 class="">${jobData[7]}</h3>
-						                </div>
-						            </div>
-						            <div class="row job-title">
-						                <h1>${jobData[0]} <small class="text-color-gray">${jobData[1]}</small></h1>
-						            </div>
-						            <div class="row job-skills">
-						                <h4>Skills</h4>
-						                <div class="content">${skills}</div>
-						            </div>
-						            <div class="row job-salary">
-						                <h4>Salary Range</h4>
-						                <div class="content">${jobData[3]} - ${jobData[4]}</div>
-						            </div>
-						            <div class="row job-description">
-						                <div class="content ">${jobData[5]}</div>
-						            </div>
-						        </div>
-							</div>
-						</div>`,
+			$(`#list_bookmarks .item-media img`).on('error',function(){
+				$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 			});
-			jobAbout.open();
-            ps_notif = new PerfectScrollbar('#display_job');
-            
-            $(".company").on('click',function(){
-            	jobAbout.close();
-				business_data = $(this).data('business');
-				business_data = JSON.parse(business.get(business_data))[0];
-				logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
-				companyAbout = app.popover.create({
+
+			$('a[data-cmd="read_job"]').on('click',function(){
+				job_id = $(this).data('node');
+				jobData = JSON.parse(job.get(job_id))[0];
+				skills = "";
+				$.each(JSON.parse(jobData[2]),function(i,v){skills += `<div class="chip color-blue"><div class="chip-label">${v}</div></div> `;});
+				logo  = ((typeof jobData[9] == 'object') || (jobData[9] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${jobData[9]}`;
+				jobAbout = app.popover.create({
 					targetEl: '.company',
-					content: `<div class="popover" id='display_business'>
+					content: `<div class="popover" id='display_job'>
 				                <div class="navbar no-shadow bg-gradient">
 				                    <div class="navbar-inner">
 				                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
-				                        <div class="title">About the Company</div>
+				                        <div class="title">About the Job Post</div>
 				                    </div>
 				                </div>
 								<div class='panel-company'>
@@ -1315,23 +1287,78 @@ bookmark = {
 							                <div class="company-background">
 							                    <img src="${logo}" width='100%'>                    
 							                </div>
-							                <div class="company">
-							                    <h3 class="name">${business_data[0]}</h3>
-							                    <h6 class="address">${business_data[2]}</h6>
-							                    <h6 class="email">Email: ${business_data[3]} | Phone: ${business_data[4]}</h6>
+							                <div class="company" data-business='${jobData[10]}'>
+							                    <h3 class="">${jobData[7]}</h3>
 							                </div>
 							            </div>
-							            <div class="row company-description">
-							                <div class="content">${business_data[5]}</div>
+							            <div class="row job-title">
+							                <h1>${jobData[0]} <small class="text-color-gray">${jobData[1]}</small></h1>
+							            </div>
+							            <div class="row job-skills">
+							                <h4>Skills</h4>
+							                <div class="content">${skills}</div>
+							            </div>
+							            <div class="row job-salary">
+							                <h4>Salary Range</h4>
+							                <div class="content">${jobData[3]} - ${jobData[4]}</div>
+							            </div>
+							            <div class="row job-description">
+							                <div class="content ">${jobData[5]}</div>
 							            </div>
 							        </div>
 								</div>
 							</div>`,
 				});
-				companyAbout.open();
-	            ps_business = new PerfectScrollbar('#display_business');
+				jobAbout.open();
+	            ps_notif = new PerfectScrollbar('#display_job');
+	            
+	            $(".company").on('click',function(){
+	            	jobAbout.close();
+					business_data = $(this).data('business');
+					business_data = JSON.parse(business.get(business_data))[0];
+					logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
+					companyAbout = app.popover.create({
+						targetEl: '.company',
+						content: `<div class="popover" id='display_business'>
+					                <div class="navbar no-shadow bg-gradient">
+					                    <div class="navbar-inner">
+					                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+					                        <div class="title">About the Company</div>
+					                    </div>
+					                </div>
+									<div class='panel-company'>
+								        <div style='height:${h}px !important;'>
+								            <div class="row business-info">
+								                <div class="company-background">
+								                    <img src="${logo}" width='100%'>                    
+								                </div>
+								                <div class="company">
+								                    <h3 class="name">${business_data[0]}</h3>
+								                    <h6 class="address">${business_data[2]}</h6>
+								                    <h6 class="email">Email: ${business_data[3]} | Phone: ${business_data[4]}</h6>
+								                </div>
+								            </div>
+								            <div class="row company-description">
+								                <div class="content">${business_data[5]}</div>
+								            </div>
+								        </div>
+									</div>
+								</div>`,
+					});
+					companyAbout.open();
+		            ps_business = new PerfectScrollbar('#display_business');
+				});
 			});
-		});
+		}
+		else{
+			$(`#list_notifications ul`).html(`<a class="item-content item-input" id="empty">
+						<div class="item-inner">
+							<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+							<div class="item-title text-align-center">No Bookmarks yet</div>
+							<div class="item-subtitle text-align-center">Start saving here job posts you are intersted in.</div>
+						</div>
+					</a>`);
+		}
 	}
 }
 
@@ -1339,7 +1366,6 @@ messages = {
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
-		console.log(this.get(id));
 		this.display(data);
 	},
 	get:function(data){
@@ -1347,34 +1373,45 @@ messages = {
 		return ajax.responseText;
 	},
 	display:function(data){
-		console.log(data);
+		console.log(data.length);
 		let	picture = "", id="", convo ="";
-		$.each(data,function(i,v){
-			picture  = ((typeof v[0][2] == 'object') || (v[0][2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[0][2]}`;
-			$('#list_messages ul').prepend(`
-				<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[2]}">
-					<div class="item-media"><img src="${picture}" width="44"/></div>
-					<div class="item-inner">
-						<div class="item-title-row">
-							<div class="item-title">
-								<strong>${v[0][1]}</strong>
+		if(data.length != 0){
+			$.each(data,function(i,v){
+				picture  = ((typeof v[0][2] == 'object') || (v[0][2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[0][2]}`;
+				$('#list_messages ul').prepend(`
+					<a class="item-link item-content" href="#" data-cmd="job-info" data-node="${v[2]}">
+						<div class="item-media"><img src="${picture}" width="44"/></div>
+						<div class="item-inner">
+							<div class="item-title-row">
+								<div class="item-title">
+									<strong>${v[0][1]}</strong>
+								</div>
+							</div>
+							<div class="item-subtitle">
+								${v[1]}
 							</div>
 						</div>
-						<div class="item-subtitle">
-							${v[1]}
-						</div>
-					</div>
-				</a>`);
+					</a>`);
 
-		})			
-			$(`a[data-cmd='job-info']`).on('click',function(){
-				convo = $(this).data('node');
-				localStorage.setItem('convo',convo);
-				view.router.navigate('/message/');
+			})			
+				$(`a[data-cmd='job-info']`).on('click',function(){
+					convo = $(this).data('node');
+					localStorage.setItem('convo',convo);
+					view.router.navigate('/message/');
+				});
+			$(`#list_messages img`).on('error',function(){
+				$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
 			});
-		$(`#list_messages img`).on('error',function(){
-			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
-		});
+		}
+		else{
+			$('#list_messages ul').html(`<a class="item-content item-input" id="empty">
+						<div class="item-inner">
+							<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+							<div class="item-title text-align-center">No messages yet</div>
+							<div class="item-subtitle text-align-center">Conversation starts when an employer responded to your application.</div>
+						</div>
+					</a>`);
+		}
 	}
 }
 
@@ -1461,73 +1498,39 @@ notifications = {
 	},
 	display:function(data){
 		let	picture="",notifName="",notifValue="",notifProp="",status="",tag="",ps_notif="",badge="";
-		$.each(data,function(i,v){
-			tag = (v[3] == 'application')?`updated your ${v[3]} status`:`set a ${v[3]}`
-			status = (v[6] == 1)?['unread','bg-color-gray']:['read','bg-color-white'];
-			picture  = ((typeof v[5] == 'object') || (v[5] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[5]}`;
-			$('#list_notifications ul').prepend(`
-				<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-value="${v[1]}" data-prop = '${v[7]}' data-node="${v[0]}" data-name ="${status[0]}">
-					<div class="item-media"><img src="${picture}" width="44"/></div>
-					<div class="item-inner">
-						<div class="item-title-row">
-							<div class="item-title">
-								<strong>${v[4]}</strong> ${tag}
+		if(data.length != 0){
+			$.each(data,function(i,v){
+				tag = (v[3] == 'application')?`updated your ${v[3]} status`:`set a ${v[3]}`
+				status = (v[6] == 1)?['unread','bg-color-gray']:['read','bg-color-white'];
+				picture  = ((typeof v[5] == 'object') || (v[5] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[5]}`;
+				$('#list_notifications ul').prepend(`
+					<a class="item-link ${status[1]} item-content" href="#" data-cmd="job-info" data-value="${v[1]}" data-prop = '${v[7]}' data-node="${v[0]}" data-name ="${status[0]}">
+						<div class="item-media"><img src="${picture}" width="44"/></div>
+						<div class="item-inner">
+							<div class="item-title-row">
+								<div class="item-title">
+									<strong>${v[4]}</strong> ${tag}
+								</div>
 							</div>
+							<small>${v[2]}</small>
 						</div>
-						<small>${v[2]}</small>
-					</div>
-				</a>`);
-		});
-
-		$(`a[data-cmd='job-info']`).on('click',function(){
-			notifNode = $(this).data('node');
-			notifValue = $(this).data('value');
-			notifProp = $(this).data('prop');
-			notifications.action($(this).data('node')); /*read function*/
-			let notifInfo = JSON.parse(notification.get(notifNode,notifValue,notifProp))[0], logo = "",random = "", status ="";
-			logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
-			notifAbout = app.popover.create({
-				targetEl: '.company',
-				content:`<div class="popover" id='display_job'>
-			                <div class="navbar no-shadow bg-gradient">
-			                    <div class="navbar-inner">
-			                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
-			                        <div class="title">Notification Details</div>
-			                    </div>
-			                </div>
-							<div class='panel-company'>
-						        <div style='height:${h}px !important;'>
-						            <div class="row business-info">
-						                <div class="company-background">
-						                    <img src="${logo}" width='100%'>                    
-						                </div>
-						                <div class="company" data-business='${notifInfo[7]}'>
-						                    <h2 class="">${notifInfo[3]}</h2>
-						                    <h3 class="">${notifInfo[5]}</h3>
-						                </div>
-						            </div>
-						            <div class="row job-title">
-						                <h1>${notifInfo[2]} <small class="text-color-gray">${notifInfo[6]}</small></h1>
-						            </div>
-						        </div>
-							</div>
-						</div>`,
+					</a>`);
 			});
-			notifAbout.open();
-            ps_job = new PerfectScrollbar('#display_job');
 
-            $(".company").on('click',function(){
-            	notifAbout.close();
-				business_data = $(this).data('business');
-				business_data = JSON.parse(business.get(business_data))[0];
-				logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
-				companyAbout = app.popover.create({
+			$(`a[data-cmd='job-info']`).on('click',function(){
+				notifNode = $(this).data('node');
+				notifValue = $(this).data('value');
+				notifProp = $(this).data('prop');
+				notifications.action($(this).data('node')); /*read function*/
+				let notifInfo = JSON.parse(notification.get(notifNode,notifValue,notifProp))[0], logo = "",random = "", status ="";
+				logo  = ((typeof notifInfo[4] == 'object') || (notifInfo[4] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${notifInfo[4]}`;
+				notifAbout = app.popover.create({
 					targetEl: '.company',
-					content: `<div class="popover" id='display_business'>
+					content:`<div class="popover" id='display_job'>
 				                <div class="navbar no-shadow bg-gradient">
 				                    <div class="navbar-inner">
 				                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
-				                        <div class="title">About the Company</div>
+				                        <div class="title">Notification Details</div>
 				                    </div>
 				                </div>
 								<div class='panel-company'>
@@ -1536,39 +1539,84 @@ notifications = {
 							                <div class="company-background">
 							                    <img src="${logo}" width='100%'>                    
 							                </div>
-							                <div class="company">
-							                    <h3 class="name">${business_data[0]}</h3>
-							                    <h6 class="address">${business_data[2]}</h6>
-							                    <h6 class="email">Email: ${business_data[3]} | Phone: ${business_data[4]}</h6>
+							                <div class="company" data-business='${notifInfo[7]}'>
+							                    <h2 class="">${notifInfo[3]}</h2>
+							                    <h3 class="">${notifInfo[5]}</h3>
 							                </div>
 							            </div>
-							            <div class="row company-description">
-							                <div class="content">${business_data[5]}</div>
+							            <div class="row job-title">
+							                <h1>${notifInfo[2]} <small class="text-color-gray">${notifInfo[6]}</small></h1>
 							            </div>
 							        </div>
 								</div>
 							</div>`,
 				});
-				companyAbout.open();
-	            ps_business = new PerfectScrollbar('#display_business');
-			});
-		});
+				notifAbout.open();
+	            ps_job = new PerfectScrollbar('#display_job');
 
-		$(`#list_notifications img`).on('error',function(){
-			$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
-		});
-
-        ps_notif = new PerfectScrollbar('#list_notifications .content');
-        
-        $('#notification-info .back').on('click', function(){
-        	$.each(JSON.parse(notifications.get(account.id())),function(i,v){
-			if(v[6] == 1){
-				badge+=v[6];
-			}
+	            $(".company").on('click',function(){
+	            	notifAbout.close();
+					business_data = $(this).data('business');
+					business_data = JSON.parse(business.get(business_data))[0];
+					logo  = ((typeof business_data[1] == 'object') || (business_data[1] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${business_data[1]}`;
+					companyAbout = app.popover.create({
+						targetEl: '.company',
+						content: `<div class="popover" id='display_business'>
+					                <div class="navbar no-shadow bg-gradient">
+					                    <div class="navbar-inner">
+					                        <div class="left"><a class="link close popover-close"><i class='material-icons'>close</i></a></div>
+					                        <div class="title">About the Company</div>
+					                    </div>
+					                </div>
+									<div class='panel-company'>
+								        <div style='height:${h}px !important;'>
+								            <div class="row business-info">
+								                <div class="company-background">
+								                    <img src="${logo}" width='100%'>                    
+								                </div>
+								                <div class="company">
+								                    <h3 class="name">${business_data[0]}</h3>
+								                    <h6 class="address">${business_data[2]}</h6>
+								                    <h6 class="email">Email: ${business_data[3]} | Phone: ${business_data[4]}</h6>
+								                </div>
+								            </div>
+								            <div class="row company-description">
+								                <div class="content">${business_data[5]}</div>
+								            </div>
+								        </div>
+									</div>
+								</div>`,
+					});
+					companyAbout.open();
+		            ps_business = new PerfectScrollbar('#display_business');
+				});
 			});
-			console.log(badge.length);
-			$('span.badge.notif').html((badge.length > 0)?badge.length:'0');
-        });
+
+			$(`#list_notifications img`).on('error',function(){
+				$(this).attr({'src':`${server}/assets/images/logo/icon.png`});
+			});
+
+	        ps_notif = new PerfectScrollbar('#list_notifications .content');
+	        
+	        $('#notification-info .back').on('click', function(){
+	        	$.each(JSON.parse(notifications.get(account.id())),function(i,v){
+				if(v[6] == 1){
+					badge+=v[6];
+				}
+				});
+				console.log(badge.length);
+				$('span.badge.notif').html((badge.length > 0)?badge.length:'0');
+	        });
+	    }
+	    else{
+	    	$(`#list_notifications ul`).html(`<a class="item-content item-input" id="empty">
+						<div class="item-inner">
+							<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+							<div class="item-title text-align-center">No Notifications yet</div>
+							<div class="item-subtitle text-align-center">You will receive notifications regarding to your application. Start applying to receive notifications.</div>
+						</div>
+					</a>`);
+	    }
 	},
 	action:function(id){
 		var ajax = system.ajax(system.host('do-action'),[id,'notification']);
@@ -1651,11 +1699,18 @@ signin = {
                 var data = system.ajax(system.host('do-logIn'),[form[0].value,form[1].value]);
                 data.done(function(data){
                     data = JSON.parse(data);
+                    console.log(data[2]);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
 				        localStorage.setItem('callback','kareer-oauth');
 				        localStorage.setItem('account_id',data[2]['id']);
 						localStorage.setItem('account',JSON.stringify(data[2]));
+						db.put({_id: 'login',title: 'Login Auth',data: [data[2].email,data[2].first_name,data[2].last_name,data[2].picture]}, 
+						function(err, response) {
+						  if (err) { return console.log(err); }
+						  console.log(response);
+						});
+						pouch.addDoc(account.get()[0]);
                         view.router.navigate('/account/');                        
                     }
                     else{
@@ -1751,12 +1806,24 @@ auth = {
 	ini:function(){
 	},
 	auto:function(email, id, auth){
+		// setTimeout(function(){
+	 //        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
+	 //        data.done(function(data){
+	 //        	console.log(data);
+	 //            data = JSON.parse(data);
+	 //            if(data[1] == 'applicant'){
+	 //                view.router.navigate('/account/');                        
+	 //            }
+	 //            else{
+	 //                system.notification("Kareer","Sign in failed.");
+	 //            }
+	 //        });
+		// },500);
 		setTimeout(function(){
-	        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
-	        data.done(function(data){
-	        	console.log(data);
-	            data = JSON.parse(data);
-	            if(data[1] == 'applicant'){
+			db.get('login', function(err, doc) {
+			    if (err) { return console.log(err); }
+				// console.log(doc.data);
+	            if(doc.data[0] == email){
 	                view.router.navigate('/account/');                        
 	            }
 	            else{
@@ -1796,4 +1863,125 @@ auth = {
 	facebook:function(){
 		openFB.init({appId: '407673386340765'});
 	}
+}
+/*Pouch DB integration*/
+pouch = {
+	account:function(){
+		let tempPicture = "", name ="", about = "", picture = "";
+		db.get('account', function(err, doc) {
+		  if (err) { return console.log(err); }
+			name = `${(doc.info[0]!=null)?doc.info[0]:''} ${(doc.info[1]!=null)?doc.info[1]:''} ${(doc.info[2]!=null)?doc.info[2]:''}`;
+			about = (doc.info[8] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:doc.info[8];
+			tempPicture = `assets/img/icons/icon.png`;
+			picture = ((new RegExp('facebook|googleusercontent','i')).test(doc.info[9]))? doc.info[9] : ((typeof doc.info[9] == 'object') || (doc.info[9] == ""))? tempPicture : `${server}/assets/images/logo/${doc.info[9]}`;
+			$(`#profile img`).on('error',function(){
+				$(this).attr({'src':tempPicture});
+			});			
+			$("#field_fname").html(doc.info[0]);
+	        $("#field_mname").html(doc.info[1]);
+	        $("#field_lname").html(doc.info[2]);
+	        $("#field_dob").html(doc.info[3]);
+	        $("#field_address").html(doc.info[4]);
+	        $("#field_gender").html(doc.info[5]);
+	        $("#field_number").html(doc.info[6]);
+	        $("#field_email").html(doc.info[7]);
+			$('#profile h3.fullname').html(name);
+	        $("p.about").html(about);
+			$('#profile img').attr({'src':picture});
+		});
+	},
+	update:function(form){
+		db.get('account', function(err, doc) {
+  			if (err) { return console.log(err); }
+			db.put({
+				_id: 'account',
+				title: 'Account info',
+				_rev: doc._rev,
+				info: [
+					form[1],
+			        form[2],
+			        form[3],
+			        form[4],
+			        form[5],
+			        form[6],
+			        form[7],
+			        form[8],
+			        form[9],
+			        doc.info[9]	
+				]
+			}, function(err, response) {
+			 	if (err) { return console.log(err); }
+			  	console.log(response.ok);
+			});
+		});
+	},
+	updatePicture:function(image){
+		db.get('account', function(err, doc) {
+  			if (err) { return console.log(err); }
+  			db.put({
+				_id: 'account',
+				title: 'Account Info',
+				_rev: doc._rev,
+				info: [
+					doc.info[0],
+					doc.info[1],
+					doc.info[2],
+					doc.info[3],
+					doc.info[4],
+					doc.info[5],
+					doc.info[6],
+					doc.info[7],
+					doc.info[8],
+					image
+				]
+			}, function(err, response) {
+			 	if (err) { return console.log(err); }
+			  	console.log(response.ok);
+			});
+  		});
+	},
+	loginAuth:function(){
+		db.get('login', function(err, doc) {
+		  if (err) { return console.log(err); }
+			// console.log(doc.data);
+		});
+	},
+	addDoc:function(data){
+		db.put({
+		  _id: 'account',
+		  title: 'Account Info',
+		  info: [ 
+		  	data[8],
+		    data[10],
+		    data[9],
+		    data[12],
+		    data[13],
+		    data[15],
+		    data[2],
+		    data[11],
+		    data[1],
+		    data[19],
+		  ]
+		}, function(err, response) {
+		  if (err) { return console.log(err); }
+		    console.log(response.ok);
+		});
+	},
+	delete:function(){
+		db.get('login', function(err, doc) {
+		  if (err) { return console.log(err); }
+		  db.remove(doc, function(err, response) {
+		    if (err) { return console.log(err); }
+		    console.log(response.ok);
+		  });
+		});
+		db.get('account', function(err, doc) {
+		  if (err) { return console.log(err); }
+		  db.remove(doc, function(err, response) {
+		    if (err) { return console.log(err); }
+		    console.log(response.ok);
+		  });
+		});
+	}
+
 }

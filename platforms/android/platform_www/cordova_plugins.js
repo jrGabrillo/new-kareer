@@ -57,7 +57,8 @@ module.exports.metadata =
     "cordova-plugin-inappbrowser": "2.0.2",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-camera": "2.4.1",
-    "cordova-plugin-image-picker": "1.1.1"
+    "cordova-plugin-image-picker": "1.1.1",
+    "cordova-plugin-crosswalk-webview": "2.4.0"
 };
 // BOTTOM OF METADATA
 });

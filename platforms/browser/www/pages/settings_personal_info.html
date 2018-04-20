@@ -6,12 +6,12 @@
 	        <div class="right"><a id='button_personalInfo' class="link"><i class='material-icons text-color-white'>done</i></a></div>
 		</div>
 	</div>	
-    <div class="page-content">
-        <div class="content bg-color-white" id='display_personal_info'>
-            <div class="row">
-	            <div class="list">
+    <div class="page-content" id='display_personal_info'>
+        <div class="content bg-color-white">
+	        <form id='form_personalInfo' class="content">
+	            <div class="content list">
 	                <ul>
-	                    <li class="item-content item-input">
+	                	<li class="item-content item-input">
 	                        <div class="item-inner">
 	                        	<div class="" id="display_accountPicture">
 	                                <img src="" width='100%'>
@@ -19,91 +19,85 @@
 								<a class="col button button-small button-fill button-round color-white text-color-black actions-open" data-actions=".action_picture">Update picture</a>
 	                        </div>
 	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">First Name</div>
+	                            <div class="item-input-wrap">
+	                                <input type="text" id='field_fname' name='field_fname' class='_gname'>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Middle Name</div>
+	                            <div class="item-input-wrap">
+	                                <input type="text" id='field_mname' name='field_mname' class='_mname'>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Last Name</div>
+	                            <div class="item-input-wrap">
+	                                <input type="text" id='field_lname' name='field_lname' class='_lname'>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Date of Birth</div>
+	                            <div class="item-input-wrap">
+	                                <input type="text" id='field_dob' name='field_dob' class='_dob'>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Address</div>
+	                            <div class="item-input-wrap">
+                                    <textarea class="resizable _address" id='field_address' name='field_dob'></textarea>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Gender</div>
+	                            <div class="item-input-wrap">
+                        	         <select id='field_gender' name='field_gender' class='_gender'>
+										<option value="">Not specified</option>
+										<option value="Male">Male</option>
+										<option value="Female">Female</option>
+									</select>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Phone Number</div>
+	                            <div class="item-input-wrap">
+	                                <input type="text" id='field_number' name='field_number' class='_number'>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Email</div>
+	                            <div class="item-input-wrap">
+	                                <input type="text" id='field_email' name='field_email' class='_email'>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="item-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title item-label">Bio</div>
+	                            <div class="item-input-wrap">
+                                    <textarea class="resizable _bio" id='field_bio' name='field_bio'></textarea>
+	                            </div>
+	                        </div>
+	                    </li>
 	                </ul>
 	            </div>
-		        <form id='form_personalInfo'>
-		            <div class="list">
-		                <ul>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">First Name</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_fname' name='field_fname' class='_gname'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Middle Name</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_mname' name='field_mname' class='_mname'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Last Name</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_lname' name='field_lname' class='_lname'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Date of Birth</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_dob' name='field_dob' class='_dob'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Address</div>
-		                            <div class="item-input-wrap">
-                                        <textarea class="resizable _address" id='field_address' name='field_dob'></textarea>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Gender</div>
-		                            <div class="item-input-wrap">
-	                        	         <select id='field_gender' name='field_gender' class='_gender'>
-											<option value="">Not specified</option>
-											<option value="Male">Male</option>
-											<option value="Female">Female</option>
-										</select>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Phone Number</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_number' name='field_number' class='_number'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Email</div>
-		                            <div class="item-input-wrap">
-		                                <input type="text" id='field_email' name='field_email' class='_email'>
-		                            </div>
-		                        </div>
-		                    </li>
-		                    <li class="item-content item-input">
-		                        <div class="item-inner">
-		                            <div class="item-title item-label">Bio</div>
-		                            <div class="item-input-wrap">
-                                        <textarea class="resizable _bio" id='field_bio' name='field_bio'></textarea>
-		                            </div>
-		                        </div>
-		                    </li>
-		                </ul>
-		            </div>
-		        </form>
-            </div>
+	        </form>
         </div>
     </div>
 	<div class="actions-modal actions-grid action_picture">
@@ -113,7 +107,7 @@
                 Upload Picture
             </label>
         	<a class="button button-big hidden" data-cmd='take-a-photo'>Take a photo</a>
-        	<a class="button button-big" data-cmd='cancel' data-position='right'>Cancel</a>
+        	<a class="button button-big actions-close" data-cmd='cancel' data-position='right'>Cancel</a>
         </div>
 	</div>
 </div>
