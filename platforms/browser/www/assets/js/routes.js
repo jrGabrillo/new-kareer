@@ -95,13 +95,13 @@ var routes = [
                 //     system.loading();
                 // }
                 app.toolbar.hide('#menu_job');
-                app.preloader.show();
-                setTimeout(function(){
-                    app.preloader.hide();
+                // app.preloader.show();
+                // setTimeout(function(){
+                //     app.preloader.hide();
                     account.ini();
-                    jobs.ini();
+                    // jobs.ini();
                     let ps = new PerfectScrollbar('#tab_account .other-info');
-                },200);
+                // },200);
             }
         }
     },
