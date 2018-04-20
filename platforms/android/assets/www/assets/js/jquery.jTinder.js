@@ -137,14 +137,10 @@
 							$('.no').css('opacity',opaX);
 							$('.yes').css('opacity',0);
 						}
-
-						// console.log(opaY);
-
 						if(posY < -50){
 							$('.bookmark').css('opacity',opaY);
 							$('.no').css('opacity',0);
 							$('.yes').css('opacity',0);
-							// console.log('bookmark');							
 						}
 					}
 					break;
