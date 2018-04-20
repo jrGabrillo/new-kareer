@@ -14,6 +14,14 @@ account = {
 		// app.toolbar.hide('#menu_account');
 		app.toolbar.hide('#menu_job');
 
+		$('#jobs').on('click', function () {
+			app.preloader.show();
+            setTimeout(function(){
+                app.preloader.hide();
+                jobs.ini();
+            },400);
+		});
+
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
 		});
@@ -62,7 +70,11 @@ account = {
 		let data = this.get()[0], ps = new PerfectScrollbar('#display_info .content');
 		db.get('account', function(err, doc) {
 		  if (err) { return console.log(err); }
+<<<<<<< HEAD
 		  console.log(doc);
+=======
+		  // console.log(doc);
+>>>>>>> e00be2837702e3c65655f52a5b8592ee8160b5de
 			let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(doc.info[9]))? doc.info[9] : ((typeof doc.info[9] == 'object') || (doc.info[9] == ""))? tempPicture : `${server}/assets/images/logo/${doc.info[9]}`;
 
 			$('#display_accountPicture img').attr({'src':`${picture}`});
@@ -70,10 +82,17 @@ account = {
 	        $("._mname").val(doc.info[1]);
 	        $("._lname").val(doc.info[2]);
 	        $("._address").html(doc.info[4]);
+<<<<<<< HEAD
 	        $("._number").val(doc.info[6]);
 	        $("._bio").html(doc.info[8]);
 	        $("._email").val(doc.info[7]);
 	        $(`._gender option[value='${doc.info[5]}']`).attr({'selected':true});
+=======
+	        $("._number").val(doc.info[5]);
+	        $("._bio").html(doc.info[8]);
+	        $("._email").val(doc.info[6]);
+	        $(`._gender option[value='${doc.info[7]}']`).attr({'selected':true});
+>>>>>>> e00be2837702e3c65655f52a5b8592ee8160b5de
 
 	        let dob = (doc.info[3] == "")?"January 26, 1993":doc.info[3];
 			let from = new Date((new Date()).getFullYear()-18, 1, 1);
@@ -95,30 +114,11 @@ account = {
 		});	
 	},
 	display:function(){
-		// let tempPicture = `${server}/assets/images/logo/icon.png`, 
-		// picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
-		// let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
-		// let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
-		// $('#profile img').attr({'src':picture});
-		// $('#profile h3.fullname').html(name);
-		// $('p.about').html(about);
-
-		// $(`#profile img`).on('error',function(){
-		// 	$(this).attr({'src':tempPicture});
-		// });
-        academic.ini();
-        career.ini();
-        specialties.display();
-        skills.frontdisplay1();
+        // academic.ini();
+        // career.ini();
+        // specialties.display();
+        // skills.frontdisplay1();
         pouch.account();
-		// $("#field_fname").html(data[8]);
-  //       $("#field_mname").html(data[10]);
-  //       $("#field_lname").html(data[9]);
-  //       $("#field_dob").html(data[12]);
-  //       $("#field_address").html(data[13]);
-  //       $("#field_number").html(data[15]);
-  //       $("#field_email").html(data[2]);
-  //       $("#field_gender").html(data[11]);
 	},
 	update:function(id){
 		$("#form_personalInfo").validate({
@@ -339,36 +339,44 @@ skills = {
 		console.log()
 		return ajax.responseText;
 	},
-	display1:function(){
-		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
-        if(_skills.length>0){
-        	$('#display_skill ul').html("");
-        	$.each(_skills,function(i,v){
-        		$('#display_skill ul').append(`
-					<li class="swipeout" data-node='${v[0]}'>
-                        <div class="item-content swipeout-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title text-align-left">${v[1]}</div>
-                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
-                            </div>
-                        </div>
-                        <div class="swipeout-actions-right">
-					        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
-					    </div>
-                    </li>`);
-        		let progress = $$(`#${v[0]}`).attr('data-progress');
-				app.progressbar.set(`#${v[0]}`, progress);
-        	})
-        } 
-        else{
-        	// $("#display_skill ul").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
-        }
-  //   	let progress = $('.progressbar').attr('data-progress');
-		// app.progressbar.set('#demo-inline-progressbar', progress);
-        this.add1();
-        this.remove1();
+	frontdisplay1:function(){
+		// db.get('skills', function(err, doc) {
+		//   if (err) { return console.log(err); }
+		//   db.remove(doc, function(err, response) {
+		//     if (err) { return console.log(err); }
+		//     console.log(response.ok);
+		//   });
+		// });
+		db.get('skills', function(err, doc) {
+  			if (err) { return console.log(err); }
+  			let _skills = doc.info[0];
+  			console.log(_skills.length);
+			// let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
+	        if(doc.info[0].length>0){
+	        	$('#display_skill ul').html("");
+	        	$.each(doc.info[0],function(i,v){
+	        		console.log(v);
+	        		$('#display_skill ul').append(`
+						<li class="swipeout" data-node='${v[0]}'>
+	                        <div class="item-content swipeout-content item-input">
+	                            <div class="item-inner">
+	                                <div class="item-title text-align-left">${v[1]}</div>
+	                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
+	                            </div>
+	                        </div>
+	                        <div class="swipeout-actions-right">
+						        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
+						    </div>
+	                    </li>`);
+	        		let progress = $$(`#${v[0]}`).attr('data-progress');
+					app.progressbar.set(`#${v[0]}`, progress);
+	        	})
+	        }
+	        this.add1();
+	        this.remove1();
+  		});
 	},
-	frontdisplay1:function(){ /**/
+	display1:function(){ /**/
 		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
         if(_skills.length>0){	
         	$('#display_skill ul').html("");
@@ -415,7 +423,6 @@ skills = {
 				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'], id = account.id();
 				let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,skill,level]);
 				ajax.done(function(data){
-					console.log(data);
 					app.preloader.show();
 					if(data != 0){
 						$('input').val(""); $('textarea').val("");
@@ -437,6 +444,7 @@ skills = {
 							let progress = $$('#demo-inline-progressbar').attr('data-progress');
 				  			app.progressbar.set('#demo-inline-progressbar', progress);
 	                    	skills.remove1();
+	                    	skills.pouch(data,skill,level);
 		                },1000);
 					}
 					else{
@@ -473,6 +481,51 @@ skills = {
                     system.notification("Kareer","Failed. Try again later.");
 				}
 			});
+		});
+	},
+	pouch:function(id,skill,level){
+		let data = [];
+		data = [id,skill,level];
+		let skills =[];
+		db.get('skills', function(err, doc) {
+  			if (err) { 
+  				skills.push(data);
+  				db.put({
+				    _id: 'skills',
+				    title: 'Account Info',
+				    info: [ 
+				  		skills
+				    ]
+				}, function(err, response) {
+				    if (err) { return console.log(err); }
+				    console.log(response.ok);
+				}); 
+  			}
+  			else{
+  				skills = doc.info[0];
+  				skills.push(data);
+  				console.log(skills);
+  				db.put({
+				    _id: 'skills',
+				    title: 'Account Info',
+				    _rev: doc._rev,
+				    info: [ 
+				  		skills
+				    ]
+				}, function(err, response) {
+				    if (err) { return console.log(err); }
+				    console.log(response.ok);
+				});
+  			}
+		});
+	},
+	pouchDelete:function(){
+		db.get('skills', function(err, doc) {
+		  if (err) { return console.log(err); }
+		  db.remove(doc, function(err, response) {
+		    if (err) { return console.log(err); }
+		    console.log(response.ok);
+		  });
 		});
 	}
 }
@@ -634,6 +687,10 @@ academic = {
         });
 	},
 	display1:function(data){ /**/
+		db.get('academic', function(err, doc) {
+  			if (err) { return console.log(err); }
+  			console.log(doc.info[0]);
+  		});
 		let degree = "";
 		if(data.length>0){
 			$("#list_schools .media-list ul").html("");
@@ -741,6 +798,7 @@ academic = {
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray(),data = 0;
 				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
+       			console.log(_form);
                 var data = system.ajax(system.host('do-addAcademic'),_form);
                 data.done(function(data){
                 	_form[0] = data;
@@ -751,6 +809,7 @@ academic = {
 	                        system.notification("Kareer","New Academic information has been added.");
 							app.popup.close('.popup-newAcad',true);
 	                    	academic.display1(JSON.parse(academic.get(id)));
+	                    	academic.pouch(_form[0],_form[2],_form[6],_form[7]);
 	                    },1000);
                     }
                     else{
@@ -760,6 +819,51 @@ academic = {
 		    }
 		});
 	},
+	pouch:function(level,from,to){
+		let data = [];
+		data = [level,from,to];
+		let academic =[];
+		db.get('academic', function(err, doc) {
+  			if (err) { 
+  				academic.push(data);
+  				db.put({
+				    _id: 'academic',
+				    title: 'Academic Info',
+				    info: [ 
+				  		academic
+				    ]
+				}, function(err, response) {
+				    if (err) { return console.log(err); }
+				    console.log(response.ok);
+				}); 
+  			}
+  			else{
+  				academic = doc.info[0];
+  				academic.push(data);
+  				console.log(academic);
+  				db.put({
+				    _id: 'academic',
+				    title: 'Academic Info',
+				    _rev: doc._rev,
+				    info: [ 
+				  		academic
+				    ]
+				}, function(err, response) {
+				    if (err) { return console.log(err); }
+				    console.log(response.ok);
+				});
+  			}
+		});
+	},
+	pouchDelete:function(){
+		db.get('academic', function(err, doc) {
+		  if (err) { return console.log(err); }
+		  db.remove(doc, function(err, response) {
+		    if (err) { return console.log(err); }
+		    console.log(response.ok);
+		  });
+		});
+	}
 }
 
 career = {
@@ -1874,6 +1978,7 @@ pouch = {
 		let tempPicture = "", name ="", about = "", picture = "";
 		db.get('account', function(err, doc) {
 		  if (err) { return console.log(err); }
+		   console.log(doc.info);
 			name = `${(doc.info[0]!=null)?doc.info[0]:''} ${(doc.info[1]!=null)?doc.info[1]:''} ${(doc.info[2]!=null)?doc.info[2]:''}`;
 			about = (doc.info[8] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:doc.info[8];
 			tempPicture = `assets/img/icons/icon.png`;
@@ -1886,12 +1991,13 @@ pouch = {
 	        $("#field_lname").html(doc.info[2]);
 	        $("#field_dob").html(doc.info[3]);
 	        $("#field_address").html(doc.info[4]);
-	        $("#field_gender").html(doc.info[5]);
-	        $("#field_number").html(doc.info[6]);
-	        $("#field_email").html(doc.info[7]);
+	        $("#field_gender").html(doc.info[7]);
+	        $("#field_number").html(doc.info[5]);
+	        $("#field_email").html(doc.info[6]);
 			$('#profile h3.fullname').html(name);
 	        $("p.about").html(about);
 			$('#profile img').attr({'src':picture});
+
 		});
 	},
 	update:function(form){

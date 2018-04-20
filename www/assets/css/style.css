@@ -378,7 +378,7 @@ margin: 0px;
 	 background: unset !important; 
 }
 #tab_account, #tab_jobs, #tab_search, .account-subpage, .load-block, .bg-gradient{
-	height:  100%;
+	/* height: auto; */
 	z-index: 10000;
 	background: #348F50;
 	background: -webkit-linear-gradient(to right, #56B4D3, #348F50) !important;
@@ -881,6 +881,7 @@ span.badge {
 	overflow: hidden!important;
 	position: absolute;
 	box-sizing: border-box;
+	z-index: 1;
 }
 
 #display_skills ul li:nth-child(1){
