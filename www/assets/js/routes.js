@@ -91,18 +91,19 @@ var routes = [
         url: './pages/account.html',
         on: {
             pageInit: function(e, page){
-                // if(localStorage.getItem('load')){
-                //     system.loading();
-                // }
-                app.toolbar.hide('#menu_job');
-                // app.preloader.show();
-                // setTimeout(function(){
-                //     app.preloader.hide();
-                    account.ini();
-                    // jobs.ini();
+                let data = localStorage.getItem('personal-info');
+                if(data == null){
+                    account.ini();   
+                    account.display();
+                    jobs.display();
                     let ps = new PerfectScrollbar('#tab_account .other-info');
-                // },200);
-            }
+                }
+                else{
+                    account.display();
+                    jobs.display();
+                    let ps = new PerfectScrollbar('#tab_account .other-info');
+                }
+            }  
         }
     },
     {
@@ -132,7 +133,7 @@ var routes = [
                     let ps_list_schools = new PerfectScrollbar('#list_jobs .content');
                     let ps_newAcad = new PerfectScrollbar('.popup-newCareer');
                     let ps_acad = new PerfectScrollbar('.popup-career');
-                    career.ini();
+                    career.display1();
                 // },200);
             }
         }
@@ -148,7 +149,7 @@ var routes = [
                     let ps_list_career = new PerfectScrollbar('#list_schools .content');
                     let ps_newCareer = new PerfectScrollbar('.popup-newAcad');
                     let ps_career = new PerfectScrollbar('.popup-acad');
-                    academic.ini();
+                    academic.display1();
                 // },200);
             }
         }
@@ -197,6 +198,7 @@ var routes = [
                 // setTimeout(function(){
                     // app.preloader.hide();
                     skills.display1();
+                    let ps = new PerfectScrollbar('#skills_display .content');
                 // },200);
             }
         }

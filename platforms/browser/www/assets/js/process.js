@@ -3,24 +3,102 @@ let host = window.location;
 let server = `http://system.kareer-ph.com/`;
 // let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
-let db = new PouchDB('kareer');
-let info = db.info().then(function (info) {
-	console.log(info);
-});
 account = {
 	ini:function(){
-		let data = this.get()[0], scroll = 0, badge ="";   
-		this.display(data);
-		// app.toolbar.hide('#menu_account');
-		app.toolbar.hide('#menu_job');
+		let data = this.get()[0], id = this.id(), scroll = 0, badge ="",
+		picture = data[19];
+		_skills = JSON.parse(skills.get(id)),
+		specialty = JSON.parse(specialties.get(id)),
+		acad = JSON.parse(academic.get(id)),
+		car = JSON.parse(career.get(id));
+		localStorage.setItem('personal-info',JSON.stringify(data));   
+		localStorage.setItem('picture',JSON.stringify(picture));   
+		localStorage.setItem('skills',JSON.stringify(_skills));
+		if(specialty.length == 0){
+			localStorage.setItem('specialty',JSON.stringify([]));   			
+		} 
+		else{
+			localStorage.setItem('specialty',JSON.stringify(specialty));   			
+		}  
+		localStorage.setItem('academic',JSON.stringify(acad));   
+		localStorage.setItem('career',JSON.stringify(car));  
 
-		$('#jobs').on('click', function () {
-			app.preloader.show();
-            setTimeout(function(){
-                app.preloader.hide();
-                jobs.ini();
-            },400);
+		// $.each(JSON.parse(notifications.get(account.id())),function(i,v){
+		// 	if(v[6] == 1){
+		// 		badge+=v[6];
+		// 	}
+		// });
+		// $('span.badge.notif').html((badge.length > 0)?badge.length:'0');
+		// $('span.badge.chat').html('0');
+	},
+	id:function(){
+		return localStorage.getItem('account_id');
+	},
+	get:function(){
+		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
+		(data[0] == null)?account.logout():"";
+        data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
+		return JSON.parse(data.responseText);
+	},
+	settingsDisplay:function(){
+		let data = JSON.parse(localStorage.getItem('personal-info')), ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		$('#display_accountPicture img').attr({'src':`${picture}`});
+        $("._gname").val(data[8]);
+        $("._mname").val(data[10]);
+        $("._lname").val(data[9]);
+        $("._address").html(data[13]);
+        $("._number").val(data[15]);
+        $("._bio").html(data[1]);
+        $("._email").val(data[2]);
+        $(`._gender option[value='${data[11]}']`).attr({'selected':true});
+
+        let dob = (data[12] == "")?"January 26, 1993":data[12];
+		let from = new Date((new Date()).getFullYear()-18, 1, 1);
+		app.calendar.create({
+			inputEl: '#field_dob',
+			openIn: 'customModal',
+			dateFormat: 'MM dd, yyyy',
+			footer: true,
+			firstDay:0,
+			value:[dob],
+		    disabled: {from: from}
 		});
+        this.update(data[0]);
+		this.updatePassword(data[0]);
+		this.updatePicture(data[0]);
+		$(`#display_accountPicture img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
+	},
+	display:function(){
+		let data = JSON.parse(localStorage.getItem('personal-info'));
+		let pic = localStorage.getItem('picture');
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
+		let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
+		$('#profile img').attr({'src':picture});
+		$('#profile h3.fullname').html(name);
+		$('p.about').html(about);
+
+		$(`#profile img`).on('error',function(){
+			$(this).attr({'src':tempPicture});
+		});
+		specialties.display();
+		skills.display1();
+		academic.display1();
+		career.display1();
+		$("#field_fname").html(data[8]);
+        $("#field_mname").html(data[10]);
+        $("#field_lname").html(data[9]);
+        $("#field_dob").html(data[12]);
+        $("#field_address").html(data[13]);
+        $("#field_number").html(data[15]);
+        $("#field_email").html(data[2]);
+        $("#field_gender").html(data[11]);
+
+		app.toolbar.hide('#menu_job');
+		app.tab.show('#tab_account');
 
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
@@ -49,65 +127,6 @@ account = {
 				$('#profile').addClass('active');
 			}
 		});
-		// $.each(JSON.parse(notifications.get(account.id())),function(i,v){
-		// 	if(v[6] == 1){
-		// 		badge+=v[6];
-		// 	}
-		// });
-		// $('span.badge.notif').html((badge.length > 0)?badge.length:'0');
-		// $('span.badge.chat').html('0');
-	},
-	id:function(){
-		return localStorage.getItem('account_id');
-	},
-	get:function(){
-		let data = [localStorage.getItem('callback'),JSON.parse(localStorage.getItem('account'))];
-		(data[0] == null)?account.logout():"";
-        data = system.ajax(system.host('get-account'),[data[1]['email'],data[1]['id'],data[0]]);
-		return JSON.parse(data.responseText);
-	},
-	settingsDisplay:function(){
-		let data = this.get()[0], ps = new PerfectScrollbar('#display_info .content');
-		db.get('account', function(err, doc) {
-		  if (err) { return console.log(err); }
-		  // console.log(doc);
-			let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(doc.info[9]))? doc.info[9] : ((typeof doc.info[9] == 'object') || (doc.info[9] == ""))? tempPicture : `${server}/assets/images/logo/${doc.info[9]}`;
-
-			$('#display_accountPicture img').attr({'src':`${picture}`});
-	        $("._gname").val(doc.info[0]);
-	        $("._mname").val(doc.info[1]);
-	        $("._lname").val(doc.info[2]);
-	        $("._address").html(doc.info[4]);
-	        $("._number").val(doc.info[5]);
-	        $("._bio").html(doc.info[8]);
-	        $("._email").val(doc.info[6]);
-	        $(`._gender option[value='${doc.info[7]}']`).attr({'selected':true});
-
-	        let dob = (doc.info[3] == "")?"January 26, 1993":doc.info[3];
-			let from = new Date((new Date()).getFullYear()-18, 1, 1);
-			app.calendar.create({
-				inputEl: '#field_dob',
-				openIn: 'customModal',
-				dateFormat: 'MM dd, yyyy',
-				footer: true,
-				firstDay:0,
-				value:[dob],
-			    disabled: {from: from}
-			});
-	        account.update(data[0]);
-			account.updatePassword(data[0]);
-			account.updatePicture(data[0]);
-			$(`#display_accountPicture img`).on('error',function(){
-				$(this).attr({'src':tempPicture});
-			});
-		});	
-	},
-	display:function(){
-        academic.ini();
-        // career.ini();
-        // specialties.display();
-        // skills.frontdisplay1();
-        pouch.account();
 	},
 	update:function(id){
 		$("#form_personalInfo").validate({
@@ -139,7 +158,7 @@ account = {
 				let _form = $("#form_personalInfo").serializeArray();
 		    	app.preloader.show();
 		    	_form = [id,_form[0]['value'],_form[1]['value'],_form[2]['value'],_form[3]['value'],_form[4]['value'],_form[5]['value'],_form[6]['value'],_form[7]['value'],_form[8]['value']];
-				console.log(_form);
+				// console.log(_form);
 				let ajax = system.ajax(system.host('do-updateInfo'),_form);
 				ajax.done(function(data){
 			    	app.preloader.hide();				
@@ -152,7 +171,7 @@ account = {
 				        $("._number").html(_form[7]);
 				        $("._bio").html(_form[9]);
 				        $("._email").html(_form[8]);
-				        pouch.update(_form);
+						localStorage.setItem('personal-info',JSON.stringify(account.get()[0]));   
 	                    system.notification("Kareer",`Updated`);
 					}
 					else{
@@ -245,7 +264,6 @@ account = {
         else {
             $inputImage.addClass("hidden");
         }
-
     },
     processPicture:function(image){
 		popover_picture = app.popover.create({
@@ -280,14 +298,12 @@ account = {
 			                            if (data != 0) {
 			                            	$("#display_accountPicture img, #profile img").attr({'src':image});
 			                            	$('#profile img').attr({'src':image});
-				                            pouch.updatePicture(JSON.parse(data));
 											setTimeout(function(){
 												app.preloader.hide();
 												popover_picture.close();
 												cropper.destroy();
 				                                system.notification("Kareer",`Picture Uploaded.`);
-        										account.ini();
-											},2000);
+												localStorage.setItem('picture',data);   											},2000);
 			                            }
 			                            else {
 											app.preloader.hide();
@@ -314,7 +330,6 @@ account = {
 			setTimeout(function(){
 				localStorage.clear();
 				app.preloader.hide();
-				pouch.delete();
 				view.router.navigate('/home/',{reloadCurrent:true});
 			},1000);
 				system.notification("Kareer",`Sign out.`);
@@ -328,44 +343,34 @@ skills = {
 		console.log()
 		return ajax.responseText;
 	},
-	frontdisplay1:function(){
-		// db.get('skills', function(err, doc) {
-		//   if (err) { return console.log(err); }
-		//   db.remove(doc, function(err, response) {
-		//     if (err) { return console.log(err); }
-		//     console.log(response.ok);
-		//   });
-		// });
-		db.get('skills', function(err, doc) {
-  			if (err) { return console.log(err); }
-  			let _skills = doc.info[0];
-  			console.log(_skills.length);
-			// let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
-	        if(doc.info[0].length>0){
-	        	$('#display_skill ul').html("");
-	        	$.each(doc.info[0],function(i,v){
-	        		console.log(v);
-	        		$('#display_skill ul').append(`
-						<li class="swipeout" data-node='${v[0]}'>
-	                        <div class="item-content swipeout-content item-input">
-	                            <div class="item-inner">
-	                                <div class="item-title text-align-left">${v[1]}</div>
-	                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
-	                            </div>
-	                        </div>
-	                        <div class="swipeout-actions-right">
-						        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
-						    </div>
-	                    </li>`);
-	        		let progress = $$(`#${v[0]}`).attr('data-progress');
-					app.progressbar.set(`#${v[0]}`, progress);
-	        	})
-	        }
-	        this.add1();
-	        this.remove1();
-  		});
+	display1:function(){
+		let _skills = JSON.parse(localStorage.getItem('skills'));
+        if(_skills.length>0){
+        	$('#display_skill ul').html("");
+        	$.each(_skills,function(i,v){
+        		$('#display_skill ul').append(`
+					<li class="swipeout" data-node='${v[0]}'>
+                        <div class="item-content swipeout-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title text-align-left">${v[1]}</div>
+                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
+                            </div>
+                        </div>
+                        <div class="swipeout-actions-right">
+					        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
+					    </div>
+                    </li>`);
+        		let progress = $$(`#${v[0]}`).attr('data-progress');
+				app.progressbar.set(`#${v[0]}`, progress);
+        	})
+        } 
+        else{
+        	// $("#display_skill ul").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
+        }
+        this.add1(account.id());
+        this.remove1();
 	},
-	display1:function(){ /**/
+	frontdisplay1:function(){ /**/
 		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
         if(_skills.length>0){	
         	$('#display_skill ul').html("");
@@ -392,7 +397,7 @@ skills = {
         this.add1();
         this.remove1();
 	},
-	add1:function(){ /**/
+	add1:function(id){ /**/
 		$("#skillForm").validate({
 			rules: {
 				field_skills: {required: true, maxlength: 100},
@@ -409,31 +414,18 @@ skills = {
 				}
 			},
 			submitHandler: function (form) {
-				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'], id = account.id();
+				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'];
 				let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,skill,level]);
 				ajax.done(function(data){
+					console.log(data);
 					app.preloader.show();
 					if(data != 0){
 						$('input').val(""); $('textarea').val("");
+						localStorage.setItem('skills',JSON.stringify(JSON.parse(skills.get(id))));   
 						setTimeout(function(){
 							app.preloader.hide();
-							$('#display_skill ul').prepend(`
-								<li class="swipeout" data-node='${data}'>
-			                        <div class="item-content swipeout-content">
-			                            <div class="item-inner">
-			                                <div class="item-title text-align-left">${skill}</div>
-			                                <div class="item-after row"><span data-progress="${level}" class="progressbar col-80" id="demo-inline-progressbar"></span><small class="col-20">${level}%</small></div>
-			                            </div>
-			                        </div>
-			                        <div class="swipeout-actions-right">
-								        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
-								    </div>
-			                    </li>`);
+							skills.display1();
 		                    system.notification("Kareer",`Success. ${skill} skill has been added.`);
-							let progress = $$('#demo-inline-progressbar').attr('data-progress');
-				  			app.progressbar.set('#demo-inline-progressbar', progress);
-	                    	skills.remove1();
-	                    	skills.pouch(data,skill,level);
 		                },1000);
 					}
 					else{
@@ -460,9 +452,21 @@ skills = {
 			ajax.done(function(_data){
 				app.preloader.show();
 				if(_data == 1){
+					localStorage.setItem('skills',JSON.stringify(JSON.parse(skills.get(id))));   
 					setTimeout(function(){
 						app.preloader.hide();
-						$(`li.swipeout.swipeout-opened`).remove();
+						if(JSON.parse(localStorage.getItem('skills')).length != 0){
+							$(`li.swipeout.swipeout-opened`).remove();
+						}
+						else{
+							$('#display_skill ul').html(`<li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            No information to show
+                                        </div>
+                                    </div>
+                                </li>`);
+						}
 	                    system.notification("Kareer",`Skill has been removed.`);
 	                },1000);
 				}
@@ -471,54 +475,8 @@ skills = {
 				}
 			});
 		});
-	},
-	pouch:function(id,skill,level){
-		let data = [];
-		data = [id,skill,level];
-		let skills =[];
-		db.get('skills', function(err, doc) {
-  			if (err) { 
-  				skills.push(data);
-  				db.put({
-				    _id: 'skills',
-				    title: 'Account Info',
-				    info: [ 
-				  		skills
-				    ]
-				}, function(err, response) {
-				    if (err) { return console.log(err); }
-				    console.log(response.ok);
-				}); 
-  			}
-  			else{
-  				skills = doc.info[0];
-  				skills.push(data);
-  				console.log(skills);
-  				db.put({
-				    _id: 'skills',
-				    title: 'Account Info',
-				    _rev: doc._rev,
-				    info: [ 
-				  		skills
-				    ]
-				}, function(err, response) {
-				    if (err) { return console.log(err); }
-				    console.log(response.ok);
-				});
-  			}
-		});
-	},
-	pouchDelete:function(){
-		db.get('skills', function(err, doc) {
-		  if (err) { return console.log(err); }
-		  db.remove(doc, function(err, response) {
-		    if (err) { return console.log(err); }
-		    console.log(response.ok);
-		  });
-		});
 	}
 }
-
 /**/
 specialties ={
 	add:function(){
@@ -552,28 +510,21 @@ specialties ={
 		return ajax.responseText;
 	},
 	display:function(){
-		let id = account.id(), specialty = JSON.parse(specialties.get(id))[0];
-		// console.log(specialty);
-		// $(".specialties ul").html("");
-		if((typeof specialty != undefined) || (specialty.length != 0)){
+		let specialty = JSON.parse(localStorage.getItem('specialty'));
+		console.log(specialty);
+		if(specialty.length>0){
+			$(".specialties ul").html("");
 			// $.each(specialty,function(i,v){
     		$(".specialties ul").append(`
     			<li class="item-content item-input">
                     <div class="item-inner">
-                        <div class="item-title">${specialty[1]}</div>
+                        <div class="item-title">${specialty[0][1]}</div>
                     </div>
                 </li>
     		`);
 	    	// });
 	    }
 	    else{
-	    	$(".specialties ul").html(`<li class="item-content item-input">
-                    <div class="item-inner">
-                        <div class="item-title">
-                            No information to show
-                        </div>
-                    </div>
-                </li>`);
 	    }
 	},
 	bio:function(){
@@ -607,10 +558,6 @@ specialties ={
 /**/
 academic = {
 	ini:function(){
-		let id =  account.id();
-		let data = JSON.parse(this.get(id));
-		this.display1(data);
-		this.add1(id);
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-academic'),id);
@@ -643,12 +590,11 @@ academic = {
                 data.done(function(data){
                 	app.preloader.show();
                     if(data != 0){
+						localStorage.setItem('academic',JSON.stringify(JSON.parse(academic.get(account.id()))));
                     	setTimeout(function(){
 							app.preloader.hide();
+							academic.display1();
 			                system.notification("Kareer","Academic information has been updated.");
-							degree = ((form[2].value == "") || (form[2].value == "null"))?"":form[2].value;
-							$(`li[data-node='${id[0]}'] div.item-title.text-align-left`).html(`${form[0].value}`);
-							$(`li[data-node='${id[0]}'] div.item-title.text-align-right`).html(`${form[4].value} - ${form[5].value}`);
 							app.popup.close('.popup-acad',true);
 						},1000);
                     }
@@ -659,33 +605,44 @@ academic = {
 		    }
 		});
 	},
-	delete:function(id){
-        var data = system.ajax(system.host('do-deleteAcademic'),id);
-        data.done(function(data){
-        	app.preloader.show();
-            if(data != 0){
-            	setTimeout(function(){
-					app.preloader.hide();
-	                system.notification("Kareer","Academic information has been deleted.");
-					app.swipeout.delete(`li[data-node='${id}']`);
-				},1000);
-            }
-            else{
-                system.notification("Kareer","Failed to delete.");
-            }
-        });
+	delete:function(){
+		$(`a[data-cmd='delete-acad']`).on('click', function(){
+			let id = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
+	        var data = system.ajax(system.host('do-deleteAcademic'),id);
+	        data.done(function(data){
+	        	app.preloader.show();
+	            if(data != 0){
+					localStorage.setItem('academic',JSON.stringify(JSON.parse(academic.get(account.id()))));   
+	            	setTimeout(function(){
+						app.preloader.hide();
+		                system.notification("Kareer","Academic information has been deleted.");
+		                if(JSON.parse(localStorage.getItem('academic')).length != 0){
+							$(`li.swipeout.swipeout-opened`).remove();
+						}
+						else{
+							$('#display_skill ul').html(`<li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            No information to show
+                                        </div>
+                                    </div>
+                                </li>`);
+						}
+					},1000);
+	            }
+	            else{
+	                system.notification("Kareer","Failed to delete.");
+	            }
+	        });
+		});
 	},
-	display:function(data){ /**/
-		db.get('academic', function(err, doc) {
-  			if (err) { return console.log(err); }
-  			console.log(doc.info[0]);
-  		});
-		let degree = "";
+	display1:function(){ /**/
+		let degree = "", data = JSON.parse(localStorage.getItem('academic'));
 		if(data.length>0){
-			$("#list_schools .media-list ul").html("");
+			$("#list_schools ul").html("");
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
-				$("#list_schools .media-list ul").append(`
+				$("#list_schools ul").append(`
 					<li class="swipeout" data-node='${v[0]}'>
 						<a class="item-link item-content swipeout-content item-input" data-node='${v[0]}' data-cmd='open-popupAcad'>
 							<div class="item-inner">
@@ -701,121 +658,49 @@ academic = {
 					</li>
 				`);
 			});			
-        	$("#list_schools .media-list ul li a.in-field-btn").remove();        	
+        	$("#list_schools ul li a.in-field-btn").remove();        	
         	$("#settings-acad-info a.btn-nav").removeClass('hidden');
 
-			$(`a[data-cmd='open-popupAcad']`).on('click', function(){
-				let _data = $(this).data(), acad = [];
-				$.each(data,function(i,v){
-					if(v[0] == _data.node){ acad = v; return false;}
-				})
-
-				console.log(acad);
-				$("#display_acad_fielddegree").attr({"style":"display:none;"});
-				$("#display_acad_fieldunit").attr({"style":"display:none;"});
-
-				if((new RegExp('Elementary|High School','i')).test(acad[2])){
-					$("#display_acad_fielddegree").attr({"style":"display:none;"});
-					$("#display_acad_fieldunit").attr({"style":"display:none;"});
-					$("#field_acad_degree").val("null");
-					$("#field_acad_units").val("null");
-				}
-				else{
-					$("#display_acad_fielddegree").attr({"style":"display:block;"});
-					$("#display_acad_fieldunit").attr({"style":"display:block;"});
-					$("#field_acad_degree").val("");
-					$("#field_acad_units").val("");
-				}
-
-				$("#field_acad_level").val(acad[2]);
-				$("#field_acad_school").html(acad[3]);
-				$("#field_acad_degree").val(acad[4]);
-				$("#field_acad_units").val(acad[5]);
-				$("#field_acad_yearfrom").val(acad[6]);
-				$("#field_acad_yearto").val(acad[7]);
-				app.popup.open('.popup-acad');
-				academic.update([acad[0],acad[1]]);
-			});
-
-			$(`a[data-cmd='delete-acad']`).on('click', function(){
-				let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
-				academic.delete(__data);
-			});
+        	this.view();
+			this.delete();
         }
 		else{
         	// $("#settings-acad-info a.btn-nav").addClass('hidden');        	
 		}
+		this.add1(account.id());
 	},
-	display1:function(data){ /**/
-		// academic.pouchDelete();
-		db.get('academic', function(err, doc) {
-  			if (err) { return console.log(err); }
-  			console.log(doc.info[0].length);
-			if(doc.info[0].length>0){
-				$("#list_schools .media-list ul").html("");
-				$.each(doc.info[0],function(i,v){
-					console.log(v);
-					$("#list_schools .media-list ul").append(`
-						<li class="swipeout" data-node='${v[0]}'>
-							<a class="item-link item-content swipeout-content item-input" data-node='${v[0]}' data-cmd='open-popupAcad'>
-								<div class="item-inner">
-									<div class="item-title-row">
-										<div class="item-title text-align-left">${v[2]}</div>
-										<div class="item-title text-align-right">${v[6]} - ${v[7]}</div>
-									</div>
-								</div>
-							</a>
-						    <div class="swipeout-actions-right">
-						        <a data-cmd='delete-acad'><i class='material-icons'>close</i></a>
-						    </div>
-						</li>
-					`);
-				});			
-	        	$("#list_schools .media-list ul li a.in-field-btn").remove();        	
-	        	$("#settings-acad-info a.btn-nav").removeClass('hidden');
+	view:function(){
+		$(`a[data-cmd='open-popupAcad']`).on('click', function(){
+			let _data = $(this).data(), acad = [], data = JSON.parse(localStorage.getItem('academic'));
+			$.each(data,function(i,v){
+				if(v[0] == _data.node){ acad = v; return false;}
+			})
+			console.log(acad);
+			$("#display_acad_fielddegree").attr({"style":"display:none;"});
+			$("#display_acad_fieldunit").attr({"style":"display:none;"});
 
-				$(`a[data-cmd='open-popupAcad']`).on('click', function(){
-					let _data = $(this).data(), acad = [];
-					$.each(doc.info[0],function(i,v){
-						if(v[0] == _data.node){ acad = v; return false;}
-					})
-
-					console.log(acad);
-					$("#display_acad_fielddegree").attr({"style":"display:none;"});
-					$("#display_acad_fieldunit").attr({"style":"display:none;"});
-
-					if((new RegExp('Elementary|High School','i')).test(acad[2])){
-						$("#display_acad_fielddegree").attr({"style":"display:none;"});
-						$("#display_acad_fieldunit").attr({"style":"display:none;"});
-						$("#field_acad_degree").val("null");
-						$("#field_acad_units").val("null");
-					}
-					else{
-						$("#display_acad_fielddegree").attr({"style":"display:block;"});
-						$("#display_acad_fieldunit").attr({"style":"display:block;"});
-						$("#field_acad_degree").val("");
-						$("#field_acad_units").val("");
-					}
-
-					$("#field_acad_level").val(acad[2]);
-					$("#field_acad_school").html(acad[3]);
-					$("#field_acad_degree").val(acad[4]);
-					$("#field_acad_units").val(acad[5]);
-					$("#field_acad_yearfrom").val(acad[6]);
-					$("#field_acad_yearto").val(acad[7]);
-					app.popup.open('.popup-acad');
-					academic.update([acad[0],acad[1]]);
-				});
-
-				$(`a[data-cmd='delete-acad']`).on('click', function(){
-					let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
-					academic.delete(__data);
-				});
-	        }
-			else{
-	        	// $("#settings-acad-info a.btn-nav").addClass('hidden');        	
+			if((new RegExp('Elementary|High School','i')).test(acad[2])){
+				$("#display_acad_fielddegree").attr({"style":"display:none;"});
+				$("#display_acad_fieldunit").attr({"style":"display:none;"});
+				$("#field_acad_degree").val("null");
+				$("#field_acad_units").val("null");
 			}
-  		});
+			else{
+				$("#display_acad_fielddegree").attr({"style":"display:block;"});
+				$("#display_acad_fieldunit").attr({"style":"display:block;"});
+				$("#field_acad_degree").val("");
+				$("#field_acad_units").val("");
+			}
+
+			$("#field_acad_level").val(acad[2]);
+			$("#field_acad_school").html(acad[3]);
+			$("#field_acad_degree").val(acad[4]);
+			$("#field_acad_units").val(acad[5]);
+			$("#field_acad_yearfrom").val(acad[6]);
+			$("#field_acad_yearto").val(acad[7]);
+			app.popup.open('.popup-acad');
+			academic.update([acad[0],acad[1]]);
+		});
 	},
 	add1:function(id){ /**/
 		$("#display_newacad_fielddegree").attr({"style":"display:none;"});
@@ -858,18 +743,18 @@ academic = {
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray(),data = 0;
 				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
-       			console.log(_form);
                 var data = system.ajax(system.host('do-addAcademic'),_form);
                 data.done(function(data){
                 	_form[0] = data;
                 	app.preloader.show();
                     if(data != 0){
+	                    $('input').val(""), $('textarea').val("");;
+						localStorage.setItem('academic',JSON.stringify(JSON.parse(academic.get(id))));   
                     	setTimeout(function(){
 							app.preloader.hide();
+							academic.display1();
 	                        system.notification("Kareer","New Academic information has been added.");
 							app.popup.close('.popup-newAcad',true);
-	                    	academic.pouch(_form);
-	                    	academic.display1(JSON.parse(academic.get(id)));
 	                    },1000);
                     }
                     else{
@@ -879,60 +764,10 @@ academic = {
 		    }
 		});
 	},
-	pouch:function(_form){
-		let data = [];
-		data = _form;
-		let academic =[];
-		db.get('academic', function(err, doc) {
-  			if (err) { 
-  				academic.push(data);
-  				db.put({
-				    _id: 'academic',
-				    title: 'Academic Info',
-				    info: [ 
-				  		academic
-				    ]
-				}, function(err, response) {
-				    if (err) { return console.log(err); }
-				    console.log(response.ok);
-				}); 
-  			}
-  			else{
-  				academic = doc.info[0];
-  				academic.push(data);
-  				console.log(academic);
-  				db.put({
-				    _id: 'academic',
-				    title: 'Academic Info',
-				    _rev: doc._rev,
-				    info: [ 
-				  		academic
-				    ]
-				}, function(err, response) {
-				    if (err) { return console.log(err); }
-				    console.log(response.ok);
-				});
-  			}
-		});
-	},
-	pouchDelete:function(){
-		db.get('academic', function(err, doc) {
-		  if (err) { return console.log(err); }
-		  db.remove(doc, function(err, response) {
-		    if (err) { return console.log(err); }
-		    console.log(response.ok);
-		  });
-		});
-	}
 }
 
 career = {
 	ini:function(){
-		let id =  account.id();
-		let data = JSON.parse(this.get(id));
-
-		this.display1(data);
-		this.add1(id);
 	},
 	get:function(id){
 		var ajax = system.ajax(system.host('get-career'),id);
@@ -965,11 +800,11 @@ career = {
                 data.done(function(data){
                 	app.preloader.show();
                     if(data != 0){
+						localStorage.setItem('career',JSON.stringify(JSON.parse(career.get(account.id()))));
                     	setTimeout(function(){
 							app.preloader.hide();
+							career.display1();
 			                system.notification("Kareer","Career information has been updated.");
-							$(`li[data-node='${id[0]}'] div.item-title.text-align-left`).html(`${_form[3]}`);
-							$(`li[data-node='${id[0]}'] div.item-title.text-align-right`).html(`${_form[6]} - ${_form[7]}`);
 							app.popup.close('.popup-career',true);
 						},1000);
                     }
@@ -981,28 +816,43 @@ career = {
 		});
 	},
 	delete:function(id){
-        var data = system.ajax(system.host('do-deleteCareer'),id);
-        data.done(function(data){
-        	app.preloader.show();
-            if(data != 0){
-            	setTimeout(function(){
-					app.preloader.hide();
-	                system.notification("Kareer","Career information has been deleted.");
-					app.swipeout.delete(`li[data-node='${id}']`);
-				},1000);
-            }
-            else{
-                system.notification("Kareer","Failed to delete.");
-            }
+		$(`a[data-cmd='delete-career']`).on('click', function(){
+			let id = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
+	        var data = system.ajax(system.host('do-deleteCareer'),id);
+	        data.done(function(data){
+	        	app.preloader.show();
+	            if(data != 0){
+					localStorage.setItem('career',JSON.stringify(JSON.parse(career.get(account.id()))));   
+	            	setTimeout(function(){
+						app.preloader.hide();
+		                system.notification("Kareer","Career information has been deleted.");
+						if(JSON.parse(localStorage.getItem('career')).length != 0){
+							$(`li.swipeout.swipeout-opened`).remove();
+						}
+						else{
+							$('#display_skill ul').html(`<li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            No information to show
+                                        </div>
+                                    </div>
+                                </li>`);
+						}
+					},1000);
+	            }
+	            else{
+	                system.notification("Kareer","Failed to delete.");
+	            }
+			});
         });
 	},
-	display1:function(data){ /**/
-		let degree = "";
+	display1:function(){ /**/
+		let degree = "", data = JSON.parse(localStorage.getItem('career'));
 		if(data.length>0){
-			$("#list_jobs .list ul").html("");
+			$("#list_jobs ul").html("");
 			$.each(data,function(i,v){
 				degree = ((v[4] == "") || (v[4] == "null"))?"":v[4];
-				$("#list_jobs .list ul").append(`
+				$("#list_jobs ul").append(`
 					<li class="swipeout" data-node='${v[0]}'>
 						<a class="item-link item-content swipeout-content item-input" data-node='${v[0]}' data-cmd='open-popupCareer'>
 							<div class="item-inner">
@@ -1018,33 +868,33 @@ career = {
 					</li>
 				`);
 			});			
-        	$("#list_jobs .list ul li a.in-field-btn").remove();        	
+        	$("#list_jobs ul li a.in-field-btn").remove();        	
         	$("#settings-career-info a.btn-nav").removeClass('hidden');        	
 
-			$(`a[data-cmd='open-popupCareer']`).on('click', function(){
-				let _data = $(this).data(), _career = [];
-				$.each(data,function(i,v){
-					if(v[0] == _data.node){ _career = v; return false;}
-				})
-				console.log(_career);
-				$("#field_career_agency").val(_career[2]);
-				$("#field_career_position").val(_career[3]);
-				$("#field_career_salary").val(_career[4]);
-				$("#field_career_appointment").val(_career[5]);
-				$("#field_career_yearfrom").val(_career[6]);
-				$("#field_career_yearto").val(_career[7]);
-				app.popup.open('.popup-career');
-				career.update([_career[0],_career[1]]);
-			});
-
-			$(`a[data-cmd='delete-career']`).on('click', function(){
-				let __data = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
-				career.delete(__data);
-			});
+        	this.view();
+			this.delete();
 		}
 		else{
         	// $("#settings-career-info a.btn-nav").addClass('hidden');        	
 		}
+		this.add1(account.id());	
+	},
+	view:function(){
+		$(`a[data-cmd='open-popupCareer']`).on('click', function(){
+			let _data = $(this).data(), _career = [], data = JSON.parse(localStorage.getItem('career'));
+			$.each(data,function(i,v){
+				if(v[0] == _data.node){ _career = v; return false;}
+			})
+			console.log(_career);
+			$("#field_career_agency").val(_career[2]);
+			$("#field_career_position").val(_career[3]);
+			$("#field_career_salary").val(_career[4]);
+			$("#field_career_appointment").val(_career[5]);
+			$("#field_career_yearfrom").val(_career[6]);
+			$("#field_career_yearto").val(_career[7]);
+			app.popup.open('.popup-career');
+			career.update([_career[0],_career[1]]);
+		});
 	},
 	add1:function(id){ /**/
 		let calendarFromModal = app.calendar.create({
@@ -1088,12 +938,13 @@ career = {
                 	_form[0] = data;
                 	app.preloader.show();
                     if(data != 0){
+						localStorage.setItem('career',JSON.stringify(JSON.parse(career.get(id))));   
                     	setTimeout(function(){
 							app.preloader.hide();
 	                    	$('input').val("");
+							career.display1();
 	                        system.notification("Kareer","New career information has been added.");
 							app.popup.close('.popup-newCareer',true);
-							career.display1(JSON.parse(career.get(id)));
 						},1000);
                     }
                     else{
@@ -1141,7 +992,7 @@ jobs = {
 						setTimeout(function () {
 							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-						},2000);
+						},200);
 
 				        jobs.loadMore(($("#tab_jobs ul li").length - 1) <= 1);
 				    },
@@ -1150,7 +1001,7 @@ jobs = {
 						setTimeout(function () {
 							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-						},2000);
+						},200);
 
 	    				job_id = $("#tab_jobs ul li.active").data('node');
 						job.apply([job_id,account.id()]);
@@ -1162,7 +1013,7 @@ jobs = {
 						setTimeout(function () {
 							app.preloader.hide();
 					    	$("#tab_jobs ul li.previous").remove();
-						},2000);
+						},200);
 
 	    				job_id = $("#tab_jobs ul li.active").data('node');
 						job.bookmark([job_id,account.id()]);
@@ -1180,7 +1031,7 @@ jobs = {
 	},
 	display:function(){
 		let swipe=true,_data=[],job_id="",business_id="",jobData="",skills="",logo="",jobAbout="",companyAbout="",ps_job="",ps_business="",business_data="";	
-		let id = account.id(),data = JSON.parse(jobs.get(id,min,count));
+		// let id = account.id(),data = JSON.parse(jobs.get(id,min,count));
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
@@ -1602,7 +1453,7 @@ convo = {
 	      let text = messagebar.getValue().replace(/\n/g, '<br>').trim();
 	      if (responseInProgress) return;
 	       let user = account.get()[0], tempPicture = "";
-        	let picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
+        	// let picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/logo/${data[19]}`;
             if(!text.length){
                     system.notification("Kareer","Message box is empty.");
             }
@@ -1870,16 +1721,14 @@ signin = {
                     console.log(data[2]);
                     if(data[1] == 'applicant'){
                         system.notification("Kareer","Signed in.");
-				        localStorage.setItem('callback','kareer-oauth');
-				        localStorage.setItem('account_id',data[2]['id']);
-						localStorage.setItem('account',JSON.stringify(data[2]));
-						db.put({_id: 'login',title: 'Login Auth',data: [data[2].email,data[2].first_name,data[2].last_name,data[2].picture]}, 
-						function(err, response) {
-						  if (err) { return console.log(err); }
-						  console.log(response);
-						});
-						pouch.addDoc(account.get()[0]);
-                        view.router.navigate('/account/');                        
+					        localStorage.setItem('callback','kareer-oauth');
+					        localStorage.setItem('account_id',data[2]['id']);
+							localStorage.setItem('account',JSON.stringify(data[2]));
+	                    	app.preloader.show();
+			                setTimeout(function(){
+			                    app.preloader.hide();
+	                        	view.router.navigate('/account/');                        
+							},1000);
                     }
                     else{
                         system.notification("Kareer","Sign in failed.");
@@ -1974,24 +1823,12 @@ auth = {
 	ini:function(){
 	},
 	auto:function(email, id, auth){
-		// setTimeout(function(){
-	 //        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
-	 //        data.done(function(data){
-	 //        	console.log(data);
-	 //            data = JSON.parse(data);
-	 //            if(data[1] == 'applicant'){
-	 //                view.router.navigate('/account/');                        
-	 //            }
-	 //            else{
-	 //                system.notification("Kareer","Sign in failed.");
-	 //            }
-	 //        });
-		// },500);
 		setTimeout(function(){
-			db.get('login', function(err, doc) {
-			    if (err) { return console.log(err); }
-				// console.log(doc.data);
-	            if(doc.data[0] == email){
+	        var data = system.ajax(system.host('do-logInAuth'),[email,id,auth]);
+	        data.done(function(data){
+	        	console.log(data);
+	            data = JSON.parse(data);
+	            if(data[1] == 'applicant'){
 	                view.router.navigate('/account/');                        
 	            }
 	            else{
@@ -2031,127 +1868,4 @@ auth = {
 	facebook:function(){
 		openFB.init({appId: '407673386340765'});
 	}
-}
-/*Pouch DB integration*/
-pouch = {
-	account:function(){
-		let tempPicture = "", name ="", about = "", picture = "";
-		db.get('account', function(err, doc) {
-		  if (err) { return console.log(err); }
-		   console.log(doc.info);
-			name = `${(doc.info[0]!=null)?doc.info[0]:''} ${(doc.info[1]!=null)?doc.info[1]:''} ${(doc.info[2]!=null)?doc.info[2]:''}`;
-			about = (doc.info[8] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:doc.info[8];
-			tempPicture = `assets/img/icons/icon.png`;
-			picture = ((new RegExp('facebook|googleusercontent','i')).test(doc.info[9]))? doc.info[9] : ((typeof doc.info[9] == 'object') || (doc.info[9] == ""))? tempPicture : `${server}/assets/images/logo/${doc.info[9]}`;
-			$(`#profile img`).on('error',function(){
-				$(this).attr({'src':tempPicture});
-			});			
-			$("#field_fname").html(doc.info[0]);
-	        $("#field_mname").html(doc.info[1]);
-	        $("#field_lname").html(doc.info[2]);
-	        $("#field_dob").html(doc.info[3]);
-	        $("#field_address").html(doc.info[4]);
-	        $("#field_gender").html(doc.info[7]);
-	        $("#field_number").html(doc.info[5]);
-	        $("#field_email").html(doc.info[6]);
-			$('#profile h3.fullname').html(name);
-	        $("p.about").html(about);
-			$('#profile img').attr({'src':picture});
-
-		});
-	},
-	update:function(form){
-		db.get('account', function(err, doc) {
-  			if (err) { return console.log(err); }
-			db.put({
-				_id: 'account',
-				title: 'Account info',
-				_rev: doc._rev,
-				info: [
-					form[1],
-			        form[2],
-			        form[3],
-			        form[4],
-			        form[5],
-			        form[6],
-			        form[7],
-			        form[8],
-			        form[9],
-			        doc.info[9]	
-				]
-			}, function(err, response) {
-			 	if (err) { return console.log(err); }
-			  	console.log(response.ok);
-			});
-		});
-	},
-	updatePicture:function(image){
-		db.get('account', function(err, doc) {
-  			if (err) { return console.log(err); }
-  			db.put({
-				_id: 'account',
-				title: 'Account Info',
-				_rev: doc._rev,
-				info: [
-					doc.info[0],
-					doc.info[1],
-					doc.info[2],
-					doc.info[3],
-					doc.info[4],
-					doc.info[5],
-					doc.info[6],
-					doc.info[7],
-					doc.info[8],
-					image
-				]
-			}, function(err, response) {
-			 	if (err) { return console.log(err); }
-			  	console.log(response.ok);
-			});
-  		});
-	},
-	loginAuth:function(){
-		db.get('login', function(err, doc) {
-		  if (err) { return console.log(err); }
-			// console.log(doc.data);
-		});
-	},
-	addDoc:function(data){
-		db.put({
-		  _id: 'account',
-		  title: 'Account Info',
-		  info: [ 
-		  	data[8],
-		    data[10],
-		    data[9],
-		    data[12],
-		    data[13],
-		    data[15],
-		    data[2],
-		    data[11],
-		    data[1],
-		    data[19],
-		  ]
-		}, function(err, response) {
-		  if (err) { return console.log(err); }
-		    console.log(response.ok);
-		});
-	},
-	delete:function(){
-		db.get('login', function(err, doc) {
-		  if (err) { return console.log(err); }
-		  db.remove(doc, function(err, response) {
-		    if (err) { return console.log(err); }
-		    console.log(response.ok);
-		  });
-		});
-		db.get('account', function(err, doc) {
-		  if (err) { return console.log(err); }
-		  db.remove(doc, function(err, response) {
-		    if (err) { return console.log(err); }
-		    console.log(response.ok);
-		  });
-		});
-	}
-
 }
