@@ -1,10 +1,11 @@
 let h = window.innerHeight, w = window.innerWidth;
 let host = window.location;
-let server = `http://system.kareer-ph.com/`;
-// let server = `http://localhost/kareer`;
+// let server = `http://system.kareer-ph.com/`;
+let server = `http://localhost/kareer`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
+		/*store user data to local storage*/
 		let data = this.get()[0], id = this.id(), scroll = 0, badge ="",
 		picture = data[19];
 		_skills = JSON.parse(skills.get(id)),
@@ -41,8 +42,8 @@ account = {
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
-		let data = JSON.parse(localStorage.getItem('personal-info')), ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		let data = JSON.parse(localStorage.getItem('personal-info')), ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "", pic = JSON.parse(localStorage.getItem('picture'));
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(pic))? pic : ((typeof pic == 'object') || (pic == ""))? tempPicture : `${server}/assets/images/profile/${pic}`;
 		$('#display_accountPicture img').attr({'src':`${picture}`});
         $("._gname").val(data[8]);
         $("._mname").val(data[10]);
@@ -73,8 +74,8 @@ account = {
 	},
 	display:function(){
 		let data = JSON.parse(localStorage.getItem('personal-info'));
-		let pic = localStorage.getItem('picture');
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		let pic = JSON.parse(localStorage.getItem('picture'));
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(pic))? pic : ((typeof pic == 'object') || (pic == ""))? tempPicture : `${server}/assets/images/profile/${pic}`;
 		let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
 		let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
 		$('#profile img').attr({'src':picture});
@@ -294,16 +295,17 @@ account = {
 								setTimeout(function(){
 			                        let data = system.ajax(system.host('do-updateImage'),[account.id(), 'picture', image]);
 			                        data.done(function(data) {
-			                        	console.log(data);
 			                            if (data != 0) {
 			                            	$("#display_accountPicture img, #profile img").attr({'src':image});
 			                            	$('#profile img').attr({'src':image});
+											localStorage.setItem('picture',data);
 											setTimeout(function(){
 												app.preloader.hide();
 												popover_picture.close();
 												cropper.destroy();
 				                                system.notification("Kareer",`Picture Uploaded.`);
-												localStorage.setItem('picture',data);   											},2000);
+												account.ini();   											
+											},2000);
 			                            }
 			                            else {
 											app.preloader.hide();
@@ -492,6 +494,7 @@ specialties ={
 					console.log(data);
 					app.preloader.show();
 					if(data == 1){
+						localStorage.setItem('specialty',JSON.stringify(JSON.parse(specialties.get(account.id()))));   
 						setTimeout(function(){
 							app.preloader.hide();
 							view.router.navigate('/skills/');
@@ -511,10 +514,8 @@ specialties ={
 	},
 	display:function(){
 		let specialty = JSON.parse(localStorage.getItem('specialty'));
-		console.log(specialty);
 		if(specialty.length>0){
 			$(".specialties ul").html("");
-			// $.each(specialty,function(i,v){
     		$(".specialties ul").append(`
     			<li class="item-content item-input">
                     <div class="item-inner">
@@ -522,14 +523,13 @@ specialties ={
                     </div>
                 </li>
     		`);
-	    	// });
 	    }
 	    else{
 	    }
 	},
 	bio:function(){
 		let data = account.get()[0][1];
-		console.log(data);
+		console.log(account.get());
 		$("p.about").html(data);
 		specialties.addBio();
 	},
@@ -540,9 +540,14 @@ specialties ={
 				let ajax = system.ajax(system.host('do-bio'),[bio,account.id()]);
 				ajax.done(function(data){
 					console.log(data);
+					app.preloader.show();
 					if(data == 1){
-						$("p.about").html(bio);
-                		system.notification("Kareer","Description added.");
+						localStorage.setItem('personal-info',JSON.stringify(account.get()[0]));   
+						setTimeout(function(){
+							app.preloader.hide();
+							$("p.about").html(bio);
+	                		system.notification("Kareer","Description added.");
+	                	},200);
 					}
 					else{
                 		system.notification("Kareer","Failed to add bio.");
@@ -1260,6 +1265,7 @@ bookmark = {
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
+		console.log(data);
 		this.display(data);
 	},
 	get:function(data){
@@ -1268,7 +1274,7 @@ bookmark = {
 	},
 	display:function(data){
 		let	picture = "", id="",ps_notif="";
-		if(data.length != 0){
+		if(data.length > 0){
 			$.each(data,function(i,v){
 				picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
 				$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="read_job" data-node="${v[0]}">
@@ -1370,7 +1376,7 @@ bookmark = {
 			});
 		}
 		else{
-			$(`#list_notifications ul`).html(`<a class="item-content item-input" id="empty">
+			$(`#list_bookmarks ul`).html(`<a class="item-content item-input" id="empty">
 						<div class="item-inner">
 							<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
 							<div class="item-title text-align-center">No Bookmarks yet</div>
