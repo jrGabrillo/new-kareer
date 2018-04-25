@@ -155,25 +155,26 @@ account = {
 		}); 
 
 		$("#button_personalInfo").on('click',function(){
+		    app.preloader.show();			
 			if($("#form_personalInfo").validate().form()){
 				let _form = $("#form_personalInfo").serializeArray();
-		    	app.preloader.show();
 		    	_form = [id,_form[0]['value'],_form[1]['value'],_form[2]['value'],_form[3]['value'],_form[4]['value'],_form[5]['value'],_form[6]['value'],_form[7]['value'],_form[8]['value']];
-				// console.log(_form);
 				let ajax = system.ajax(system.host('do-updateInfo'),_form);
-				ajax.done(function(data){
-			    	app.preloader.hide();				
+				ajax.done(function(data){				
 					if(data == 1){
-				        $("._gname").html(_form[1]);
-				        $("._mname").html(_form[2]);
-				        $("._lname").html(_form[3]);
-				        $("._dob").html(_form[4]);
-				        $("._address").html(_form[5]);
-				        $("._number").html(_form[7]);
-				        $("._bio").html(_form[9]);
-				        $("._email").html(_form[8]);
-						localStorage.setItem('personal-info',JSON.stringify(account.get()[0]));   
-	                    system.notification("Kareer",`Updated`);
+						setTimeout(function(){
+							app.preloader.hide();
+					        $("._gname").html(_form[1]);
+					        $("._mname").html(_form[2]);
+					        $("._lname").html(_form[3]);
+					        $("._dob").html(_form[4]);
+					        $("._address").html(_form[5]);
+					        $("._number").html(_form[7]);
+					        $("._bio").html(_form[9]);
+					        $("._email").html(_form[8]);
+							localStorage.setItem('personal-info',JSON.stringify(account.get()[0]));   
+	                    	system.notification("Kareer",`Updated`);
+	                    },200);
 					}
 					else{
 	                    system.notification("Kareer",`Update failed`);
@@ -213,6 +214,7 @@ account = {
 		}); 
 
 		$("#button_accountInfo").on('click',function(){
+			app.preloader.show();
 			if($("#form_password").validate().form()){
 				let _form = $("#form_password").serializeArray();
 				_form = [account.id(),_form[0]['value'],_form[1]['value']];
@@ -225,8 +227,11 @@ account = {
 					ajax.done(function(data){
 				    	app.preloader.hide();				
 						if(data == 1){
-							$("#form_password input").val("");
-		                    system.notification("Kareer",`Password updated`);
+							setTimeout(function(){
+								app.preloader.hide();
+								$("#form_password input").val("");
+			                    system.notification("Kareer",`Password updated`);
+			                },200);
 						}
 						else{
 		                    system.notification("Kareer",`Password update failed`);
@@ -290,8 +295,8 @@ account = {
 	                    minCropBoxHeight:100,
 			            ready: function(){
 			                $("#button_updatePicture").on('click',function() {
-			                	image = cropper.getCroppedCanvas().toDataURL('image/png');
 								app.preloader.show();
+			                	image = cropper.getCroppedCanvas().toDataURL('image/png');
 								setTimeout(function(){
 			                        let data = system.ajax(system.host('do-updateImage'),[account.id(), 'picture', image]);
 			                        data.done(function(data) {
@@ -305,7 +310,7 @@ account = {
 												cropper.destroy();
 				                                system.notification("Kareer",`Picture Uploaded.`);
 												account.ini();   											
-											},2000);
+											},200);
 			                            }
 			                            else {
 											app.preloader.hide();
@@ -333,7 +338,7 @@ account = {
 				localStorage.clear();
 				app.preloader.hide();
 				view.router.navigate('/home/',{reloadCurrent:true});
-			},1000);
+			},200);
 				system.notification("Kareer",`Sign out.`);
 		});
 	}
@@ -342,7 +347,6 @@ account = {
 skills = {
 	get:function(id){
 		var ajax = system.ajax(system.host('get-skills'),id);
-		console.log()
 		return ajax.responseText;
 	},
 	display1:function(){
@@ -350,7 +354,7 @@ skills = {
 	    if(_skills.length>0){
 	    	$('#display_skill ul').html("");
 	    	$.each(_skills,function(i,v){
-	    		$('#display_skill ul').append(`
+	    		$('#display_skill ul').prepend(`
 					<li class="swipeout" data-node='${v[0]}'>
 	                    <div class="item-content swipeout-content item-input">
 	                        <div class="item-inner">
@@ -395,8 +399,8 @@ skills = {
 				}
 			},
 			submitHandler: function (form) {
-				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'];
 				app.preloader.show();
+				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'];
 				let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,skill,level]);
 				ajax.done(function(data){
 					if(data != 0){
@@ -406,7 +410,7 @@ skills = {
 							app.preloader.hide();
 							skills.display1();
 		                    system.notification("Kareer",`Success. ${skill} skill has been added.`);
-		                },1000);
+		                },200);
 					}
 					else{
 	                    system.notification("Kareer","Failed. Try again later.");
@@ -426,11 +430,11 @@ skills = {
 	remove1:function(){ /**/
 		let id = account.id();
 		$("a[data-cmd='deleteSkill']").on('click',function(){
+			app.preloader.show();
 			console.log('delete');
 			let data = $(this).parents().find('li.swipeout.swipeout-opened').data('node');
 			let ajax = system.ajax(system.host('do-deleteSkill'),['applicant','skill',id, data]);
 			ajax.done(function(_data){
-				app.preloader.show();
 				if(_data == 1){
 					localStorage.setItem('skills',JSON.stringify(JSON.parse(skills.get(id))));   
 					setTimeout(function(){
@@ -448,7 +452,7 @@ skills = {
 			                    </a>`);
 						}
 	                    system.notification("Kareer",`Skill has been removed.`);
-	                },1000);
+	                },200);
 				}
 				else{
                     system.notification("Kareer","Failed. Try again later.");
@@ -457,7 +461,7 @@ skills = {
 		});
 	}
 }
-/**/
+
 specialties ={
 	add:function(){
 		$("input[type='checkbox']").on('change',function(){
@@ -477,16 +481,16 @@ specialties ={
 	        });
 	        let val = $("input[type='checkbox']:checked").val();
 	        if(vals.length == 1){
+				app.preloader.show();
 	            let ajax = system.ajax(system.host('do-addSpecialties'),[val,account.id()]);
 				ajax.done(function(data){
 					console.log(data);
-					app.preloader.show();
 					if(data == 1){
 						localStorage.setItem('specialty',JSON.stringify(JSON.parse(specialties.get(account.id()))));   
 						setTimeout(function(){
 							app.preloader.hide();
 							view.router.navigate('/skills/');
-						},1000);
+						},200);
 					}
 				});
 	        }
@@ -555,7 +559,7 @@ specialties ={
 		});
 	}
 }
-/**/
+
 academic = {
 	ini:function(){
 	},
@@ -584,11 +588,11 @@ academic = {
 				}
 			},
 			submitHandler: function (form) {
-				var _form = $(form).serializeArray(), degree = "";
+                app.preloader.show();
+				let _form = $(form).serializeArray(), degree = "";
 				_form = [id[0],id[1],form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
                 var data = system.ajax(system.host('do-updateAcademic'),_form);
                 data.done(function(data){
-                	app.preloader.show();
                     if(data != 0){
 						localStorage.setItem('academic',JSON.stringify(JSON.parse(academic.get(account.id()))));
                     	setTimeout(function(){
@@ -596,7 +600,7 @@ academic = {
 							academic.display1();
 			                system.notification("Kareer","Academic information has been updated.");
 							app.popup.close('.popup-acad',true);
-						},1000);
+						},200);
                     }
                     else{
                         system.notification("Kareer","Failed to updated.");
@@ -607,10 +611,10 @@ academic = {
 	},
 	delete:function(){
 		$(`a[data-cmd='delete-acad']`).on('click', function(){
+	        app.preloader.show();
 			let id = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
 	        var data = system.ajax(system.host('do-deleteAcademic'),id);
 	        data.done(function(data){
-	        	app.preloader.show();
 	            if(data != 0){
 					localStorage.setItem('academic',JSON.stringify(JSON.parse(academic.get(account.id()))));   
 	            	setTimeout(function(){
@@ -628,7 +632,7 @@ academic = {
 									</div>
 								</a>`);
 						}
-					},1000);
+					},200);
 	            }
 	            else{
 	                system.notification("Kareer","Failed to delete.");
@@ -747,21 +751,21 @@ academic = {
 				}
 			},
 			submitHandler: function (form) {
+               	app.preloader.show();
 				var _form = $(form).serializeArray(),data = 0;
 				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
                 var data = system.ajax(system.host('do-addAcademic'),_form);
                 data.done(function(data){
                 	_form[0] = data;
-                	app.preloader.show();
                     if(data != 0){
-	                    $('input').val(""), $('textarea').val("");;
+	                    $('input').val(""), $('textarea').val("");
 						localStorage.setItem('academic',JSON.stringify(JSON.parse(academic.get(id))));   
                     	setTimeout(function(){
 							app.preloader.hide();
 							academic.display1();
 	                        system.notification("Kareer","New Academic information has been added.");
 							app.popup.close('.popup-newAcad',true);
-	                    },1000);
+	                    },200);
                     }
                     else{
                         system.notification("Kareer","Failed to add.");
@@ -800,11 +804,11 @@ career = {
 				}
 			},
 			submitHandler: function (form) {
+               	app.preloader.show();
 				var _form = $(form).serializeArray();
 				_form = [id[0],id[1],form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
                 var data = system.ajax(system.host('do-updateCareer'),_form);
                 data.done(function(data){
-                	app.preloader.show();
                     if(data != 0){
 						localStorage.setItem('career',JSON.stringify(JSON.parse(career.get(account.id()))));
                     	setTimeout(function(){
@@ -812,7 +816,7 @@ career = {
 							career.display1();
 			                system.notification("Kareer","Career information has been updated.");
 							app.popup.close('.popup-career',true);
-						},1000);
+						},200);
                     }
                     else{
                         system.notification("Kareer","Failed to update.");
@@ -823,10 +827,10 @@ career = {
 	},
 	delete:function(id){
 		$(`a[data-cmd='delete-career']`).on('click', function(){
+        	app.preloader.show();
 			let id = $(this).parents().find('li.swipeout.swipeout-opened a.item-link').data('node');
 	        var data = system.ajax(system.host('do-deleteCareer'),id);
 	        data.done(function(data){
-	        	app.preloader.show();
 	            if(data != 0){
 					localStorage.setItem('career',JSON.stringify(JSON.parse(career.get(account.id()))));   
 	            	setTimeout(function(){
@@ -844,7 +848,7 @@ career = {
 								</div>
 							</a>`);
 						}
-					},1000);
+					},200);
 	            }
 	            else{
 	                system.notification("Kareer","Failed to delete.");
@@ -943,12 +947,12 @@ career = {
 				}
 			},
 			submitHandler: function (form) {
+                app.preloader.show();
 				var _form = $(form).serializeArray(),data = 0;
 				_form = [data,id,form[0].value,form[1].value,form[2].value,form[3].value,form[4].value,form[5].value];
                 var data = system.ajax(system.host('do-addCareer'),_form);
                 data.done(function(data){
                 	_form[0] = data;
-                	app.preloader.show();
                     if(data != 0){
 						localStorage.setItem('career',JSON.stringify(JSON.parse(career.get(id))));   
                     	setTimeout(function(){
@@ -957,7 +961,7 @@ career = {
 							career.display1();
 	                        system.notification("Kareer","New career information has been added.");
 							app.popup.close('.popup-newCareer',true);
-						},1000);
+						},200);
                     }
                     else{
                         system.notification("Kareer","Failed to add.");

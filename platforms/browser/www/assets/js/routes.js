@@ -99,6 +99,7 @@ var routes = [
                     let ps = new PerfectScrollbar('#tab_account .other-info');
                 }
                 else{
+                    console.log('account');
                     account.display();
                     jobs.display();
                     let ps = new PerfectScrollbar('#tab_account .other-info');
@@ -111,7 +112,7 @@ var routes = [
         url: './pages/account_info.html',
         on: {
             pageInit: function(e, page){
-                let data = account.get()[0];
+                let data = localStorage.getItem('personal-info');
                 let auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
                 $("#display_accountLogin").addClass(auth);
                 account.logout();    
@@ -184,9 +185,13 @@ var routes = [
         url: './pages/bookmarks.html',
         on: {
             pageInit: function(e, page){
-                bookmark.ini();
-                new PerfectScrollbar('#list_bookmarks .list');
-                console.log('bookmark');
+                app.preloader.show();           
+                setTimeout(function(){
+                    app.preloader.hide();
+                    bookmark.ini();
+                    new PerfectScrollbar('#list_bookmarks .list');
+                    console.log('bookmark');
+                },200);
             }
         }
     },
@@ -204,9 +209,13 @@ var routes = [
         url: './pages/notifications.html',
         on: {
             pageInit: function(e, page){
-                notifications.ini();
-                let ps = new PerfectScrollbar('#list_notifications .list');
-          }
+                app.preloader.show();           
+                setTimeout(function(){
+                    app.preloader.hide();
+                    notifications.ini();
+                    let ps = new PerfectScrollbar('#list_notifications .list');
+                },200);
+            }
         }
     },
     {
@@ -242,9 +251,13 @@ var routes = [
         url: './pages/messages.html',
         on: {
             pageInit: function(e, page){
-                messages.ini();
-                let ps = new PerfectScrollbar('.list.media-list');
-                console.log('messages');
+                app.preloader.show();           
+                setTimeout(function(){
+                    app.preloader.hide();
+                    messages.ini();
+                    let ps = new PerfectScrollbar('.list.media-list');
+                    console.log('messages');
+                },200);
             }
         }
     },
@@ -291,23 +304,7 @@ var routes = [
             pageInit: function(e, page){
                 let data = localStorage.getItem('personal-info');
                 if(data == null){
-                    let personal = account.get()[0], id = account.id(),
-                    picture = personal[19];
-                    _skills = JSON.parse(skills.get(id)),
-                    specialty = JSON.parse(specialties.get(id)),
-                    acad = JSON.parse(academic.get(id)),
-                    car = JSON.parse(career.get(id));
-                    localStorage.setItem('personal-info',JSON.stringify(personal));   
-                    localStorage.setItem('picture',JSON.stringify(picture));   
-                    localStorage.setItem('skills',JSON.stringify(_skills));
-                    if(specialty.length == 0){
-                        localStorage.setItem('specialty',JSON.stringify([]));               
-                    } 
-                    else{
-                        localStorage.setItem('specialty',JSON.stringify(specialty));            
-                    }  
-                    localStorage.setItem('academic',JSON.stringify(acad));   
-                    localStorage.setItem('career',JSON.stringify(car));
+                    account.ini();
                 }
                 else
                     view.router.navigate('/home/');
