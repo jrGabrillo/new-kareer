@@ -100,7 +100,7 @@ account = {
 
 		app.toolbar.hide('#menu_job');
 		app.tab.show('#tab_account');
-
+		
 		$('.hide-toolbar-account-menu').on('click', function () {
 			app.toolbar.hide('#menu_account');
 		});
