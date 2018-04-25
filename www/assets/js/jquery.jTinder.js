@@ -12,11 +12,13 @@
 		defaults = {
 			onDislike: null,
 			onLike: null,
+			onBookmark: null,
 			animationRevertSpeed: 200,
 			animationSpeed: 400,
 			threshold: 1,
 			likeSelector: '.yes',
-			dislikeSelector: '.no'
+			dislikeSelector: '.no',
+			bookmarkSelector: '.bookmark'
 		};
 	var container = null;
 	var panes = null;
@@ -92,7 +94,13 @@
 			$('.bookmark').css('opacity',1);
 			$('.yes').css('opacity',0);
 			$('.no').css('opacity',0);
-
+			panes.eq(current_pane).animate({"transform": "translate(" + (pane_width-pane_width) + "px," + (pane_width*-1.5) + "px)"}, $that.settings.animationSpeed, function () {
+				if($that.settings.onBookmark) {
+					$that.settings.onBookmark(panes.eq(current_pane));
+				}
+				$('.yes, .no, .bookmark').css('opacity',0);
+				$that.next();
+			});
 			console.log('bookmark');
 		},
 		handler: function (ev) {

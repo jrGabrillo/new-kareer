@@ -20,9 +20,20 @@
                         </li>
                         <li class="item-content item-input" style="width: 35%">
                             <div class="item-inner">
-                                <div class="item-title item-floating-label">Percentage</div>
+                                <div class="item-title item-label">Percentage</div>
                                 <div class="item-input-wrap">
-                                    <input type="number" id='field_level' name='field_level' class='_gname'>
+                                     <select id='field_level' name='field_level' class='_gender'>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                        <option value="60">60</option>
+                                        <option value="70">70</option>
+                                        <option value="80">80</option>
+                                        <option value="90">90</option>
+                                        <option value="100">100</option>
+                                    </select>
                                 </div>
                             </div>
                         </li>
@@ -38,13 +49,13 @@
             </form>
             <div class="block list media-list bottom-margin" id="display_skill">
                 <ul>
-                    <li class="item-content item-input empty">
+                    <a class="item-content item-input" id="empty">
                         <div class="item-inner">
-                            <div class="item-title">
-                                No information to show
-                            </div>
+                            <div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+                            <div class="item-title text-align-center">No Skills yet</div>
+                            <div class="item-subtitle text-align-center">Start adding now.</div>
                         </div>
-                    </li>
+                    </a>
                 </ul>
             </div>
         </div>

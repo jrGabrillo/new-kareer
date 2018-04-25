@@ -289,6 +289,29 @@ var routes = [
         url: './pages/welcome.html',
         on: {
             pageInit: function(e, page){
+                let data = localStorage.getItem('personal-info');
+                if(data == null){
+                    let personal = account.get()[0], id = account.id(),
+                    picture = personal[19];
+                    _skills = JSON.parse(skills.get(id)),
+                    specialty = JSON.parse(specialties.get(id)),
+                    acad = JSON.parse(academic.get(id)),
+                    car = JSON.parse(career.get(id));
+                    localStorage.setItem('personal-info',JSON.stringify(personal));   
+                    localStorage.setItem('picture',JSON.stringify(picture));   
+                    localStorage.setItem('skills',JSON.stringify(_skills));
+                    if(specialty.length == 0){
+                        localStorage.setItem('specialty',JSON.stringify([]));               
+                    } 
+                    else{
+                        localStorage.setItem('specialty',JSON.stringify(specialty));            
+                    }  
+                    localStorage.setItem('academic',JSON.stringify(acad));   
+                    localStorage.setItem('career',JSON.stringify(car));
+                }
+                else
+                    view.router.navigate('/home/');
+                    console.log(data);
             }
         }
     },

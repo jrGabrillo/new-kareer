@@ -5,6 +5,7 @@ let server = `http://system.kareer-ph.com/`;
 let slides = [], count = 5, min = 0, max = count;
 account = {
 	ini:function(){
+		/*store user data to local storage*/
 		let data = this.get()[0], id = this.id(), scroll = 0, badge ="",
 		picture = data[19];
 		_skills = JSON.parse(skills.get(id)),
@@ -41,8 +42,8 @@ account = {
 		return JSON.parse(data.responseText);
 	},
 	settingsDisplay:function(){
-		let data = JSON.parse(localStorage.getItem('personal-info')), ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "";
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		let data = JSON.parse(localStorage.getItem('personal-info')), ps = new PerfectScrollbar('#display_info .content'), auth = ((new RegExp('fb|google','i')).test(data[4]))? "hidden" : "", pic = JSON.parse(localStorage.getItem('picture'));
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(pic))? pic : ((typeof pic == 'object') || (pic == ""))? tempPicture : `${server}/assets/images/profile/${pic}`;
 		$('#display_accountPicture img').attr({'src':`${picture}`});
         $("._gname").val(data[8]);
         $("._mname").val(data[10]);
@@ -73,8 +74,8 @@ account = {
 	},
 	display:function(){
 		let data = JSON.parse(localStorage.getItem('personal-info'));
-		let pic = localStorage.getItem('picture');
-		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(data[19]))? data[19] : ((typeof data[19] == 'object') || (data[19] == ""))? tempPicture : `${server}/assets/images/profile/${data[19]}`;
+		let pic = JSON.parse(localStorage.getItem('picture'));
+		let tempPicture = `${server}/assets/images/logo/icon.png`, picture = ((new RegExp('facebook|googleusercontent','i')).test(pic))? pic : ((typeof pic == 'object') || (pic == ""))? tempPicture : `${server}/assets/images/profile/${pic}`;
 		let name = `${(data[8]!=null)?data[8]:''} ${(data[10]!=null)?data[10]:''} ${(data[9]!=null)?data[9]:''}`;
 		let about = (data[1] == "")?`Describe yourself. <a href="/personal-info/">Add your bio now </a>`:data[1];
 		$('#profile img').attr({'src':picture});
@@ -294,16 +295,17 @@ account = {
 								setTimeout(function(){
 			                        let data = system.ajax(system.host('do-updateImage'),[account.id(), 'picture', image]);
 			                        data.done(function(data) {
-			                        	console.log(data);
 			                            if (data != 0) {
 			                            	$("#display_accountPicture img, #profile img").attr({'src':image});
 			                            	$('#profile img').attr({'src':image});
+											localStorage.setItem('picture',data);
 											setTimeout(function(){
 												app.preloader.hide();
 												popover_picture.close();
 												cropper.destroy();
 				                                system.notification("Kareer",`Picture Uploaded.`);
-												localStorage.setItem('picture',data);   											},2000);
+												account.ini();   											
+											},2000);
 			                            }
 			                            else {
 											app.preloader.hide();
@@ -345,59 +347,38 @@ skills = {
 	},
 	display1:function(){
 		let _skills = JSON.parse(localStorage.getItem('skills'));
-        if(_skills.length>0){
-        	$('#display_skill ul').html("");
-        	$.each(_skills,function(i,v){
-        		$('#display_skill ul').append(`
+	    if(_skills.length>0){
+	    	$('#display_skill ul').html("");
+	    	$.each(_skills,function(i,v){
+	    		$('#display_skill ul').append(`
 					<li class="swipeout" data-node='${v[0]}'>
-                        <div class="item-content swipeout-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title text-align-left">${v[1]}</div>
-                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
-                            </div>
-                        </div>
-                        <div class="swipeout-actions-right">
+	                    <div class="item-content swipeout-content item-input">
+	                        <div class="item-inner">
+	                            <div class="item-title text-align-left">${v[1]}</div>
+	                            <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
+	                        </div>
+	                    </div>
+	                    <div class="swipeout-actions-right">
 					        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
 					    </div>
-                    </li>`);
-        		let progress = $$(`#${v[0]}`).attr('data-progress');
+	                </li>`);
+	    		let progress = $$(`#${v[0]}`).attr('data-progress');
 				app.progressbar.set(`#${v[0]}`, progress);
-        	})
-        } 
-        else{
-        	// $("#display_skill ul").html("<h5 class='text-color-gray text-align-center'>- No information to show -</h5>");        	
-        }
+	    	})
+	    } 
+	    else{
+	    	$('#display_skill ul').html(`<a class="item-content item-input" id="empty">
+                    <div class="item-inner">
+                        <div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+                        <div class="item-title text-align-center">No Skills yet</div>
+                        <div class="item-subtitle text-align-center">Please add atleast one.</div>
+                    </div>
+                </a>`);        	
+	    }
         this.add1(account.id());
         this.remove1();
 	},
-	frontdisplay1:function(){ /**/
-		let data = account.get()[0], id = account.id(), _skills = JSON.parse(this.get(id));
-        if(_skills.length>0){	
-        	$('#display_skill ul').html("");
-        	$.each(_skills,function(i,v){
-        		$('#display_skill ul').append(`
-					<li class="swipeout" data-node='${v[0]}'>
-                        <div class="item-content swipeout-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title text-align-left">${v[1]}</div>
-                                <div class="item-after row"><span data-progress="${v[2]}" class="progressbar col-80" id="${v[0]}"></span><small class="col-20">${v[2]}%</small></div>
-                            </div>
-                        </div>
-                        <div class="swipeout-actions-right">
-					        <a data-cmd='deleteSkill'><i class='material-icons'>close</i></a>
-					    </div>
-                    </li>`);
-		    	let progress = $$(`#${v[0]}`).attr('data-progress');
-				app.progressbar.set(`#${v[0]}`, progress);
-    		});
-    	}
-    	else{
-        	// $("#display_skill ul").html("");        	
-        }
-        this.add1();
-        this.remove1();
-	},
-	add1:function(id){ /**/
+	add1:function(id){ /**/		
 		$("#skillForm").validate({
 			rules: {
 				field_skills: {required: true, maxlength: 100},
@@ -415,10 +396,9 @@ skills = {
 			},
 			submitHandler: function (form) {
 				var _form = $(form).serializeArray(), skill = _form[0]['value'], level = _form[1]['value'];
+				app.preloader.show();
 				let ajax = system.ajax(system.host('do-addSkill'),['applicant','skill',id,skill,level]);
 				ajax.done(function(data){
-					console.log(data);
-					app.preloader.show();
 					if(data != 0){
 						$('input').val(""); $('textarea').val("");
 						localStorage.setItem('skills',JSON.stringify(JSON.parse(skills.get(id))));   
@@ -459,13 +439,13 @@ skills = {
 							$(`li.swipeout.swipeout-opened`).remove();
 						}
 						else{
-							$('#display_skill ul').html(`<li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title">
-                                            No information to show
-                                        </div>
-                                    </div>
-                                </li>`);
+							$('#display_skill ul').html(`<a class="item-content item-input" id="empty">
+			                        <div class="item-inner">
+			                            <div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+			                            <div class="item-title text-align-center">No Skills yet</div>
+			                            <div class="item-subtitle text-align-center">Please add atleast one.</div>
+			                        </div>
+			                    </a>`);
 						}
 	                    system.notification("Kareer",`Skill has been removed.`);
 	                },1000);
@@ -480,6 +460,16 @@ skills = {
 /**/
 specialties ={
 	add:function(){
+		$("input[type='checkbox']").on('change',function(){
+			var vals = [];
+	        $.each($("input[type='checkbox']:checked"), function(){  
+	            vals.push($(this).val());  
+	        });
+	        console.log(vals.length);
+	        if(vals.length > 1){
+	        	system.notification("Kareer","Please add only one industry.");
+	        }
+		});
 		$('a.next').on('click',function(){
 	        var vals = [];
 	        $.each($("input[type='checkbox']:checked"), function(){  
@@ -492,6 +482,7 @@ specialties ={
 					console.log(data);
 					app.preloader.show();
 					if(data == 1){
+						localStorage.setItem('specialty',JSON.stringify(JSON.parse(specialties.get(account.id()))));   
 						setTimeout(function(){
 							app.preloader.hide();
 							view.router.navigate('/skills/');
@@ -511,10 +502,8 @@ specialties ={
 	},
 	display:function(){
 		let specialty = JSON.parse(localStorage.getItem('specialty'));
-		console.log(specialty);
-		if(specialty.length>0){
+		if(specialty.length >0){
 			$(".specialties ul").html("");
-			// $.each(specialty,function(i,v){
     		$(".specialties ul").append(`
     			<li class="item-content item-input">
                     <div class="item-inner">
@@ -522,14 +511,20 @@ specialties ={
                     </div>
                 </li>
     		`);
-	    	// });
 	    }
 	    else{
+	    	$('.specialties ul').html(`<a class="item-content item-input" id="empty">
+				<div class="item-inner">
+					<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+					<div class="item-title text-align-center">No industry yet</div>
+					<div class="item-subtitle text-align-center">Please add atleast one.</div>
+				</div>
+			</a>`);  
 	    }
 	},
 	bio:function(){
 		let data = account.get()[0][1];
-		console.log(data);
+		console.log(account.get());
 		$("p.about").html(data);
 		specialties.addBio();
 	},
@@ -540,9 +535,14 @@ specialties ={
 				let ajax = system.ajax(system.host('do-bio'),[bio,account.id()]);
 				ajax.done(function(data){
 					console.log(data);
+					app.preloader.show();
 					if(data == 1){
-						$("p.about").html(bio);
-                		system.notification("Kareer","Description added.");
+						localStorage.setItem('personal-info',JSON.stringify(account.get()[0]));   
+						setTimeout(function(){
+							app.preloader.hide();
+							$("p.about").html(bio);
+	                		system.notification("Kareer","Description added.");
+	                	},200);
 					}
 					else{
                 		system.notification("Kareer","Failed to add bio.");
@@ -620,13 +620,13 @@ academic = {
 							$(`li.swipeout.swipeout-opened`).remove();
 						}
 						else{
-							$('#display_skill ul').html(`<li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title">
-                                            No information to show
-                                        </div>
-                                    </div>
-                                </li>`);
+							$('#list_schools ul').html(`<a class="item-content item-input" id="empty">
+									<div class="item-inner">
+										<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+										<div class="item-title text-align-center">No Academics yet</div>
+										<div class="item-subtitle text-align-center">Please add atleast one.</div>
+									</div>
+								</a>`);
 						}
 					},1000);
 	            }
@@ -665,7 +665,13 @@ academic = {
 			this.delete();
         }
 		else{
-        	// $("#settings-acad-info a.btn-nav").addClass('hidden');        	
+        	$('#list_schools ul').html(`<a class="item-content item-input" id="empty">
+				<div class="item-inner">
+					<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+					<div class="item-title text-align-center">No Academics yet</div>
+					<div class="item-subtitle text-align-center">Please add atleast one.</div>
+				</div>
+			</a>`);       	
 		}
 		this.add1(account.id());
 	},
@@ -830,13 +836,13 @@ career = {
 							$(`li.swipeout.swipeout-opened`).remove();
 						}
 						else{
-							$('#display_skill ul').html(`<li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title">
-                                            No information to show
-                                        </div>
-                                    </div>
-                                </li>`);
+							$('#list_jobs ul').html(`<a class="item-content item-input" id="empty">
+								<div class="item-inner">
+									<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+									<div class="item-title text-align-center">No Career yet</div>
+									<div class="item-subtitle text-align-center">Please add atleast one.</div>
+								</div>
+							</a>`);
 						}
 					},1000);
 	            }
@@ -875,7 +881,13 @@ career = {
 			this.delete();
 		}
 		else{
-        	// $("#settings-career-info a.btn-nav").addClass('hidden');        	
+        	$('#list_jobs ul').html(`<a class="item-content item-input" id="empty">
+				<div class="item-inner">
+					<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
+					<div class="item-title text-align-center">No Career yet</div>
+					<div class="item-subtitle text-align-center">Please add atleast one.</div>
+				</div>
+			</a>`);        	
 		}
 		this.add1(account.id());	
 	},
@@ -1024,14 +1036,15 @@ jobs = {
 					animationSpeed: 400,
 					threshold: 1,
 					likeSelector: '.like',
-					dislikeSelector: '.dislike'
+					dislikeSelector: '.dislike',
+					bookmarkSelector: '.bookmark'
 				});
 	        }
 		}
 	},
 	display:function(){
 		let swipe=true,_data=[],job_id="",business_id="",jobData="",skills="",logo="",jobAbout="",companyAbout="",ps_job="",ps_business="",business_data="";	
-		// let id = account.id(),data = JSON.parse(jobs.get(id,min,count));
+		let id = account.id();
         jobs.loadMore(true);
 
 		$("#menu_job .job_next").on('click',function(){
@@ -1041,6 +1054,11 @@ jobs = {
 			job_id = $("#tab_jobs ul li.active").data('node');
 			job.apply([job_id,id]);
 			$("#tab_jobs").jTinder('like');
+		});
+		$("#menu_job .job_bookmark").on('click',function(){
+			job_id = $("#tab_jobs ul li.active").data('node');
+			job.bookmark([job_id,id]);
+			$("#tab_jobs").jTinder('bookmark');
 		});
 
 		$('button[data-cmd="read_job"]').on('click',function(){
@@ -1260,6 +1278,7 @@ bookmark = {
 	ini:function(){
 		let id =  account.id();
 		let data = JSON.parse(this.get(id));
+		console.log(data);
 		this.display(data);
 	},
 	get:function(data){
@@ -1268,7 +1287,7 @@ bookmark = {
 	},
 	display:function(data){
 		let	picture = "", id="",ps_notif="";
-		if(data.length != 0){
+		if(data.length > 0){
 			$.each(data,function(i,v){
 				picture  = ((typeof v[2] == 'object') || (v[2] == ""))? `${server}/assets/images/logo/icon.png` : `${server}/assets/images/logo/${v[2]}`;
 				$('#list_bookmarks ul').append(`<a class="item-link item-content" href="#" data-cmd="read_job" data-node="${v[0]}">
@@ -1370,7 +1389,7 @@ bookmark = {
 			});
 		}
 		else{
-			$(`#list_notifications ul`).html(`<a class="item-content item-input" id="empty">
+			$(`#list_bookmarks ul`).html(`<a class="item-content item-input" id="empty">
 						<div class="item-inner">
 							<div class="text-align-center"><i class='material-icons'>info_fill</i></div>
 							<div class="item-title text-align-center">No Bookmarks yet</div>
@@ -1788,11 +1807,15 @@ signup = {
 					console.log(data);
 					if(data != 0){
 						data = JSON.parse(data);
+						system.notification("Kareer","Success. You are now officially registered.");
 				        localStorage.setItem('account_id',data['id']);
 						localStorage.setItem('callback','kareer-oauth');
 						localStorage.setItem('account',JSON.stringify(data));
-						system.notification("Kareer","Success. You are now officially registered.");
-						view.router.navigate('/welcome/');
+						app.preloader.show();
+		                setTimeout(function(){
+		                    app.preloader.hide();
+							view.router.navigate('/welcome/');
+						},1000);
 					}
 					else{
 						system.notification("Kareer","Sign up failed.");
